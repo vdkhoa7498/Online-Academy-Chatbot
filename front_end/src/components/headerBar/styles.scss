@@ -1,0 +1,19 @@
+.header-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo-item{
+        font-size: large;
+        color: white;
+    }
+
+    .tool{
+        display: flex;
+        flex-direction: row;
+
+        .search-box{
+            margin-right: 15px;
+        }
+    }
+}   
