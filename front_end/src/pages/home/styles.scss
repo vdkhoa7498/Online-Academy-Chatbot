@@ -1,0 +1,17 @@
+.home-container{
+    padding: 10px;
+
+    .carousel-container{
+        margin: 15px;
+        .carousel-item{
+            .item-img{
+                width: 100%!important;
+                height: auto;
+                &:hover{
+                    opacity: 0.5;
+                }
+            }
+            
+        }
+    }
+}
