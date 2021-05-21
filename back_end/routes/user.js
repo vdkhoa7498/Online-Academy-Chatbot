@@ -2,10 +2,11 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { User, validate } = require("../models/user");
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const user = await User.find();
   res.send(user);
 });
