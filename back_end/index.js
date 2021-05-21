@@ -1,13 +1,19 @@
 const express = require("express");
-const cors = require("cors");
 const auth = require("./routes/auth");
+const user = require("./routes/user");
 
 const PORT = 8888;
 const app = express();
 
-app.use(cors());
+app.use(express.json());
 
-app.use("/auth", auth);
+require("./startup/cors.js")(app);
+require("./startup/db")();
+require("./startup/config")();
+require("./startup/validation")();
+
+// app.use("/auth", auth);
+app.use("/users", user);
 
 const server = app.listen(PORT, () => {
   console.log("listening on ", PORT);
