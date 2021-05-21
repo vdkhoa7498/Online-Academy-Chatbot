@@ -105,17 +105,19 @@ const Home = () => {
             <Carousel autoplay effect="fade" className="carousel-container">
                 {
                     topHighlight.map((item, index)=>
-                        <Link to="/" key={index} >
-                            <img 
-                                style={{width: '100%', height: 450 }} 
-                                alt={item.title} 
-                                src={item.image}
-                            />
-                            <div style={{ height: 100, opacity: 0.7, backgroundColor: 'black'}}>
-                                <div style={{fontWeight: 'bold', color: 'white', fontSize: 24}}>{item.title}</div>
-                                <div style={{fontWeight: 'bold', color: 'white', fontSize: 14}}>{item.description}</div>
+                        <div key={index}>
+                            <Link to="/">
+                                <img 
+                                    style={{width: '100%', height: 450 }} 
+                                    alt={item.title} 
+                                    src={item.image}
+                                />
+                            </Link>
+                            <div style={{ height: 100, opacity: 0.7, backgroundColor: 'black', display:'flex', flexDirection: 'column'}}>
+                                <Link to="/" style={{fontWeight: 'bold', color: 'white', fontSize: 24}}>{item.title}</Link>
+                                <Link to="/" style={{fontWeight: 'bold', color: 'white', fontSize: 14}}>{item.description}</Link>
                             </div>
-                        </Link>
+                        </div>
                     )
                 }
             </Carousel>
@@ -131,9 +133,9 @@ const Home = () => {
                                     alt={item.title} 
                                     src={item.image}
                                 />
-                                <div style={{ height: '20%', opacity: 0.7, backgroundColor: 'black'}}>
-                                    <div style={{fontWeight: 'bold', color: 'white', fontSize: 14}}>{item.title}</div>
-                                    <div style={{color: 'white', fontSize: 12}}>{item.description}</div>
+                                <div style={{ height: '20%', opacity: 0.7, backgroundColor: 'black', textAlign: 'left'}}>
+                                    <div style={{fontWeight: 'bold', color: 'white', fontSize: 14, marginBottom: 5,  marginLeft: 5, marginRight: 5}}>{item.title}</div>
+                                    <div style={{color: 'white', fontSize: 12,  marginLeft: 5, marginRight: 5}}>{item.description}</div>
                                 </div>
                             </Col>
                         )
@@ -152,9 +154,9 @@ const Home = () => {
                                     alt={item.title} 
                                     src={item.image}
                                 />
-                                <div style={{ height: '20%', opacity: 0.7, backgroundColor: 'black'}}>
-                                    <div style={{fontWeight: 'bold', color: 'white', fontSize: 14}}>{item.title}</div>
-                                    <div style={{color: 'white', fontSize: 12}}>{item.description}</div>
+                                <div style={{ height: '20%', opacity: 0.7, backgroundColor: 'black', textAlign: 'left'}}>
+                                    <div style={{fontWeight: 'bold', color: 'white', fontSize: 14, marginBottom: 5,  marginLeft: 5, marginRight: 5}}>{item.title}</div>
+                                    <div style={{color: 'white', fontSize: 12,  marginLeft: 5, marginRight: 5}}>{item.description}</div>
                                 </div>
                             </Col>
                         )

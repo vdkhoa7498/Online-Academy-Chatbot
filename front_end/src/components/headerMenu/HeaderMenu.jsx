@@ -71,7 +71,7 @@ const HeaderMenu = () =>{
     return(
         <div className="header-menu">
             <div className="logo" />
-            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
+            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['-1']}>
                 <Menu.Item key="-1"><HomeOutlined />Home</Menu.Item>
                 {
                     menu.map((item, index)=>{
