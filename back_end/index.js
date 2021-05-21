@@ -12,7 +12,7 @@ require("./startup/db")();
 require("./startup/config")();
 require("./startup/validation")();
 
-// app.use("/auth", auth);
+app.use("/auth", auth);
 app.use("/users", user);
 
 const server = app.listen(PORT, () => {
