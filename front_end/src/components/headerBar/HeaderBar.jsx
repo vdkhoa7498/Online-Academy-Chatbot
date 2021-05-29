@@ -11,7 +11,8 @@ const HeaderBar = () =>{
             <Link to="/" className="logo-item"><img src={Logo} alt="Online Learning" /> Online Learning</Link>
             <div className="tool">
                 <Search placeholder="Enter your input..." className="search-box"/>
-                <Button shape="round" type="primary">Login</Button>
+                <Button className="button" shape="round" type="primary">Đăng nhập</Button>
+                <Button className="button" shape="round" type="primary">Đăng Ký</Button>
             </div>
         </div>
     )
