@@ -30,7 +30,9 @@ const Register = (props) =>{
             {
                 (!isSuccess) ? (
                     <Form onFinish={handleSubmit} className="register-form" form={form}>
-                        <img src={Logo} className="register-form__image" alt="admin" />
+                        <Link to="/">
+                            <img src={Logo} className="register-form__image" alt="Online Learning" />
+                        </Link>
                         <Form.Item
                         name="email"
                         rules={[
