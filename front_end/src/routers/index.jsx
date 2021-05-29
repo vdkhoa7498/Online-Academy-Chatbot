@@ -11,8 +11,8 @@ import HeaderMenu from '../components/headerMenu/HeaderMenu';
 import Home from '../pages/home/Home';
 import NotFound from '../pages/notFound/NotFound';
 import Register from '../pages/authentication/register/Register';
-// import Login from '../pages/authentication/login/Login';
-// import ForgetPassword from '../pages/authentication/fogetPassword/ForgetPassword';
+import Login from '../pages/authentication/login/Login';
+import ForgetPassword from '../pages/authentication/fogetPassword/ForgetPassword';
 import CourseDetail from '../pages/courseDetail/CourseDetail';
 import CourseListCategory from '../pages/courseListCategory/CourseListCategory'
 
@@ -46,12 +46,12 @@ function RouterOutlet(props) {
           <Route exact path="/register">
             <Register />
           </Route>
-          {/* <Route exact path="/login">
+          <Route exact path="/login">
             <Login />
           </Route>
           <Route exact path="/forget-password">
             <ForgetPassword />
-          </Route> */}
+          </Route>
           <Route exact path={["/", "/courses/:id", "/categories/:id"]}>
             <RouteLayout {...rest}>
               <Switch>
