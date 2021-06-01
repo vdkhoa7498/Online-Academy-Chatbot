@@ -6,7 +6,7 @@ const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
+    fullName: {
       type: String,
       required: true,
       trim: true,
@@ -38,11 +38,19 @@ const userSchema = mongoose.Schema(
     role: {
       type: String,
       enum: roles,
-      default: 'user',
+      default: 'student',
     },
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    courses: {
+      type: Array,
+      default: [],
+    },
+    watchList: {
+      type: Array,
+      default: [],
     },
   },
   {
