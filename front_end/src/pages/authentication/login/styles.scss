@@ -1,0 +1,49 @@
+.login-page {
+  padding-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-form {
+    max-width: 350px;
+    width: 100%;
+    margin: 15px;
+    box-shadow: 0 1px 4px rgba(0,0,0, .1);
+    // background-color: #f5f5f5;
+    padding: 16px;
+    &__image {
+      width: 128px;
+      height: 128px;
+      object-fit: cover;
+    }
+    &__title {
+      color: "black";
+      font-weight: bold;
+      margin: 24px 0 12px;
+    }
+    &__btn-submit {
+      margin-top: 8px;
+      align-self: center;
+      justify-content: center;
+    }
+    &__link {
+      .ant-form-item-control-input-content{
+          display: flex !important;
+          justify-content: space-between !important;
+          padding: 10px;
+      }
+      // width: 100%;
+    }
+    .ant-form-item-label {
+      line-height: 1.5;
+      padding-bottom: 8px;
+    }
+    .ant-form-item-control-input-content {
+      
+      .btn-submit{
+        width: 120px;
+      }
+    }
+  }
+  
+}

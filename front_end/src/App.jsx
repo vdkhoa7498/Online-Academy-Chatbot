@@ -1,6 +1,5 @@
 import React from 'react';
 import RouterOutlet from './routers';
-import { withRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,4 +23,4 @@ const mapState = (state) => ({
 const mapDispatch = dispatch => bindActionCreators({
   
 }, dispatch)
-export default withRouter(connect(mapState, mapDispatch)(App));
+export default connect(mapState, mapDispatch)(App);
