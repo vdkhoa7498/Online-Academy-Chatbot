@@ -1,0 +1,27 @@
+.course-detail-container{
+    padding: 20px;
+    text-align: left;
+
+    .img-item{
+        width: 100%;
+        height: 80%;
+    }
+
+    .combo-item{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ant-comment-avatar img{
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    
+
+    .ant-avatar{
+        width: 50px !important;
+        height: 50px !important;
+    }
+}
