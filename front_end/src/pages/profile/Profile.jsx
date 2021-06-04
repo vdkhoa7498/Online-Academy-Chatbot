@@ -36,23 +36,23 @@ export default function Profile() {
         <Form
         {...formItemLayout}
         // layout={formLayout}
-        onSubmit={onFinish} 
+        onFinish={onFinish} 
       >
-        <Form.Item label="Email" >
+        <Form.Item label="Email" name="email">
           <Input placeholder="example@gmail.com" disabled={!isEdit}  />
         </Form.Item>
-        <Form.Item label="Ho ten">
+        <Form.Item label="Ho ten" name="fullName">
           <Input placeholder="Nguyen Van A" disabled={!isEdit}/>
         </Form.Item>
-        <Form.Item label="Mat khau">
+        <Form.Item label="Mat khau" name="password">
           <Input placeholder="123456**" type="password" disabled={!isEdit}/>
         </Form.Item>
         {isEdit ? 
         (<Form.Item {...buttonItemLayout}>
-          <Button type="primary">Submit</Button>
+          <Button type="primary" htmlType="submit">Submit</Button>
         </Form.Item>) : 
         (<Form.Item {...buttonItemLayout}>
-          <Button type="primary" onClick={() => setIsEdit(!isEdit)} >Edit</Button>
+          <Button type="primary" onClick={(e) => {e.preventDefault();setIsEdit(!isEdit)}} >Edit</Button>
         </Form.Item>)
         }
 
