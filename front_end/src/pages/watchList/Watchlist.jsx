@@ -108,8 +108,7 @@ const top10 = [
 export default function Watchlist() {
     const [courses, setCourses] = useState(top10);
 
-
     return (
-        <CoursesList titleList={"Danh sach yeu thich"} courses={courses} />
+        <CoursesList titleList={"Danh sach yeu thich"} courses={courses}  isWatchList={true}/>
     );
 }

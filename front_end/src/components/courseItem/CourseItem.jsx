@@ -1,9 +1,9 @@
 import React from "react";
-import { Row, Col, Rate} from 'antd'
+import { Row, Col, Rate, Button} from 'antd'
 import './styles.scss'
 
 export default function CourseItem({
- item
+ item, isWatchList 
 }) {
   const {title,
     category,
@@ -11,6 +11,7 @@ export default function CourseItem({
     numberOfRate,
     price, rateScore} = item;
 
+  console.log("isWatchList", isWatchList)
   return (
     <div>
       <Row className="list-container">
@@ -40,7 +41,12 @@ export default function CourseItem({
               <span className="title">Giá:</span>
               {price} VND
             </div>
+            { isWatchList && (<Button className="btn-remove-courses" type='danger'>
+              Remove
+            </Button>) }
+            
           </div>
+         
         </Col>
       </Row>
     </div>

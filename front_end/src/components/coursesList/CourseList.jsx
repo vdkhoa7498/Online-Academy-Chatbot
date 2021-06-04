@@ -4,7 +4,7 @@ import CourseItem from '../../components/courseItem/CourseItem'
 
 import './styles.scss'
 
-export default function CourseList({ titleList, courses }) {
+export default function CourseList({ titleList, courses,  isWatchList }) {
   return (
     <div>
       <div className="courseListCategory-container">
@@ -13,7 +13,7 @@ export default function CourseList({ titleList, courses }) {
             {
                 courses.map((item, index)=>{
                     return(
-                       <CourseItem key={index} item={item} />       
+                       <CourseItem key={index} item={item} isWatchList={isWatchList} />       
                     )
                 })
             }
