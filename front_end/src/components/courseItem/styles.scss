@@ -1,0 +1,25 @@
+.list-container {
+  padding: 15px;
+
+  .image-item {
+    height: 200px;
+    width: 300px;
+    object-fit: cover;
+  }
+
+  .content-item {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding: 15px;
+    height: 200px;
+    width: 100%;
+    background-color: white;
+    font-size: 14px;
+    .title {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  }
+}
