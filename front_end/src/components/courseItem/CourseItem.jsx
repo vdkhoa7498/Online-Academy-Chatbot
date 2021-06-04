@@ -11,7 +11,6 @@ export default function CourseItem({
     numberOfRate,
     price, rateScore} = item;
 
-  console.log("isWatchList", isWatchList)
   return (
     <div>
       <Row className="list-container">

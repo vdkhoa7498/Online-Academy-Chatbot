@@ -21,6 +21,7 @@ import ForgetPassword from "../pages/authentication/fogetPassword/ForgetPassword
 import CourseDetail from "../pages/courseDetail/CourseDetail";
 import CourseListCategory from "../pages/courseListCategory/CourseListCategory";
 import Watchlist from "../pages/watchList/Watchlist";
+import Profile from '../pages/profile/Profile'
 
 const { Header, Content, Footer } = Layout;
 
@@ -60,7 +61,7 @@ function RouterOutlet(props) {
           </Route>
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/watchlist"]}
+            path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/user/profile"]}
           >
             <RouteLayout {...rest}>
               <Switch>
@@ -75,6 +76,9 @@ function RouterOutlet(props) {
                 </Route>
                 <Route exact path="/watchlist">
                   <Watchlist />
+                </Route>
+                <Route exact path='/user/profile'>
+                  <Profile />
                 </Route>
               </Switch>
             </RouteLayout>
