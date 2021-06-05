@@ -15,6 +15,11 @@ const createUser = async (userBody) => {
   return user;
 };
 
+
+const getProfile = async (id) => {
+  return await User.findOne({ _id: id });
+};
+
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -82,6 +87,7 @@ const deleteUserById = async (userId) => {
 
 module.exports = {
   createUser,
+  getProfile,
   queryUsers,
   getUserById,
   getUserByEmail,

@@ -1,35 +1,42 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Form, Input, Button, message } from 'antd';
+import { register, clearAuthMessage } from '../../../stores/auth'
 import { UserOutlined, LockOutlined, UserAddOutlined } from '@ant-design/icons';
 import Logo from '../../../assets/img/logo_128.png';
 import './styles.scss';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom'
+import { Redirect, Link, useHistory } from 'react-router-dom'
 
 const Register = (props) =>{
 
     let [form] = Form.useForm();
+    const history = useHistory();
     const [isSuccess, setIsSuccess] = useState(false);
 
-    let handleSubmit = (data) => {
-        props.register(data.username, data.fullName, data.email, data.password)
-        .then((value) => {
-            // message.success('Đăng kí thành công. Bạn có thể đăng nhập ngay bây giờ !');
-            setIsSuccess(true)
+    const onFinish = (data) => {
+      const form = {email: data.email, fullName:data.fullName, password: data.password}
+        props.register({
+          form,
+          onSuccess: (model) =>{
+            message.success('Đăng kí thành công. Bạn có thể đăng nhập ngay bây giờ !');
+            history.push("/")
+          },
+          onFailure: (error) =>{
+              console.log(error)
+          }
         })
-        .catch((error) => {
-            form.resetFields();
-        });
     };
 
-
+    useEffect(()=>{
+      return props.clearAuthMessage();
+    },[])
     return(
         <div className="register-page snap-padding">
             {
                 (!isSuccess) ? (
-                    <Form onFinish={handleSubmit} className="register-form" form={form}>
+                    <Form onFinish={onFinish} className="register-form" form={form}>
                         <Link to="/">
                             <img src={Logo} className="register-form__image" alt="Online Learning" />
                         </Link>
@@ -135,6 +142,7 @@ const Register = (props) =>{
                           <span>Bạn đã có tài khoản? </span>
                           <Link to="/login">Login</Link>
                       </Form.Item>
+                      <div style={{color: 'red', marginBottom: 15}}>{props.message}</div>
                       <Form.Item>
                         <Button type="primary" htmlType="submit" className="register-form-button" icon={<UserAddOutlined/>}>
                           Đăng kí
@@ -151,7 +159,10 @@ const Register = (props) =>{
     )
 }
 const mapState = (state) => ({
+  message: state.auth.message,
 });
 const mapDispatch = dispatch => bindActionCreators({
+  register,
+  clearAuthMessage,
 }, dispatch)
 export default connect(mapState, mapDispatch)(Register);

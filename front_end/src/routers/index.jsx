@@ -51,10 +51,18 @@ function RouterOutlet(props) {
       <Router>
         <Switch>
           <Route exact path="/register">
-            <Register />
+            {
+              (!isAuthenticated)
+              ? <Register />
+              : <Redirect to="/"/>
+            }
           </Route>
           <Route exact path="/login">
-            <Login />
+            {
+              (!isAuthenticated)
+              ? <Login />
+              : <Redirect to="/"/>
+            }
           </Route>
           <Route exact path="/forget-password">
             <ForgetPassword />
