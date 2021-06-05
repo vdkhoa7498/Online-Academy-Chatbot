@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import Logo from '../../../assets/img/logo_128.png';
@@ -8,13 +8,28 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { login, clearAuthMessage } from '../../../stores/auth';
 import { toggleAuthModal } from '../../../stores/auth/action';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const Login = (props) =>{
+    const history = useHistory();
 
     const onFinish = (values) =>{
-        console.log(values)
+        const form = {...values}
+        props.login({
+            form,
+            onSuccess: (model) =>{
+                message.success(`Welcome, ${model.fullName}!`);
+                history.push("/")
+            },
+            onFailure: (error) =>{
+                console.log(error)
+            }
+        })
     }
+
+    useEffect(()=>{
+        return props.clearAuthMessage();
+    },[])
 
     return(
         <div className="login-page snap-padding">
@@ -61,6 +76,7 @@ const Login = (props) =>{
                     <Link to="/register">Register</Link>
                     <Link to="/forget-password">Forget Password</Link>
                 </Form.Item>
+                <div style={{color: 'red', marginBottom: 15}}>{props.message}</div>
                 <Form.Item>
                     <Button className="btn-submit" type="primary" htmlType="submit">
                         Login
