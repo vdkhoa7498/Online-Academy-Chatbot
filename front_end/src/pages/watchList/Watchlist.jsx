@@ -1,8 +1,7 @@
-import React, {useState} from 'react'
-import CourseList from '../../components/coursesList/CourseList';
-import './styles.scss'
+import React, { useState} from "react";
+import CoursesList from '../../components/coursesList/CourseList'
 
-const top10= [
+const top10 = [
     {
         title: "Lập trình web",
         description: "Lập trình web là công việc với nhiệm vụ nhận tất cả dữ liệu từ các bộ phận thiết kế và chuyển thành một website hoàn chỉnh",
@@ -105,13 +104,11 @@ const top10= [
     },
 ]
 
-const CourseListCategory = () => {
+
+export default function Watchlist() {
     const [courses, setCourses] = useState(top10);
-    const category = "Kinh tế"
 
-    return(
-        <CourseList titleList={"Danh sách khoá học thể loại " + category} courses={courses} />
-    )
+    return (
+        <CoursesList titleList={"Danh sach yeu thich"} courses={courses}  isWatchList={true}/>
+    );
 }
-
-export default CourseListCategory
