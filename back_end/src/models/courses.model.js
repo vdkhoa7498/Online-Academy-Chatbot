@@ -8,7 +8,7 @@ const courseSchema = mongoose.Schema({
   },
   picture: { type: Array }, //  required: true,,
   description: { type: String, required: true },
-  categoryId: { type: String, required: true },
+  categoryId: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category', required: true },
   voteId: { type: Array },
   price: { type: Number, required: true },
   voucher: { type: Number, default: 0 },
