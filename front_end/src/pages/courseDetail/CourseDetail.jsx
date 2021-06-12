@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col } from 'antd'
 import moment from 'moment';
-import { TeamOutlined } from '@ant-design/icons'
+import { TeamOutlined, CalendarOutlined } from '@ant-design/icons'
 import './styles.scss'
 import {useParams} from 'react-router-dom'
 
@@ -11,8 +11,10 @@ const courseEx = {
     description: "Tập đánh đàn bằng cả hai tay là một trong những bước quan trọng dành cho những bạn học đánh đàn guitar cơ bản. Sẽ giúp bạn biết cách cầm phím ra sao và ngón tay bấm như thế nào, đồng thời phối hợp được nhịp nhàng giữa 2 tay. Ngoài ra, ở tuần đầu tiên luyện tập, các ngón tay trái của bạn sẽ bị đau. Tuy nhiên, nếu cố gắng luyện tập một thời gian, bạn sẽ dễ dàng làm quen và không còn đau nữa.",
     image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
     rateScore: 3.9,
-    numberOfRate: 249,
-    numberOfLearning: 341,
+    ratings: 249,
+    studentNumber: 341,
+    lastUpdate: "7/2021",
+
     rates: [
         {
             user:{
@@ -58,12 +60,14 @@ const CourseDetail = () => {
             <img className='img-item' alt={course.title} src={course.image}/>
 
             <h1 style={{fontWeight: 'bold', marginTop: 15, fontSize: 24}}>{course.title}</h1>
-            <div>
-                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.numberOfRate} đánh giá)     <TeamOutlined className="student-number" /> {course.numberOfLearning} học viên
-            </div>
-            
             <div style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>{course.short_description}</div>
             <div>{course.description}</div>
+            <div>
+                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.ratings} đánh giá)     <TeamOutlined className="student-number" /> {course.studentNumber} học viên
+            </div>
+            <div>
+                <CalendarOutlined/> Cập nhật lần cuối: {course.lastUpdate}
+            </div>
 
             <Divider/>
             <List
