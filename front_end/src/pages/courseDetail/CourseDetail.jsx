@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination } from 'antd'
+import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col } from 'antd'
 import moment from 'moment';
 import { TeamOutlined } from '@ant-design/icons'
 import './styles.scss'
@@ -56,13 +56,10 @@ const CourseDetail = () => {
     return(
         <div className="course-detail-container">
             <img className='img-item' alt={course.title} src={course.image}/>
-            <div className="combo-item">
-                <h1 style={{fontWeight: 'bold', marginTop: 15}}>{course.title}</h1>
-                <div><TeamOutlined /> Số lượng học viên đăng ký học: {course.numberOfLearning}</div>
-            </div>
-            <div className='combo-item'>
-                <div><Rate allowHalf value={course.rateScore} disabled/> {course.rateScore}</div>
-                <div><TeamOutlined /> Số lượng học viên đánh giá: {course.numberOfRate}</div>
+
+            <h1 style={{fontWeight: 'bold', marginTop: 15, fontSize: 24}}>{course.title}</h1>
+            <div>
+                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.numberOfRate} đánh giá)     <TeamOutlined className="student-number" /> {course.numberOfLearning} học viên
             </div>
             
             <div style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>{course.short_description}</div>
