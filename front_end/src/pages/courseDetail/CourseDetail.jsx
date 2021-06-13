@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col } from 'antd'
 import moment from 'moment';
-import { TeamOutlined, CalendarOutlined } from '@ant-design/icons'
+import { TeamOutlined, CalendarOutlined, PlayCircleOutlined } from '@ant-design/icons'
 import './styles.scss'
 import {useParams} from 'react-router-dom'
 
@@ -14,6 +14,21 @@ const courseEx = {
     ratings: 249,
     studentNumber: 341,
     lastUpdate: "7/2021",
+
+    lectures: [
+        {
+            name: "Bài 1",
+            length: '15:00'
+        },
+        {
+            name: "Bài 2",
+            length: '15:00'
+        },
+        {
+            name: "Bài 2",
+            length: '15:00'
+        }
+    ],
 
     rates: [
         {
@@ -59,7 +74,7 @@ const CourseDetail = () => {
         <div className="course-detail-container">
             <img className='img-item' alt={course.title} src={course.image}/>
 
-            <h1 style={{fontWeight: 'bold', marginTop: 15, fontSize: 24}}>{course.title}</h1>
+            <h1 style={{fontWeight: 'bold', marginTop: 15, fontSize: 30}}>{course.title}</h1>
             <div style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>{course.short_description}</div>
             <div>{course.description}</div>
             <div>
@@ -70,9 +85,27 @@ const CourseDetail = () => {
             </div>
 
             <Divider/>
+
+            <List
+                className="lecture-list"
+                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đề cương khóa học</div>}
+                itemLayout="horizontal"
+                dataSource={courseEx.lectures}
+                renderItem={item => (
+                    <Row>
+                        <Col span={1}><PlayCircleOutlined /></Col>
+                        <Col span={17}><b>{item.name}</b></Col>
+                        <Col span={3}><a href='#'>Preview</a></Col>
+                        <Col span={3}>{item.length}</Col>
+                    </Row>
+                )}
+            />
+
+            <Divider/>
+
             <List
                 className="comment-list"
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}> Đánh giá  <span style={{fontSize: 16}}> ({courseEx.rates.length} đánh giá)</span></div>}
+                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đánh giá  <span style={{fontSize: 16}}> ({courseEx.rates.length} đánh giá)</span></div>}
                 itemLayout="horizontal"
                 dataSource={courseEx.rates}
                 renderItem={item => (
