@@ -11,13 +11,21 @@ const getAllCourses = async () => {
   return await Course.find();
 };
 
-const queryCourse = async (filter, options) => {
-  const users = await User.paginate(filter, options);
-  return users;
+const queryCourses = async (filter, options) => {
+  const courses = await Course.paginate(filter, options);
+  return courses;
+};
+
+const addView = async (courseId) => {
+  const course = await Course.findOne({_id: courseId})
+  course.view = course.view + 1;
+  await course.save();
+  return course;
 };
 
 module.exports = {
   createCourse,
-  queryCourse,
+  queryCourses,
   getAllCourses,
+  addView,
 };

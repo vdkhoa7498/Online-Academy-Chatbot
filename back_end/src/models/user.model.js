@@ -40,15 +40,15 @@ const userSchema = mongoose.Schema(
       enum: roles,
       default: 'student',
     },
-    isEmailVerified: {
+    isActivated: {
       type: Boolean,
       default: false,
     },
-    courses: {
+    favoriteCourses: {
       type: Array,
       default: [],
     },
-    watchList: {
+    registeredCourses: {
       type: Array,
       default: [],
     },
