@@ -3,19 +3,28 @@ const { objectId } = require('./custom.validation');
 
 const createCourse = {
   body: Joi.object().keys({
-    name: Joi.string().required(),
     title: Joi.string().required(),
-    picture: Joi.array(),
-    description: Joi.string(),
+    picture: Joi.string(),
+    description: Joi.string().required(),
+    shortDescription: Joi.string().required(),
     categoryId: Joi.string().required().custom(objectId),
-    voteId: Joi.string().custom(objectId),
-    price: Joi.number().required(),
+    price: Joi.number(),
     voucher: Joi.number(),
-    studentId: Joi.array(),
-    videoId: Joi.array(),
+  }),
+};
+
+const getCourses = {
+  query: Joi.object().keys({
+    title: Joi.string(),
+    category: Joi.string(),
+    search: Joi.string(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
   }),
 };
 
 module.exports = {
   createCourse,
+  getCourses,
 };

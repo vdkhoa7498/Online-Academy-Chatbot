@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
 const courseSchema = mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true,
     trim: true,
   },
   picture: { 
-    type: Array,
+    type: String,
     required: true,
   },
   description: { 
@@ -24,9 +24,13 @@ const courseSchema = mongoose.Schema({
     ref: 'Category', 
     required: true 
   },
+  view: { 
+    type: Number, 
+    default: 0
+  },
   price: { 
     type: Number, 
-    required: true 
+    default: 0
   },
   voucher: { 
     type: Number, 
@@ -36,6 +40,11 @@ const courseSchema = mongoose.Schema({
 {
   timestamps: true,
 });
+
+
+// add plugin that converts mongoose to json
+courseSchema.plugin(toJSON);
+courseSchema.plugin(paginate);
 
 const Course = mongoose.model('Course', courseSchema);
 
