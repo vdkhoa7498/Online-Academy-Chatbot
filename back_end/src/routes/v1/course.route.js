@@ -8,4 +8,7 @@ router
   .route('/')
   .get(coursesController.getCourses)
   .post(validate(courseValidate.createCourse), coursesController.createCourse);
+
+router.post('/addView',  coursesController.addView);
+
 module.exports = router;
