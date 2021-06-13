@@ -1,13 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import RouterOutlet from './routers';
-import { withRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import { getProfile } from './stores/auth';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import 'antd/dist/antd.css'
 import './App.scss';
 
-function App() {
+function App(props) {
+
+  useEffect(()=>{
+    if (localStorage && localStorage.getItem('access_token')) {
+      props.getProfile({
+        onSuccess: () => {
+          localStorage.setItem("isAuthenticated", true)
+        },
+        onFailure: () => {
+          localStorage.setItem("isAuthenticated", false)
+        }
+      });
+    } else {
+    //  props.toggleGlobalLoading(false);
+    }
+  }, [])
+
   return (
     <div className="App">
       <ConfigProvider>
@@ -22,6 +38,6 @@ const mapState = (state) => ({
 });
 
 const mapDispatch = dispatch => bindActionCreators({
-  
+  getProfile
 }, dispatch)
-export default withRouter(connect(mapState, mapDispatch)(App));
+export default connect(mapState, mapDispatch)(App);

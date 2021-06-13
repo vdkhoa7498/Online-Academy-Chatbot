@@ -108,7 +108,7 @@ const Home = () => {
                         <div key={index}>
                             <Link to="/">
                                 <img 
-                                    style={{width: '100%', height: 450 }} 
+                                    style={{width: '100%', height: 450, objectFit: 'cover' }} 
                                     alt={item.title} 
                                     src={item.image}
                                 />
@@ -129,7 +129,7 @@ const Home = () => {
                         return(
                             <Col span={12} style={{padding: 15}}>
                                 <img 
-                                    style={{width: '100%', height: '80%' }} 
+                                    style={{width: '100%', height: '80%', objectFit: 'cover' }} 
                                     alt={item.title} 
                                     src={item.image}
                                 />
@@ -150,7 +150,7 @@ const Home = () => {
                         return(
                             <Col span={12} style={{padding: 15}}>
                                 <img 
-                                    style={{width: '100%', height: '80%' }} 
+                                    style={{width: '100%', height: '80%', objectFit: 'cover' }} 
                                     alt={item.title} 
                                     src={item.image}
                                 />
