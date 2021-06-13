@@ -13,8 +13,10 @@ export function login({
       const result = await httpClient.auth.login(form);
       dispatch(setProfile(result.user));
       dispatch(setIsLoggedIn(true));
+      localStorage.setItem('refresh_token', result.tokens.refresh.token);
       localStorage.setItem('access_token', result.tokens.access.token);
       localStorage.setItem('isAuthenticated', JSON.stringify(true));
+      localStorage.setItem('user', result.user);
       onSuccess(result.user);
       dispatch(setAuthLoading(false));
     } catch (error) {
@@ -63,7 +65,7 @@ export function getProfile({
       onSuccess(result);
     } catch (error) {
       localStorage.removeItem('access_token');
-      localStorage.removeItem('isAuthenticated')
+      localStorage.removeItem('isAuthenticated');
       onFailure(error);
       toggleGlobalLoading(false);
     }
@@ -78,7 +80,7 @@ export function logout({
     try {
       dispatch(clearProfile());
       localStorage.removeItem('access_token');
-      localStorage.removeItem('isAuthenticated')
+      localStorage.removeItem('isAuthenticated');
       onSuccess()
     } catch (error) {
       onFailure(error);

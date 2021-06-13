@@ -17,7 +17,7 @@ function App(props) {
           localStorage.setItem("isAuthenticated", true)
         },
         onFailure: () => {
-          localStorage.setItem("isAuthenticated", false)
+          
         }
       });
     } else {

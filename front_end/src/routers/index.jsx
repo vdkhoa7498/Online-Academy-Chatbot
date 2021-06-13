@@ -21,7 +21,8 @@ import ForgetPassword from "../pages/authentication/fogetPassword/ForgetPassword
 import CourseDetail from "../pages/courseDetail/CourseDetail";
 import CourseListCategory from "../pages/courseListCategory/CourseListCategory";
 import Watchlist from "../pages/watchList/Watchlist";
-import Profile from '../pages/profile/Profile'
+import Profile from '../pages/profile/Profile';
+import PostCourse from '../pages/postCourse/PostCourse';
 
 const { Header, Content, Footer } = Layout;
 
@@ -69,12 +70,15 @@ function RouterOutlet(props) {
           </Route>
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/user/profile"]}
+            path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/user/profile", "/courses/post"]}
           >
             <RouteLayout {...rest}>
               <Switch>
                 <Route exact path="/" {...rest}>
                   <Home />
+                </Route>
+                <Route exact path="/courses/post">
+                  <PostCourse />
                 </Route>
                 <Route exact path="/courses/:id">
                   <CourseDetail />

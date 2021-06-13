@@ -1,7 +1,9 @@
 export function CourseHttpService(options) {
-    function getCourses() {
+    function getCourses(query) {
       const baseUrl = options.httpService.getUrl("courses");
-      return options.httpService.get(baseUrl);
+      return options.httpService.get(baseUrl, {
+        params: {...query}
+      });
     }
   
     function createCourse(form) {
