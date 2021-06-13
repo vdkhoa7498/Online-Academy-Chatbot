@@ -7,13 +7,18 @@ const watchListSchema = mongoose.Schema({
     ref: 'Video', 
     required: true 
   },
+  courseId: { 
+    type: mongoose.SchemaTypes.ObjectId, 
+    ref: 'Course', 
+    required: true 
+  },
   userId: { 
     type: mongoose.SchemaTypes.ObjectId, 
     ref: 'User', 
     required: true 
   },
   duration: { 
-    type: String, 
+    type: Number, 
     required: true 
   },
 },
