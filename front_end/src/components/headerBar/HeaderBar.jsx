@@ -114,9 +114,8 @@ const HeaderBar = (props) =>{
 const mapState = (state) => ({
     user: state.auth.user,
   });
-  const mapDispatch = dispatch => bindActionCreators({
-    logout
-  }, dispatch)
+const mapDispatch = dispatch => bindActionCreators({
+logout
+}, dispatch)
   
-  export default connect(mapState, mapDispatch)(HeaderBar);
-  
+export default connect(mapState, mapDispatch)(HeaderBar); 
