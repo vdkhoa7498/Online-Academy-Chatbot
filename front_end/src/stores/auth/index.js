@@ -16,6 +16,7 @@ export function login({
       localStorage.setItem('refresh_token', result.tokens.refresh.token);
       localStorage.setItem('access_token', result.tokens.access.token);
       localStorage.setItem('isAuthenticated', JSON.stringify(true));
+      localStorage.setItem('user', result.user);
       onSuccess(result.user);
       dispatch(setAuthLoading(false));
     } catch (error) {

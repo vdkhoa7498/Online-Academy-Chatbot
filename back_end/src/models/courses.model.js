@@ -24,6 +24,11 @@ const courseSchema = mongoose.Schema({
     ref: 'Category', 
     required: true 
   },
+  status:{
+    type: String,
+    enum: ['complete', 'incomplete'],
+    default: 'incomplete',
+  },
   view: { 
     type: Number, 
     default: 0

@@ -4,13 +4,13 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh';
 export function HttpService(options) {
 
   // Function that will be called to refresh authorization
-  const serverUrl = process.env.REACT_APP_BASE_API;
-  const refreshAuthLogic = failedRequest => Axios.post(`${serverUrl}/auth/refresh-tokens`).then(tokenRefreshResponse => {
-    localStorage.setItem('access_token', tokenRefreshResponse.access.token);
-    localStorage.setItem('refresh_token', tokenRefreshResponse.refresh.token);
-    failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.token;
-    return Promise.resolve();
-  });
+  // const serverUrl = process.env.REACT_APP_BASE_API;
+  // const refreshAuthLogic = failedRequest => Axios.post(`${serverUrl}/auth/refresh-tokens`).then(tokenRefreshResponse => {
+  //   localStorage.setItem('access_token', tokenRefreshResponse.access.token);
+  //   localStorage.setItem('refresh_token', tokenRefreshResponse.refresh.token);
+  //   failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.token;
+  //   return Promise.resolve();
+  // });
 
   const HTTP = Axios.create({
     headers: {
@@ -18,7 +18,7 @@ export function HttpService(options) {
     },
   });
 
-  createAuthRefreshInterceptor(HTTP, refreshAuthLogic);
+  // createAuthRefreshInterceptor(HTTP, refreshAuthLogic);
 
   function getUrl(url, mock) {
     const baseURL = mock ? options.mockBaseURL : options.baseURL;
