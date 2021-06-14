@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination } from 'antd'
+import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space } from 'antd'
 import moment from 'moment';
-import { TeamOutlined } from '@ant-design/icons'
+import { TeamOutlined, CalendarOutlined, PlayCircleOutlined } from '@ant-design/icons'
 import './styles.scss'
 import {useParams} from 'react-router-dom'
 
@@ -11,8 +11,25 @@ const courseEx = {
     description: "Tập đánh đàn bằng cả hai tay là một trong những bước quan trọng dành cho những bạn học đánh đàn guitar cơ bản. Sẽ giúp bạn biết cách cầm phím ra sao và ngón tay bấm như thế nào, đồng thời phối hợp được nhịp nhàng giữa 2 tay. Ngoài ra, ở tuần đầu tiên luyện tập, các ngón tay trái của bạn sẽ bị đau. Tuy nhiên, nếu cố gắng luyện tập một thời gian, bạn sẽ dễ dàng làm quen và không còn đau nữa.",
     image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
     rateScore: 3.9,
-    numberOfRate: 249,
-    numberOfLearning: 341,
+    ratings: 249,
+    studentNumber: 341,
+    lastUpdate: "7/2021",
+
+    lectures: [
+        {
+            name: "Bài 1",
+            length: '15:00'
+        },
+        {
+            name: "Bài 2",
+            length: '15:00'
+        },
+        {
+            name: "Bài 2",
+            length: '15:00'
+        }
+    ],
+
     rates: [
         {
             user:{
@@ -56,22 +73,49 @@ const CourseDetail = () => {
     return(
         <div className="course-detail-container">
             <img className='img-item' alt={course.title} src={course.image}/>
-            <div className="combo-item">
-                <h1 style={{fontWeight: 'bold', marginTop: 15}}>{course.title}</h1>
-                <div><TeamOutlined /> Số lượng học viên đăng ký học: {course.numberOfLearning}</div>
-            </div>
-            <div className='combo-item'>
-                <div><Rate allowHalf value={course.rateScore} disabled/> {course.rateScore}</div>
-                <div><TeamOutlined /> Số lượng học viên đánh giá: {course.numberOfRate}</div>
-            </div>
-            
+
+            <h1 style={{fontWeight: 'bold', marginTop: 15, fontSize: 30}}>{course.title}</h1>
             <div style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>{course.short_description}</div>
             <div>{course.description}</div>
+            <div>
+                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.ratings} đánh giá)     <TeamOutlined className="student-number" /> {course.studentNumber} học viên
+            </div>
+            <div>
+                <CalendarOutlined/> Cập nhật lần cuối: {course.lastUpdate}
+            </div>
 
             <Divider/>
+
+            <List
+                size="large"
+                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đề cương khóa học</div>}
+                itemLayout="horizontal"
+                dataSource={courseEx.lectures}
+                renderItem={item => (
+                    <List.Item>
+                        <div>
+                            <Space>
+                                <PlayCircleOutlined />
+                                <b>{item.name}</b>
+                            </Space>
+                        </div>
+                        <div>
+                            <Space size='large'>
+                                <a href='#'>Xem trước</a>
+                                {item.length}
+                            </Space>
+                        </div>
+                    </List.Item>
+                )}
+            />
+
+            <Divider/>
+
+            <Divider/>
+
             <List
                 className="comment-list"
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}> Đánh giá  <span style={{fontSize: 16}}> ({courseEx.rates.length} đánh giá)</span></div>}
+                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đánh giá  <span style={{fontSize: 16}}> ({courseEx.rates.length} đánh giá)</span></div>}
                 itemLayout="horizontal"
                 dataSource={courseEx.rates}
                 renderItem={item => (
