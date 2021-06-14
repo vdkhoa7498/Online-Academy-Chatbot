@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col } from 'antd'
+import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space } from 'antd'
 import moment from 'moment';
 import { TeamOutlined, CalendarOutlined, PlayCircleOutlined } from '@ant-design/icons'
 import './styles.scss'
@@ -87,19 +87,29 @@ const CourseDetail = () => {
             <Divider/>
 
             <List
-                className="lecture-list"
+                size="large"
                 header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đề cương khóa học</div>}
                 itemLayout="horizontal"
                 dataSource={courseEx.lectures}
                 renderItem={item => (
-                    <Row>
-                        <Col span={1}><PlayCircleOutlined /></Col>
-                        <Col span={17}><b>{item.name}</b></Col>
-                        <Col span={3}><a href='#'>Preview</a></Col>
-                        <Col span={3}>{item.length}</Col>
-                    </Row>
+                    <List.Item>
+                        <div>
+                            <Space>
+                                <PlayCircleOutlined />
+                                <b>{item.name}</b>
+                            </Space>
+                        </div>
+                        <div>
+                            <Space size='large'>
+                                <a href='#'>Xem trước</a>
+                                {item.length}
+                            </Space>
+                        </div>
+                    </List.Item>
                 )}
             />
+
+            <Divider/>
 
             <Divider/>
 
