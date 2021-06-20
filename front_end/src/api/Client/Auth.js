@@ -19,10 +19,16 @@ export function AuthHttpService(options) {
     return options.httpService.post(baseUrl, { tokenId });
   }
 
+  function loginWithFacebook(userInfoLogin) {
+    const baseUrl = options.httpService.getUrl("auth/loginwithfacebook");
+
+    return options.httpService.post(baseUrl, { userInfoLogin });
+  }
   return {
     register,
     login,
     loginWithGoogle,
+    loginWithFacebook,
     getProfile,
   };
 }

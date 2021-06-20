@@ -2,12 +2,18 @@ import React, { useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
 import Logo from "../../../assets/img/logo_128.png";
 import "./styles.scss";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { login, clearAuthMessage, loginWithGoogle } from "../../../stores/auth";
+import {
+  login,
+  clearAuthMessage,
+  loginWithGoogle,
+  loginWithFacebook,
+} from "../../../stores/auth";
 import { toggleAuthModal } from "../../../stores/auth/action";
 import { Link, useHistory } from "react-router-dom";
 
@@ -33,9 +39,22 @@ const Login = (props) => {
   }, []);
 
   const responseGoogle = (response) => {
-    console.log("google log response", response);
     props.loginWithGoogle({
       tokenId: response.tokenId,
+      onSuccess: (model) => {
+        message.success(`Welcome, ${model.fullName}!`);
+        history.push("/");
+      },
+      onFailure: (error) => {
+        console.log(error);
+      },
+    });
+  };
+
+  const responseFacebook = ({ accessToken, userID }) => {
+    console.log({ accessToken, userID });
+    props.loginWithFacebook({
+      userInfoLogin: { accessToken, userId: userID },
       onSuccess: (model) => {
         message.success(`Welcome, ${model.fullName}!`);
         history.push("/");
@@ -100,7 +119,12 @@ const Login = (props) => {
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
-        ,
+        <FacebookLogin
+          appId="501324381076690"
+          autoLoad={false}
+          callback={responseFacebook}
+        />
+        , ,
       </Form>
     </div>
   );
@@ -115,6 +139,7 @@ const mapDispatch = (dispatch) =>
       login,
       clearAuthMessage,
       loginWithGoogle,
+      loginWithFacebook,
       toggleAuthModal,
     },
     dispatch

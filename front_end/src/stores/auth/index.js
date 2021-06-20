@@ -49,9 +49,8 @@ export function loginWithGoogle({ tokenId, onSuccess, onFailure }) {
   return async (dispatch) => {
     try {
       dispatch(setAuthLoading(true));
-      console.log("TokenId in dispatch", tokenId);
       const result = await httpClient.auth.loginWithGoogle(tokenId);
-      dispatch(setProfile(result.newUser));
+      dispatch(setProfile(result.user));
       dispatch(setIsLoggedIn(true));
       localStorage.setItem("refresh_token", result.tokens.refresh.token);
       localStorage.setItem("access_token", result.tokens.access.token);
@@ -59,11 +58,32 @@ export function loginWithGoogle({ tokenId, onSuccess, onFailure }) {
       localStorage.setItem("user", result.user);
       onSuccess(result.user);
       dispatch(setAuthLoading(false));
-      console.log("result login with google api", result);
     } catch (error) {
       dispatch(setAuthLoading(false));
       dispatch(setAuthMessage(error.message || error));
       onFailure(error);
+    }
+  };
+}
+
+export function loginWithFacebook({ userInfoLogin, onSuccess, onFailure }) {
+  return async (dispatch) => {
+    try {
+      dispatch(setAuthLoading(true));
+      const result = await httpClient.auth.loginWithFacebook(userInfoLogin);
+      dispatch(setProfile(result.user));
+      dispatch(setIsLoggedIn(true));
+      localStorage.setItem("refresh_token", result.tokens.refresh.token);
+      localStorage.setItem("access_token", result.tokens.access.token);
+      localStorage.setItem("isAuthenticated", JSON.stringify(true));
+      localStorage.setItem("user", result.user);
+      onSuccess(result.user);
+      dispatch(setAuthLoading(false));
+    } catch (error) {
+      dispatch(setAuthLoading(false));
+      dispatch(setAuthMessage(error.message || error));
+      onFailure(error);
+      console.log("error in facebook login", error);
     }
   };
 }
