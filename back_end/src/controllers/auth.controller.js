@@ -1,6 +1,12 @@
 const httpStatus = require('http-status');
+const { OAuth2Client } = require('google-auth-library');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const config = require('../config/config');
+
+const googleId = '1027836292196-23jb4mhdloh2pas4t8b7ab8fmfe60cdj.apps.googleusercontent.com';
+
+const client = new OAuth2Client(googleId);
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -13,6 +19,28 @@ const login = catchAsync(async (req, res) => {
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
+});
+
+const loginWithGoogle = catchAsync(async (req, res) => {
+  const { tokenId } = req.body;
+
+  const response = await client.verifyIdToken({ idToken: tokenId, audience: googleId });
+  console.log('response', response);
+  const { email_verified, name, email } = response.payload;
+  if (email_verified) {
+    const user = await userService.getUserByEmail(email);
+    if (user) {
+      const tokens = await tokenService.generateAuthTokens(user);
+      return res.status(httpStatus.CREATED).send({ user, tokens });
+    }
+    const newUser = await userService.createUser({
+      email,
+      fullName: name,
+      password: email + config.jwt.secret,
+    });
+    const tokens = await tokenService.generateAuthTokens(newUser);
+    return res.status(httpStatus.CREATED).send({ newUser, tokens });
+  }
 });
 
 const getProfile = catchAsync(async (req, res) => {
@@ -55,6 +83,7 @@ const verifyEmail = catchAsync(async (req, res) => {
 module.exports = {
   register,
   login,
+  loginWithGoogle,
   logout,
   refreshTokens,
   forgotPassword,

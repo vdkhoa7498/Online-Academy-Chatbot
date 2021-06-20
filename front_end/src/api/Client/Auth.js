@@ -13,9 +13,16 @@ export function AuthHttpService(options) {
     return options.httpService.get(baseUrl);
   }
 
+  function loginWithGoogle(tokenId) {
+    const baseUrl = options.httpService.getUrl("auth/loginwithgoogle");
+
+    return options.httpService.post(baseUrl, { tokenId });
+  }
+
   return {
     register,
     login,
+    loginWithGoogle,
     getProfile,
   };
 }
