@@ -1,6 +1,13 @@
 const httpStatus = require('http-status');
+const { OAuth2Client } = require('google-auth-library');
+const fetch = require('node-fetch');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const config = require('../config/config');
+
+const googleId = '1027836292196-23jb4mhdloh2pas4t8b7ab8fmfe60cdj.apps.googleusercontent.com';
+
+const client = new OAuth2Client(googleId);
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -13,6 +20,52 @@ const login = catchAsync(async (req, res) => {
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
+});
+
+const loginWithGoogle = catchAsync(async (req, res) => {
+  const { tokenId } = req.body;
+
+  const response = await client.verifyIdToken({ idToken: tokenId, audience: googleId });
+  const { email_verified, name, email } = response.payload;
+  if (email_verified) {
+    const user = await userService.getUserByEmail(email);
+    if (user) {
+      const tokens = await tokenService.generateAuthTokens(user);
+      return res.status(httpStatus.CREATED).send({ user, tokens });
+    }
+    const newUser = await userService.createUser({
+      email,
+      fullName: name,
+      password: email + config.jwt.secret,
+    });
+    const tokens = await tokenService.generateAuthTokens(newUser);
+    return res.status(httpStatus.CREATED).send({ user: newUser, tokens });
+  }
+});
+
+const loginWithFacebook = catchAsync(async (req, res) => {
+  const { accessToken, userId } = req.body.userInfoLogin;
+
+  const urlGraphFacebook = `https://graph.facebook.com/${userId}?fields=id,name,email&access_token=${accessToken}`;
+
+  // const urlGraphFacebook = `https://graph.facebook.com/me?access_token=${accessToken}`;
+  // const { id, name } = await fetch(urlGraphFacebook, { method: 'GET' });
+  const result = await fetch(urlGraphFacebook, { method: 'GET' });
+  const { id, name } = await result.json();
+
+  const email = id + '@gmail.com';
+  const user = await userService.getUserByEmail(email);
+  if (user) {
+    const tokens = await tokenService.generateAuthTokens(user);
+    return res.status(httpStatus.CREATED).send({ user, tokens });
+  }
+  const newUser = await userService.createUser({
+    email,
+    fullName: name,
+    password: email + config.jwt.secret,
+  });
+  const tokens = await tokenService.generateAuthTokens(newUser);
+  return res.status(httpStatus.CREATED).send({ user: newUser, tokens });
 });
 
 const getProfile = catchAsync(async (req, res) => {
@@ -55,6 +108,8 @@ const verifyEmail = catchAsync(async (req, res) => {
 module.exports = {
   register,
   login,
+  loginWithGoogle,
+  loginWithFacebook,
   logout,
   refreshTokens,
   forgotPassword,
