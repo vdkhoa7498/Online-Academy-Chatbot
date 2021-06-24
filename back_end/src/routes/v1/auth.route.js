@@ -15,6 +15,8 @@ router.post('/forgot-password', validate(authValidation.forgotPassword), authCon
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
+router.post('/loginwithgoogle', authController.loginWithGoogle);
+router.post('/loginwithfacebook', authController.loginWithFacebook);
 
 module.exports = router;
 
