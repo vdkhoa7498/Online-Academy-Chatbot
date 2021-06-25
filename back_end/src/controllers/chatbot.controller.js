@@ -35,14 +35,13 @@ let postWebhook = (req, res) => {
 };
 
 let getWebhook = (req, res) => {
-    let mode = req.query['hub.mode'];
-    let token = req.query['hub.verify_token'];
-    let challenge = req.query['hub.challenge'];
-    // let mode = req.query['hub_mode'];
-    // let token = req.query['hub_verify_token'];
-    // let challenge = req.query['hub_challenge'];
 
-    console.log(req.query);
+    let query = req._parsedUrl.query;
+    let splitedQuery = splitQuery(query);
+
+    let mode = splitedQuery['hub_mode'];
+    let token = splitedQuery['hub_verify_token'];
+    let challenge = splitedQuery['hub_challenge'];
 
     if (mode && token) {
         if (mode === 'subscribe' && token === VERIFY_TOKEN) {
@@ -140,6 +139,18 @@ function callSendAPI(sender_psid, response) {
             console.error("Unable to send message:" + err);
         }
     });
+}
+
+function splitQuery(query) {
+    let result = {};
+    let keyValueStrings = query.split('&');
+    keyValueStrings.forEach(str => {
+        let keyValuePair = str.split('=');
+        keyValuePair[0] = keyValuePair[0].replace('.', '_');
+        console.log(keyValuePair);
+        result[keyValuePair[0]] = keyValuePair[1];
+    })
+    return result;
 }
 
 module.exports = {
