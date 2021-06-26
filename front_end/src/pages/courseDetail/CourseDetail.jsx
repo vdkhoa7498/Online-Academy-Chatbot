@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space } from 'antd'
+import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image } from 'antd'
 import moment from 'moment';
-import { TeamOutlined, CalendarOutlined, PlayCircleOutlined } from '@ant-design/icons'
+import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, StarFilled, EditFilled, PlayCircleFilled } from '@ant-design/icons'
 import './styles.scss'
 import {useParams} from 'react-router-dom'
 
@@ -68,6 +68,17 @@ const courseEx = {
         },
     ],
 
+    lecturer: {
+        name: "Nguyễn Mạnh Linh",
+        company: "Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM",
+        description: "Sinh viên năm cuối",
+        avatar: "https://scontent-xsp1-2.xx.fbcdn.net/v/t1.6435-9/158305641_1645311139006556_3306965368672052658_n.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=A-_waVsPB84AX_4rQVa&_nc_ht=scontent-xsp1-2.xx&oh=78cc5154ccc65156902fe48598d8cb54&oe=60DB979D",
+        averageRating: 4.5,
+        totalReviews: 100000,
+        totalStudents: 2000000,
+        totalCourses: 10
+    },
+
     rates: [
         {
             user:{
@@ -126,7 +137,7 @@ const CourseDetail = () => {
 
             <List
                 size="large"
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đề cương khóa học</div>}
+                header={<div className="section">Đề cương khóa học</div>}
                 itemLayout="horizontal"
                 dataSource={courseEx.lectures}
                 renderItem={item => (
@@ -150,7 +161,7 @@ const CourseDetail = () => {
             <Divider/>
 
             <List
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Các khóa học khác</div>}
+                header={<div className="section">Các khóa học khác</div>}
                 itemLayout="horizontal"
                 dataSource={courseEx.otherCourses}
                 renderItem={item => (
@@ -172,9 +183,50 @@ const CourseDetail = () => {
 
             <Divider/>
 
+            <div className="section">Thông tin giảng viên</div>
+            <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{courseEx.lecturer.name}</div>
+            <Row>
+                <Col span={4}>
+                    <Image style={{ borderRadius: '50%' }} src={courseEx.lecturer.avatar} width={128}/>
+                </Col>
+                <Col span={20}>
+                    <Row>
+                        <Space>
+                            <StarFilled />
+                            {courseEx.lecturer.averageRating}
+                            Đánh giá trung bình
+                        </Space>
+                    </Row>
+                    <Row>
+                        <Space>
+                            <EditFilled />
+                            {courseEx.lecturer.averageRating}
+                            Đánh giá
+                        </Space>
+                    </Row>
+                    <Row>
+                        <Space>
+                            <TeamOutlined />
+                            {courseEx.lecturer.totalStudents}
+                            Học viên
+                        </Space>
+                    </Row>
+                    <Row>
+                        <Space>
+                            <PlayCircleFilled />
+                            {courseEx.lecturer.totalCourses}
+                            Khóa học
+                        </Space>
+                    </Row>
+                </Col>
+            </Row>
+            <div>{courseEx.lecturer.description}</div>
+
+            <Divider/>
+
             <List
                 className="comment-list"
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đánh giá  <span style={{fontSize: 16}}> ({courseEx.rates.length} đánh giá)</span></div>}
+                header={<div className="section">Đánh giá  <span style={{fontSize: 24}}> ({courseEx.rates.length} đánh giá)</span></div>}
                 itemLayout="horizontal"
                 dataSource={courseEx.rates}
                 renderItem={item => (
@@ -183,7 +235,6 @@ const CourseDetail = () => {
                         author={<b style={{color: 'black'}}>{item.user.name}</b>}
                         avatar={
                             <Avatar
-                            
                             src= {item.user.avatar}
                             alt= {courseEx.title}
                             />
@@ -193,7 +244,6 @@ const CourseDetail = () => {
                                 <Rate allowHalf value={item.rateScore} disabled/>
                                 <p>{item.content}</p>
                             </div>
-                            
                         }
                         datetime={
                             <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
