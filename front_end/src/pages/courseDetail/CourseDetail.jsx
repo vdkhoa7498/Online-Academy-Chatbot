@@ -10,7 +10,7 @@ const courseEx = {
     short_description: "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
     description: "Tập đánh đàn bằng cả hai tay là một trong những bước quan trọng dành cho những bạn học đánh đàn guitar cơ bản. Sẽ giúp bạn biết cách cầm phím ra sao và ngón tay bấm như thế nào, đồng thời phối hợp được nhịp nhàng giữa 2 tay. Ngoài ra, ở tuần đầu tiên luyện tập, các ngón tay trái của bạn sẽ bị đau. Tuy nhiên, nếu cố gắng luyện tập một thời gian, bạn sẽ dễ dàng làm quen và không còn đau nữa.",
     image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-    rateScore: 3.9,
+    rateScore: 3.5,
     ratings: 249,
     studentNumber: 341,
     lastUpdate: "7/2021",
@@ -28,6 +28,44 @@ const courseEx = {
             name: "Bài 2",
             length: '15:00'
         }
+    ],
+
+    otherCourses: [
+        {
+            title: "Tự học guitar",
+            short_description: "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
+            image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
+            rateScore: 3.5,
+            studentNumber: 341,
+        },
+        {
+            title: "Tự học guitar",
+            short_description: "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
+            image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
+            rateScore: 3.5,
+            studentNumber: 341,
+        },
+        {
+            title: "Tự học guitar",
+            short_description: "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
+            image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
+            rateScore: 3.5,
+            studentNumber: 341,
+        },
+        {
+            title: "Tự học guitar",
+            short_description: "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
+            image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
+            rateScore: 3.5,
+            studentNumber: 341,
+        },
+        {
+            title: "Tự học guitar",
+            short_description: "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
+            image: "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
+            rateScore: 3.5,
+            studentNumber: 341,
+        },
     ],
 
     rates: [
@@ -78,7 +116,7 @@ const CourseDetail = () => {
             <div style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>{course.short_description}</div>
             <div>{course.description}</div>
             <div>
-                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.ratings} đánh giá)     <TeamOutlined className="student-number" /> {course.studentNumber} học viên
+                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.studentNumber} học viên
             </div>
             <div>
                 <CalendarOutlined/> Cập nhật lần cuối: {course.lastUpdate}
@@ -110,6 +148,27 @@ const CourseDetail = () => {
             />
 
             <Divider/>
+
+            <List
+                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Các khóa học khác</div>}
+                itemLayout="horizontal"
+                dataSource={courseEx.otherCourses}
+                renderItem={item => (
+                    <List.Item>
+                        <List.Item.Meta
+                            avatar={<Avatar shape="square" size={64} src={item.image}/>}
+                            title={<a href="#">{item.title}</a>}
+                            description={item.short_description}
+                        />
+                        <div>
+                            <Rate allowHalf value={item.rateScore} disabled/>
+                        </div>
+                        <div>
+                            <TeamOutlined className="student-number" /> {course.studentNumber}
+                        </div>
+                    </List.Item>
+                )}
+            />
 
             <Divider/>
 
