@@ -1,5 +1,6 @@
 require('dotenv').config();
 const request = require('request');
+const chatbotService = require('../services/chatbot.service');
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
@@ -9,15 +10,13 @@ let postWebhook = (req, res) => {
 
     if (body.object === 'page') {
         body.entry.forEach(function (entry) {
-            // Gets the body of the webhook event
+            
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
-            // Get the sender PSID
+            
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
 
-            // Check if the event is a message or postback and
-            // pass the event to the appropriate handler function
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
@@ -83,41 +82,7 @@ function handleMessage(sender_psid, received_message) {
                                     "payload": "no",
                                 }
                             ],
-                        },
-                        {
-                            "title": "Is this the right picture?",
-                            "subtitle": "Tap a button to answer.",
-                            "image_url": attachment_url,
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Yes!",
-                                    "payload": "yes",
-                                },
-                                {
-                                    "type": "postback",
-                                    "title": "No!",
-                                    "payload": "no",
-                                }
-                            ],
-                        },
-                        {
-                            "title": "Is this the right picture?",
-                            "subtitle": "Tap a button to answer.",
-                            "image_url": attachment_url,
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Yes!",
-                                    "payload": "yes",
-                                },
-                                {
-                                    "type": "postback",
-                                    "title": "No!",
-                                    "payload": "no",
-                                }
-                            ],
-                        },
+                        }
                     ]
                 }
             }
@@ -128,7 +93,7 @@ function handleMessage(sender_psid, received_message) {
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+async function handlePostback(sender_psid, received_postback) {
     let response;
 
     let payload = received_postback.payload;
@@ -141,13 +106,13 @@ function handlePostback(sender_psid, received_postback) {
             response = { "text": "Oops, try sending another image." };
             break;
         case 'get_started':
-            response = { "text": "Chào mừng bạn ABC đã đến với Online Academy." };
+            await chatbotService.handleGetStarted(sender_psid);
             break;
         default:
             response = { "text": `Xin lỗi, tôi không hiểu ${payload}.` };
     }
 
-    callSendAPI(sender_psid, response);
+    //callSendAPI(sender_psid, response);
 }
 
 // Sends response messages via the Send API
