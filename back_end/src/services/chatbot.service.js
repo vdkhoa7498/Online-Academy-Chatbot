@@ -44,12 +44,58 @@ function getUsername(sender_psid) {
     })
 }
 
+function getStartedTemplate() {
+    let response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                    {
+                        "title": "Công nghệ thông tin",
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Xem thêm",
+                                "payload": "show_list",
+                            }
+                        ],
+                    },
+                    {
+                        "title": "Công nghệ thông tin",
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Xem thêm",
+                                "payload": "show_list",
+                            }
+                        ],
+                    },
+                    {
+                        "title": "Công nghệ thông tin",
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Xem thêm",
+                                "payload": "show_list",
+                            }
+                        ],
+                    }
+                ]
+            }
+        }
+    };
+    return response;
+}
+
 let handleGetStarted = (sender_psid) => {
     return new Promise(async(resolve, reject) => {
         try {
             let username = await getUsername(sender_psid);
-            let response = { "text": `Chào mừng bạn ${username} đã đến với Online Academy.` }
-            callSendAPI(sender_psid, response)
+            let response1 = { "text": `Chào mừng bạn ${username} đã đến với Online Academy, bạn có thể nhập từ khóa để tìm kiếm khóa học hoặc duyệt khóa học theo những danh mục sau:` }
+            let response2 = getStartedTemplate();
+            callSendAPI(sender_psid, response1);
+            callSendAPI(sender_psid, response2);
             resolve('done');
         } catch (e) {
             reject(e);
