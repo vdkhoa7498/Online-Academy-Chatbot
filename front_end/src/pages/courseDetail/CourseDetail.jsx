@@ -148,7 +148,7 @@ const CourseDetail = () => {
             <List
                 size="large"
                 itemLayout="horizontal"
-                dataSource={courseEx.lectures}
+                dataSource={course.lectures}
                 renderItem={item => (
                     <List.Item className="lecture-item">
                         <div>
@@ -170,7 +170,7 @@ const CourseDetail = () => {
             <Divider orientation="left"><div className="section">Các khóa học khác</div></Divider>
             <List
                 itemLayout="horizontal"
-                dataSource={courseEx.otherCourses}
+                dataSource={course.otherCourses}
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
@@ -189,43 +189,43 @@ const CourseDetail = () => {
             />
 
             <Divider orientation="left"><div className="section">Thông tin giảng viên</div></Divider>
-            <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{courseEx.lecturer.name}</div>
-            <div>{courseEx.lecturer.company}</div>
+            <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div>
+            <div>{course.lecturer.company}</div>
             <Row>
                 <Col span={3}>
-                    <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={courseEx.lecturer.avatar}/>
+                    <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar}/>
                 </Col>
                 <Col span={21}>
                     <Row>
                         <Space>
                             <StarFilled />
-                            {courseEx.lecturer.averageRating}
+                            {course.lecturer.averageRating}
                             Đánh giá trung bình
                         </Space>
                     </Row>
                     <Row>
                         <Space>
                             <EditFilled />
-                            {courseEx.lecturer.averageRating}
+                            {course.lecturer.averageRating}
                             Đánh giá
                         </Space>
                     </Row>
                     <Row>
                         <Space>
                             <TeamOutlined />
-                            {courseEx.lecturer.totalStudents}
+                            {course.lecturer.totalStudents}
                             Học viên
                         </Space>
                     </Row>
                     <Row>
                         <Space>
                             <PlayCircleFilled />
-                            {courseEx.lecturer.totalCourses}
+                            {course.lecturer.totalCourses}
                             Khóa học
                         </Space>
                     </Row>
                     <Row>
-                        {courseEx.lecturer.description}
+                        {course.lecturer.description}
                     </Row>
                 </Col>
             </Row>
@@ -234,7 +234,7 @@ const CourseDetail = () => {
             <List
                 className="comment-list"
                 itemLayout="horizontal"
-                dataSource={courseEx.rates}
+                dataSource={course.rates}
                 renderItem={item => (
                 <li>
                     <Comment
@@ -242,7 +242,7 @@ const CourseDetail = () => {
                         avatar={
                             <Avatar
                             src= {item.user.avatar}
-                            alt= {courseEx.title}
+                            alt= {course.title}
                             />
                         }
                         content={
