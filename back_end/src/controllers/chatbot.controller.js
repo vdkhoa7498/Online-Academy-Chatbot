@@ -62,13 +62,14 @@ async function handleMessage(sender_psid, received_message) {
 async function handlePostback(sender_psid, received_postback) {
     
     let payload = received_postback.payload;
+    let keyValuePair = payload.split('=');
 
-    switch (payload) {
+    switch (keyValuePair[0]) {
         case 'get_started':
             await chatbotService.handleGetStarted(sender_psid);
             break;
         case 'show_list':
-            await chatbotService.handleGetListCoursesByCategory(sender_psid, 'Công nghệ thông tin');
+            await chatbotService.handleGetListCoursesByCategory(sender_psid, keyValuePair[1]);
             break;
         case 'show_detail':
             await chatbotService.handleGetCourseDetail(sender_psid);

@@ -66,7 +66,7 @@ async function getAllCategories() {
             buttons: [{
                 type: "postback",
                 title: "Xem " + category.name,
-                payload: "show_list"
+                payload: `show_list=${category.name}`
             }]
         });
     });
