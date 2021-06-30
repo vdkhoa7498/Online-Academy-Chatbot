@@ -3,7 +3,7 @@ import { Form, Input, Select, Modal, Button } from "antd";
 
 
 
-const EditStudentForm = (props) => {
+const EditCategoryForm = (props) => {
   const {
     visible,
     onCancel,
@@ -11,7 +11,7 @@ const EditStudentForm = (props) => {
     currentRowData,
     onFinish
   } = props;
-  const { id, name, email } = currentRowData;
+  const { id, name, parent, totalCourses } = currentRowData;
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -22,7 +22,7 @@ const EditStudentForm = (props) => {
   };
   return (
     <Modal
-      title="Cập nhật thông tin học viên"
+      title="Cập nhật danh mục"
       visible={visible}
       footer={[
         <Button key="cancel" onClick={onCancel}>
@@ -36,16 +36,20 @@ const EditStudentForm = (props) => {
       <Form {...formItemLayout} onFinish={onFinish} id="myForm">
         <Form.Item label="ID:" initialValue={id}><Input disabled />
         </Form.Item>
-        <Form.Item label="Email"
-          rules={[{ required: true, message: "Vui lòng nhập email!" }]}
-          initialValue={email}><Input placeholder="Email" />
+        <Form.Item label="Tiêu đề:"
+          rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
+          initialValue={name}><Input placeholder="Tiêu đề" />
         </Form.Item>
-        <Form.Item label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-          initialValue={name}><Input placeholder="Tên" />
+        <Form.Item name="parent" label="Danh mục cha:" initialValue="none">
+          <Select>
+            <Select.Option value="none">Không có</Select.Option>
+            <Select.Option value="it">Công nghệ thông tin</Select.Option>
+            <Select.Option value="art">Nghệ thuật</Select.Option>
+          </Select>
         </Form.Item>
       </Form>
     </Modal>
   );
 }
 
-export default EditStudentForm
+export default EditCategoryForm

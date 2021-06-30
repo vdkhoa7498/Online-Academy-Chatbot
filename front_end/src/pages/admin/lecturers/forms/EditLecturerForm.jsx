@@ -11,7 +11,7 @@ const EditLecturerForm = (props) => {
     currentRowData,
     onFinish
   } = props;
-  const { id, name, role, email } = currentRowData;
+  const { id, name, email } = currentRowData;
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },

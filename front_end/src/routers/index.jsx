@@ -35,9 +35,10 @@ import Watchlist from "../pages/watchList/Watchlist";
 import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 
-import Lecturer from "../pages/admin/lecturers";
-import Student from "../pages/admin/students";
+import Categories from "../pages/admin/categories";
 import Course from "../pages/admin/courses";
+import Student from "../pages/admin/students";
+import Lecturer from "../pages/admin/lecturers";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -180,13 +181,16 @@ function RouterOutlet(props) {
           >
             <AdminRouteLayout>
               <Switch>
-                <Route exact path="/admin/lecturers" component={Lecturer} />
+                <Route exact path="/admin/categories" component={Categories} />
+              </Switch>
+              <Switch>
+                <Route exact path="/admin/courses" component={Course} />
               </Switch>
               <Switch>
                 <Route exact path="/admin/students" component={Student} />
               </Switch>
               <Switch>
-                <Route exact path="/admin/courses" component={Course} />
+                <Route exact path="/admin/lecturers" component={Lecturer} />
               </Switch>
             </AdminRouteLayout>
           </Route>
