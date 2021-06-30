@@ -17,6 +17,8 @@ import {
   MenuFoldOutlined,
   TeamOutlined,
   AppstoreOutlined,
+  BookOutlined,
+  SolutionOutlined
 } from '@ant-design/icons';
 
 import HeaderBar from "../components/headerBar/HeaderBar";
@@ -68,15 +70,27 @@ function AdminRouteLayout(props) {
           <div className="logo" />
           <Menu theme="dark" mode="inline" onClick={(value) => { setMenuIndex(value.key); console.log(menuIndex) }} defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <Link to="/admin/users">
-                <TeamOutlined />
-                <span>Users</span>
+              <Link to="/admin/categories">
+                <AppstoreOutlined />
+                <span>Danh mục</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to="/admin/categories">
-                <AppstoreOutlined />
-                <span>Categories</span>
+              <Link to="/admin/courses">
+                <BookOutlined />
+                <span>Khóa học</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/admin/users">
+                <TeamOutlined />
+                <span>Học viên</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link to="/admin/lecturers">
+                <SolutionOutlined />
+                <span>Giảng viên</span>
               </Link>
             </Menu.Item>
           </Menu>

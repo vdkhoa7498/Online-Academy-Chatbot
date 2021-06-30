@@ -72,7 +72,7 @@ const courseEx = {
         name: "Nguyễn Mạnh Linh",
         company: "Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM",
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus iusto adipisci ratione commodi deleniti in modi, ipsa perferendis fugiat reiciendis dignissimos eos distinctio perspiciatis aut nisi fuga nihil nam delectus.",
-        avatar: "https://scontent-xsp1-2.xx.fbcdn.net/v/t1.6435-9/158305641_1645311139006556_3306965368672052658_n.jpg?_nc_cat=104&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=A-_waVsPB84AX_4rQVa&_nc_ht=scontent-xsp1-2.xx&oh=78cc5154ccc65156902fe48598d8cb54&oe=60DB979D",
+        avatar: "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
         averageRating: 4.5,
         totalReviews: 100000,
         totalStudents: 2000000,
