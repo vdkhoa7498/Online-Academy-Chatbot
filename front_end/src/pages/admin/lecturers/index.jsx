@@ -3,6 +3,7 @@ import { Card, Button, Table, message, Divider } from "antd";
 import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons"
 import EditLecturerForm from "./forms/EditLecturerForm"
 import AddLecturerForm from "./forms/AddLecturerForm"
+import '../styles.scss'
 const { Column } = Table;
 
 const lecturersEx = [
@@ -62,14 +63,15 @@ const Lecturer = () => {
 
   return (
     <div className="app-container">
-      <br />
+      <div className="title">Danh sách giảng viên</div>
+      {/* <br /> */}
       <Card title={<span>
         <Button icon={<UserAddOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddLecturer}>Thêm giảng viên</Button>
       </span>}>
         <Table bordered rowKey="id" dataSource={lecturers} pagination={false}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
           <Column title="Tên" dataIndex="name" key="name" align="center" />
-          <Column title="Email" dataIndex="email" key="description" align="center" />
+          <Column title="Email" dataIndex="email" key="email" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>
               <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={handleEditLecturer} />

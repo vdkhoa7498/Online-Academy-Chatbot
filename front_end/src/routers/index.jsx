@@ -36,6 +36,8 @@ import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 
 import Lecturer from "../pages/admin/lecturers";
+import Student from "../pages/admin/students";
+import Course from "../pages/admin/courses";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -82,7 +84,7 @@ function AdminRouteLayout(props) {
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Link to="/admin/users">
+              <Link to="/admin/students">
                 <TeamOutlined />
                 <span>Học viên</span>
               </Link>
@@ -174,11 +176,17 @@ function RouterOutlet(props) {
           </Route>
           <Route
             exact
-            path={["/admin/lecturers", "/admin/categories"]}
+            path={["/admin/categories", "/admin/courses", "/admin/students", "/admin/lecturers"]}
           >
             <AdminRouteLayout>
               <Switch>
                 <Route exact path="/admin/lecturers" component={Lecturer} />
+              </Switch>
+              <Switch>
+                <Route exact path="/admin/students" component={Student} />
+              </Switch>
+              <Switch>
+                <Route exact path="/admin/courses" component={Course} />
               </Switch>
             </AdminRouteLayout>
           </Route>

@@ -3,7 +3,7 @@ import { Form, Input, Select, Modal, Button } from "antd";
 
 
 
-const EditLecturerForm = (props) => {
+const EditStudentForm = (props) => {
   const {
     visible,
     onCancel,
@@ -22,7 +22,7 @@ const EditLecturerForm = (props) => {
   };
   return (
     <Modal
-      title="Cập nhật thông tin giảng viên"
+      title="Cập nhật thông tin học viên"
       visible={visible}
       footer={[
         <Button key="cancel" onClick={onCancel}>
@@ -48,4 +48,4 @@ const EditLecturerForm = (props) => {
   );
 }
 
-export default EditLecturerForm
+export default EditStudentForm
