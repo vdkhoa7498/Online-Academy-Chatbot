@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
 import moment from 'moment';
 import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, StarFilled, EditFilled, PlayCircleFilled, HeartOutlined, FormOutlined } from '@ant-design/icons'
 import './styles.scss'
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const courseEx = {
     title: "Tự học guitar",
@@ -81,7 +81,7 @@ const courseEx = {
 
     rates: [
         {
-            user:{
+            user: {
                 id: 0,
                 avatar: "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
                 name: "abc"
@@ -91,7 +91,7 @@ const courseEx = {
             createdAt: 1621611357961
         },
         {
-            user:{
+            user: {
                 id: 1,
                 avatar: "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
                 name: "Vivi"
@@ -101,7 +101,7 @@ const courseEx = {
             createdAt: 1621611343961
         },
         {
-            user:{
+            user: {
                 id: 1,
                 avatar: "https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg",
                 name: "Khung long con"
@@ -119,13 +119,13 @@ const CourseDetail = () => {
     const param = useParams()
     console.log(Date.now())
 
-    return(
+    return (
         <div className="course-detail-container">
             <Row className="course-content">
                 <Col span={16}>
                     <h1 style={{ fontWeight: 'bold', marginTop: 15, fontSize: 30 }}>{course.title}</h1>
                     <div style={{ fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>{course.short_description}</div>
-                    <div>{course.description}</div>
+                    <div dangerouslySetInnerHTML={{ __html: course.description }} />
                     <div>
                         {course.rateScore} <Rate allowHalf value={course.rateScore} disabled /> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.studentNumber} học viên
                     </div>
@@ -134,13 +134,13 @@ const CourseDetail = () => {
                     </div>
                     <div style={{ marginTop: "20px" }}>
                         <Space>
-                            <Button type="primary" icon={<FormOutlined/>}>Tham gia</Button>
-                            <Button icon={<HeartOutlined/>}>Yêu thích</Button>
+                            <Button type="primary" icon={<FormOutlined />}>Tham gia</Button>
+                            <Button icon={<HeartOutlined />}>Yêu thích</Button>
                         </Space>
                     </div>
                 </Col>
                 <Col span={8}>
-                    <img className='img-item' alt={course.title} src={course.image}/>
+                    <img className='img-item' alt={course.title} src={course.image} />
                 </Col>
             </Row>
 
@@ -174,12 +174,12 @@ const CourseDetail = () => {
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<Avatar shape="square" size={64} src={item.image}/>}
+                            avatar={<Avatar shape="square" size={64} src={item.image} />}
                             title={<a href="#">{item.title}</a>}
                             description={item.short_description}
                         />
                         <div>
-                            <Rate allowHalf value={item.rateScore} disabled/>
+                            <Rate allowHalf value={item.rateScore} disabled />
                         </div>
                         <div>
                             <TeamOutlined className="student-number" /> {course.studentNumber}
@@ -193,7 +193,7 @@ const CourseDetail = () => {
             <div>{course.lecturer.company}</div>
             <Row>
                 <Col span={3}>
-                    <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar}/>
+                    <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} />
                 </Col>
                 <Col span={21}>
                     <Row>
@@ -230,39 +230,39 @@ const CourseDetail = () => {
                 </Col>
             </Row>
 
-            <Divider orientation="center"><div className="section">Đánh giá của học viên<span style={{fontSize: 24}}> ({courseEx.rates.length} đánh giá)</span></div></Divider>
+            <Divider orientation="center"><div className="section">Đánh giá của học viên<span style={{ fontSize: 24 }}> ({courseEx.rates.length} đánh giá)</span></div></Divider>
             <List
                 className="comment-list"
                 itemLayout="horizontal"
                 dataSource={course.rates}
                 renderItem={item => (
-                <li>
-                    <Comment
-                        author={<b style={{color: 'black'}}>{item.user.name}</b>}
-                        avatar={
-                            <Avatar
-                            src= {item.user.avatar}
-                            alt= {course.title}
-                            />
-                        }
-                        content={
-                            <div>
-                                <Rate allowHalf value={item.rateScore} disabled/>
-                                <p>{item.content}</p>
-                            </div>
-                        }
-                        datetime={
-                            <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                                <span style={{color: 'gray'}}>{moment(item.createdAt).fromNow()}</span>
-                            </Tooltip>
-                        }
-                    />
-                </li>
+                    <li>
+                        <Comment
+                            author={<b style={{ color: 'black' }}>{item.user.name}</b>}
+                            avatar={
+                                <Avatar
+                                    src={item.user.avatar}
+                                    alt={course.title}
+                                />
+                            }
+                            content={
+                                <div>
+                                    <Rate allowHalf value={item.rateScore} disabled />
+                                    <p>{item.content}</p>
+                                </div>
+                            }
+                            datetime={
+                                <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                                    <span style={{ color: 'gray' }}>{moment(item.createdAt).fromNow()}</span>
+                                </Tooltip>
+                            }
+                        />
+                    </li>
                 )}
             />
-            <br/>
+            <br />
             <Pagination defaultCurrent={1} total={50} />
-            <Divider/>
+            <Divider />
         </div>
     )
 }
