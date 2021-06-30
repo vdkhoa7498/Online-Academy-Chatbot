@@ -1,14 +1,23 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import {
   Switch,
   Route,
   BrowserRouter as Router,
   Redirect,
+  Link
 } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PrivateRoute } from "./privateRoute";
+import './styles.scss'
+
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  TeamOutlined,
+  AppstoreOutlined,
+} from '@ant-design/icons';
 
 import HeaderBar from "../components/headerBar/HeaderBar";
 import HeaderMenu from "../components/headerMenu/HeaderMenu";
@@ -24,7 +33,9 @@ import Watchlist from "../pages/watchList/Watchlist";
 import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 
-const { Header, Content, Footer } = Layout;
+import User from "../pages/admin/user";
+
+const { Header, Content, Footer, Sider } = Layout;
 
 function RouteLayout(props) {
   const { children } = props;
@@ -42,6 +53,58 @@ function RouteLayout(props) {
     </Layout>
   );
 }
+
+function AdminRouteLayout(props) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [menuIndex, setMenuIndex] = useState(1)
+
+  return (
+    <Layout className="private-layout-container">
+      <Header className="header">
+        <HeaderBar />
+      </Header>
+      <Layout>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className="logo" />
+          <Menu theme="dark" mode="inline" onClick={(value) => { setMenuIndex(value.key); console.log(menuIndex) }} defaultSelectedKeys={['1']}>
+            <Menu.Item key="1">
+              <Link to="/admin/users">
+                <TeamOutlined />
+                <span>Users</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/admin/categories">
+                <AppstoreOutlined />
+                <span>Categories</span>
+              </Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout className="site-layout">
+          <Header className="site-layout-background" style={{ padding: 15, display: "flex", }}>
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              className: 'trigger',
+              onClick: () => { setCollapsed(!collapsed) },
+            })}
+          </Header>
+          <Content
+            className="site-layout-background"
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              minHeight: 500,
+            }}
+          >
+            {props.children}
+          </Content>
+        </Layout>
+      </Layout>
+
+    </Layout>
+  );
+}
+
 function RouterOutlet(props) {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
   const { ...rest } = props;
@@ -54,15 +117,15 @@ function RouterOutlet(props) {
           <Route exact path="/register">
             {
               (!isAuthenticated)
-              ? <Register />
-              : <Redirect to="/"/>
+                ? <Register />
+                : <Redirect to="/" />
             }
           </Route>
           <Route exact path="/login">
             {
               (!isAuthenticated)
-              ? <Login />
-              : <Redirect to="/"/>
+                ? <Login />
+                : <Redirect to="/" />
             }
           </Route>
           <Route exact path="/forget-password">
@@ -95,7 +158,16 @@ function RouterOutlet(props) {
               </Switch>
             </RouteLayout>
           </Route>
-
+          <Route
+            exact
+            path={["/admin/users", "/admin/categories"]}
+          >
+            <AdminRouteLayout>
+              <Switch>
+                <Route exact path="/admin/users" component={User} />
+              </Switch>
+            </AdminRouteLayout>
+          </Route>
           <Route path="*">
             <NotFound />
           </Route>
@@ -105,7 +177,9 @@ function RouterOutlet(props) {
   );
 }
 
-const mapState = (state) => ({});
+const mapState = (state) => ({
+  user: state.auth.user
+});
 const mapDispatch = (dispatch) =>
   bindActionCreators(
     {
