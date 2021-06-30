@@ -35,7 +35,7 @@ import Watchlist from "../pages/watchList/Watchlist";
 import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 
-import User from "../pages/admin/user";
+import Lecturer from "../pages/admin/lecturers";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -174,11 +174,11 @@ function RouterOutlet(props) {
           </Route>
           <Route
             exact
-            path={["/admin/users", "/admin/categories"]}
+            path={["/admin/lecturers", "/admin/categories"]}
           >
             <AdminRouteLayout>
               <Switch>
-                <Route exact path="/admin/users" component={User} />
+                <Route exact path="/admin/lecturers" component={Lecturer} />
               </Switch>
             </AdminRouteLayout>
           </Route>
