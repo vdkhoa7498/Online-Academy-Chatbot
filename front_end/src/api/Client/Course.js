@@ -11,7 +11,7 @@ export function CourseHttpService(options) {
       return options.httpService.post(baseUrl, form);
     }
     return {
-        getCourses,
-        createCourse,
+      getCourses,
+      createCourse,
     };
 }
