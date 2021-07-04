@@ -40,10 +40,10 @@ const PostCourse = ({ categories }) => {
     const parentCategories = categories.filter((category) => { return !category.parentId })
     const childrenCategories = categories.filter((category) => { return !!category.parentId })
 
-    const S3_BUCKET = 'online-academy-chatbot';
-    const REGION = 'us-east-2';
-    const ACCESS_KEY = 'AKIA55S5NLZ6FNOPY6XJ';
-    const SECRET_ACCESS_KEY = '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';
+    const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+    const REGION = process.env.REACT_APP_REGION;
+    const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
+    const SECRET_ACCESS_KEY = process.env.REACT_APP_SECRET_ACCESS_KEY;
 
     const config = {
         bucketName: S3_BUCKET,
@@ -340,8 +340,8 @@ const PostCourse = ({ categories }) => {
                                                             accept={".mp4, .mkv, .mpeg-4, mpeg-2, .avi, .mov, .flv, .wmv, .webm"}
                                                             beforeUpload={() => false}
                                                             listType='picture'
-                                                            // fileList={videos}
-                                                            // onChange={({ fileList }) => { setVideos([...videos, fileList]) }}
+                                                            fileList={videos}
+                                                            onChange={({ fileList }) => { setVideos([...videos, fileList]) }}
                                                             maxCount={1}
                                                         >
                                                             <Button icon={<VerticalAlignTopOutlined />} >
