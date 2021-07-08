@@ -12,12 +12,18 @@ const getAllCategories = async () => {
 };
 
 const queryCategory = async (filter, options) => {
-  const users = await User.paginate(filter, options);
+  const users = await Category.paginate(filter, options);
   return users;
+};
+
+const getCategoryById = async (categoryId) => {
+  const category =  await Category.findById(categoryId);
+  return category
 };
 
 module.exports = {
   createCategory,
   queryCategory,
   getAllCategories,
+  getCategoryById,
 };

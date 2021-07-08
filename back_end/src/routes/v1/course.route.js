@@ -11,4 +11,7 @@ router
 
 router.post('/addView',  coursesController.addView);
 
+router.get('/:courseId', coursesController.getCourseById)
+router.get('/category/:categoryId', coursesController.getCoursesByCategoryId)
+
 module.exports = router;

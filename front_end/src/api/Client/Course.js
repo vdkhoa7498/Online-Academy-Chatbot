@@ -10,8 +10,21 @@ export function CourseHttpService(options) {
       const baseUrl = options.httpService.getUrl("courses");
       return options.httpService.post(baseUrl, form);
     }
+
+    function getCourseById(courseId) {
+      const baseUrl = options.httpService.getUrl(`courses/${courseId}`);
+      return options.httpService.get(baseUrl);
+    }
+
+    function getCoursesByCategoryId(categoryId) {
+      const baseUrl = options.httpService.getUrl(`courses/category/${categoryId}`);
+      return options.httpService.get(baseUrl);
+    }
+
     return {
       getCourses,
       createCourse,
+      getCourseById,
+      getCoursesByCategoryId,
     };
 }

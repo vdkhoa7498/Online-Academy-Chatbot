@@ -16,6 +16,16 @@ const queryCourses = async (filter, options) => {
   return courses;
 };
 
+const queryCoursesByCategoryId = async (filter, options) => {
+  const courses = await Course.paginate(filter, options);
+  return courses;
+};
+
+const getCourseById = async (courseId) => {
+  const course =  await Course.findById(courseId);
+  return course
+};
+
 const addView = async (courseId) => {
   const course = await Course.findOne({_id: courseId})
   course.view = course.view + 1;
@@ -28,4 +38,6 @@ module.exports = {
   queryCourses,
   getAllCourses,
   addView,
+  getCourseById,
+  queryCoursesByCategoryId,
 };
