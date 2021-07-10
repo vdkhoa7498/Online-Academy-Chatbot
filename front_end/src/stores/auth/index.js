@@ -142,12 +142,11 @@ export function changePassword({ form, onSuccess, onFailure }) {
 
 export function editProfile({ form, onSuccess, onFailure }) {
   return async (dispatch) => {
-    // dispatch(toggleGlobalLoading(true));
     try {
       dispatch(clearAuthMessage());
-      const result = await httpClient.user.editProfile(form);
-      dispatch(setProfile(result.data));
-      onSuccess(result.data);
+      const result = await httpClient.auth.editProfile(form);
+      dispatch(setProfile(result));
+      onSuccess(result);
     } catch (error) {
       dispatch(setAuthMessage(error.message || error));
       onFailure(error);

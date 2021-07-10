@@ -20,6 +20,16 @@ const getProfile = async (id) => {
   return await User.findOne({ _id: id });
 };
 
+const editProfile = async ({ email, fullName }) => {
+  const user = await User.findOne({ email });
+
+  user.fullName = fullName;
+  await user.save();
+
+  return user;
+
+}
+
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -88,6 +98,7 @@ const deleteUserById = async (userId) => {
 module.exports = {
   createUser,
   getProfile,
+  editProfile,
   queryUsers,
   getUserById,
   getUserByEmail,

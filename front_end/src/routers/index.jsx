@@ -70,7 +70,7 @@ function RouterOutlet(props) {
           </Route>
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/user/profile", "/courses/post"]}
+            path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/profile", "/courses/post"]}
           >
             <RouteLayout {...rest}>
               <Switch>
@@ -89,7 +89,7 @@ function RouterOutlet(props) {
                 <Route exact path="/watchlist">
                   <Watchlist />
                 </Route>
-                <Route exact path='/user/profile'>
+                <Route exact path='/profile'>
                   <Profile />
                 </Route>
               </Switch>

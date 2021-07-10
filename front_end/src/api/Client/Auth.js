@@ -9,8 +9,13 @@ export function AuthHttpService(options) {
     return options.httpService.post(baseUrl, { email, password });
   }
   function getProfile() {
-    const baseUrl = options.httpService.getUrl("/auth/me");
+    const baseUrl = options.httpService.getUrl("auth/me");
     return options.httpService.get(baseUrl);
+  }
+
+  function editProfile(user) {
+    const baseUrl = options.httpService.getUrl("auth/edit-profile");
+    return options.httpService.post(baseUrl, user);
   }
 
   function loginWithGoogle(tokenId) {
@@ -30,5 +35,6 @@ export function AuthHttpService(options) {
     loginWithGoogle,
     loginWithFacebook,
     getProfile,
+    editProfile
   };
 }
