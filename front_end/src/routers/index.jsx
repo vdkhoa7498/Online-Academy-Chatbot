@@ -17,6 +17,8 @@ import {
   MenuFoldOutlined,
   TeamOutlined,
   AppstoreOutlined,
+  BookOutlined,
+  SolutionOutlined
 } from '@ant-design/icons';
 
 import HeaderBar from "../components/headerBar/HeaderBar";
@@ -33,7 +35,10 @@ import Watchlist from "../pages/watchList/Watchlist";
 import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 
-import User from "../pages/admin/user";
+import Categories from "../pages/admin/categories";
+import Course from "../pages/admin/courses";
+import Student from "../pages/admin/students";
+import Lecturer from "../pages/admin/lecturers";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -68,15 +73,27 @@ function AdminRouteLayout(props) {
           <div className="logo" />
           <Menu theme="dark" mode="inline" onClick={(value) => { setMenuIndex(value.key); console.log(menuIndex) }} defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <Link to="/admin/users">
-                <TeamOutlined />
-                <span>Users</span>
+              <Link to="/admin/categories">
+                <AppstoreOutlined />
+                <span>Danh mục</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to="/admin/categories">
-                <AppstoreOutlined />
-                <span>Categories</span>
+              <Link to="/admin/courses">
+                <BookOutlined />
+                <span>Khóa học</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/admin/students">
+                <TeamOutlined />
+                <span>Học viên</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link to="/admin/lecturers">
+                <SolutionOutlined />
+                <span>Giảng viên</span>
               </Link>
             </Menu.Item>
           </Menu>
@@ -93,7 +110,7 @@ function AdminRouteLayout(props) {
             style={{
               margin: '24px 16px',
               padding: 24,
-              minHeight: 500,
+              minHeight: 775,
             }}
           >
             {props.children}
@@ -160,11 +177,20 @@ function RouterOutlet(props) {
           </Route>
           <Route
             exact
-            path={["/admin/users", "/admin/categories"]}
+            path={["/admin/categories", "/admin/courses", "/admin/students", "/admin/lecturers"]}
           >
             <AdminRouteLayout>
               <Switch>
-                <Route exact path="/admin/users" component={User} />
+                <Route exact path="/admin/categories" component={Categories} />
+              </Switch>
+              <Switch>
+                <Route exact path="/admin/courses" component={Course} />
+              </Switch>
+              <Switch>
+                <Route exact path="/admin/students" component={Student} />
+              </Switch>
+              <Switch>
+                <Route exact path="/admin/lecturers" component={Lecturer} />
               </Switch>
             </AdminRouteLayout>
           </Route>
