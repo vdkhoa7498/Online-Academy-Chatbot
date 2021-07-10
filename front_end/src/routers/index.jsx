@@ -110,7 +110,7 @@ function AdminRouteLayout(props) {
             style={{
               margin: '24px 16px',
               padding: 24,
-              minHeight: 500,
+              minHeight: 775,
             }}
           >
             {props.children}

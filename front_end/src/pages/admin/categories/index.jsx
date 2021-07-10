@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, message, Divider } from "antd";
-import { EditOutlined, DeleteOutlined, TagsOutlined } from "@ant-design/icons"
+import { Card, Button, Table, Divider, Input, Space } from "antd";
+import Highlighter from 'react-highlight-words';
+import { EditOutlined, DeleteOutlined, TagsOutlined, SearchOutlined } from "@ant-design/icons"
 import EditCategoryForm from "./forms/EditCategoryForm"
 import AddCategoryForm from "./forms/AddCategoryForm"
 import '../styles.scss'
@@ -71,7 +72,7 @@ const Category = () => {
       <Card title={<span>
         <Button icon={<TagsOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddCategory}>Thêm danh mục</Button>
       </span>}>
-        <Table bordered rowKey="id" dataSource={categories} pagination={false}>
+        <Table rowKey="id" dataSource={categories} pagination={false} size="middle">
           <Column title="ID" dataIndex="id" key="id" align="center" />
           <Column title="Tiêu đề" dataIndex="name" key="name" align="center" />
           <Column title="Danh mục cha" dataIndex="parent" key="parent" align="center" />
