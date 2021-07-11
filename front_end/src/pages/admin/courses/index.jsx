@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Table, message, Divider } from "antd";
 import { DeleteOutlined } from "@ant-design/icons"
 import '../styles.scss'
+import { httpClient } from '../../../api'
 const { Column } = Table;
 
 const coursesEx = [
@@ -26,7 +27,7 @@ const coursesEx = [
 ]
 
 const Course = () => {
-  const [courses, setCourses] = useState(coursesEx)
+  const [courses, setCourses] = useState([])
   const [currentRowData, setCurrentRowData] = useState({})
 
   const handleDeleteCourse = (row) => {
@@ -34,7 +35,12 @@ const Course = () => {
   }
 
   useEffect(() => {
-
+    const fetchData = async () => {
+      const courses_ = await httpClient.course.getCourses({});
+      console.log(courses_.results)
+      setCourses(courses_.results);
+    }
+    fetchData()
   }, [])
 
   return (
@@ -45,7 +51,7 @@ const Course = () => {
         <Table bordered rowKey="id" dataSource={courses} pagination={false}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
           <Column title="Tên khóa học" dataIndex="title" key="title" align="center" />
-          <Column title="Mô tả" dataIndex="short_description" key="short_description" align="center" />
+          <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" />
           <Column title="Giảng viên" dataIndex="lecturer" key="lecturer" align="center" />
           <Column title="Gỡ bỏ khóa học" key="action" width={195} align="center" render={(text, row) => (
             <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteCourse} />
