@@ -41,6 +41,10 @@ const courseSchema = mongoose.Schema({
     type: Number, 
     default: 0 
   },
+  preView: {
+    type: Number,
+    default: 0,
+  }
 },
 {
   timestamps: true,

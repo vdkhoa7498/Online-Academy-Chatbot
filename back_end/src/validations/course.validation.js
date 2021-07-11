@@ -10,6 +10,7 @@ const createCourse = {
     categoryId: Joi.string().required().custom(objectId),
     price: Joi.number(),
     voucher: Joi.number(),
+    status: Joi.string(),
   }),
 };
 

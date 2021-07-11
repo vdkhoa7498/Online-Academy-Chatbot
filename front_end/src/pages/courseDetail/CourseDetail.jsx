@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space } from 'antd'
+import React, { useState } from 'react'
+import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
 import moment from 'moment';
-import { TeamOutlined, CalendarOutlined, PlayCircleOutlined } from '@ant-design/icons'
+import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, StarFilled, EditFilled, PlayCircleFilled, HeartOutlined, FormOutlined } from '@ant-design/icons'
 import './styles.scss'
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const courseEx = {
     title: "Tự học guitar",
@@ -68,9 +68,20 @@ const courseEx = {
         },
     ],
 
+    lecturer: {
+        name: "Nguyễn Mạnh Linh",
+        company: "Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus iusto adipisci ratione commodi deleniti in modi, ipsa perferendis fugiat reiciendis dignissimos eos distinctio perspiciatis aut nisi fuga nihil nam delectus.",
+        avatar: "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
+        averageRating: 4.5,
+        totalReviews: 100000,
+        totalStudents: 2000000,
+        totalCourses: 10
+    },
+
     rates: [
         {
-            user:{
+            user: {
                 id: 0,
                 avatar: "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
                 name: "abc"
@@ -80,7 +91,7 @@ const courseEx = {
             createdAt: 1621611357961
         },
         {
-            user:{
+            user: {
                 id: 1,
                 avatar: "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
                 name: "Vivi"
@@ -90,7 +101,7 @@ const courseEx = {
             createdAt: 1621611343961
         },
         {
-            user:{
+            user: {
                 id: 1,
                 avatar: "https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg",
                 name: "Khung long con"
@@ -108,29 +119,38 @@ const CourseDetail = () => {
     const param = useParams()
     console.log(Date.now())
 
-    return(
+    return (
         <div className="course-detail-container">
-            <img className='img-item' alt={course.title} src={course.image}/>
+            <Row className="course-content">
+                <Col span={16}>
+                    <h1 style={{ fontWeight: 'bold', marginTop: 15, fontSize: 30 }}>{course.title}</h1>
+                    <div style={{ fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>{course.short_description}</div>
+                    <div dangerouslySetInnerHTML={{ __html: course.description }} />
+                    <div>
+                        {course.rateScore} <Rate allowHalf value={course.rateScore} disabled /> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.studentNumber} học viên
+                    </div>
+                    <div>
+                        <CalendarOutlined /> Cập nhật lần cuối: {course.lastUpdate}
+                    </div>
+                    <div style={{ marginTop: "20px" }}>
+                        <Space>
+                            <Button type="primary" icon={<FormOutlined />}>Tham gia</Button>
+                            <Button icon={<HeartOutlined />}>Yêu thích</Button>
+                        </Space>
+                    </div>
+                </Col>
+                <Col span={8}>
+                    <img className='img-item' alt={course.title} src={course.image} />
+                </Col>
+            </Row>
 
-            <h1 style={{fontWeight: 'bold', marginTop: 15, fontSize: 30}}>{course.title}</h1>
-            <div style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>{course.short_description}</div>
-            <div>{course.description}</div>
-            <div>
-                {course.rateScore} <Rate allowHalf value={course.rateScore} disabled/> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.studentNumber} học viên
-            </div>
-            <div>
-                <CalendarOutlined/> Cập nhật lần cuối: {course.lastUpdate}
-            </div>
-
-            <Divider/>
-
+            <Divider orientation="left"><div className="section">Đề cương khóa học</div></Divider>
             <List
                 size="large"
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đề cương khóa học</div>}
                 itemLayout="horizontal"
-                dataSource={courseEx.lectures}
+                dataSource={course.lectures}
                 renderItem={item => (
-                    <List.Item>
+                    <List.Item className="lecture-item">
                         <div>
                             <Space>
                                 <PlayCircleOutlined />
@@ -147,21 +167,19 @@ const CourseDetail = () => {
                 )}
             />
 
-            <Divider/>
-
+            <Divider orientation="left"><div className="section">Các khóa học khác</div></Divider>
             <List
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Các khóa học khác</div>}
                 itemLayout="horizontal"
-                dataSource={courseEx.otherCourses}
+                dataSource={course.otherCourses}
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<Avatar shape="square" size={64} src={item.image}/>}
+                            avatar={<Avatar shape="square" size={64} src={item.image} />}
                             title={<a href="#">{item.title}</a>}
                             description={item.short_description}
                         />
                         <div>
-                            <Rate allowHalf value={item.rateScore} disabled/>
+                            <Rate allowHalf value={item.rateScore} disabled />
                         </div>
                         <div>
                             <TeamOutlined className="student-number" /> {course.studentNumber}
@@ -170,43 +188,81 @@ const CourseDetail = () => {
                 )}
             />
 
-            <Divider/>
+            <Divider orientation="left"><div className="section">Thông tin giảng viên</div></Divider>
+            <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div>
+            <div>{course.lecturer.company}</div>
+            <Row>
+                <Col span={3}>
+                    <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} />
+                </Col>
+                <Col span={21}>
+                    <Row>
+                        <Space>
+                            <StarFilled />
+                            {course.lecturer.averageRating}
+                            Đánh giá trung bình
+                        </Space>
+                    </Row>
+                    <Row>
+                        <Space>
+                            <EditFilled />
+                            {course.lecturer.averageRating}
+                            Đánh giá
+                        </Space>
+                    </Row>
+                    <Row>
+                        <Space>
+                            <TeamOutlined />
+                            {course.lecturer.totalStudents}
+                            Học viên
+                        </Space>
+                    </Row>
+                    <Row>
+                        <Space>
+                            <PlayCircleFilled />
+                            {course.lecturer.totalCourses}
+                            Khóa học
+                        </Space>
+                    </Row>
+                    <Row>
+                        {course.lecturer.description}
+                    </Row>
+                </Col>
+            </Row>
 
+            <Divider orientation="center"><div className="section">Đánh giá của học viên<span style={{ fontSize: 24 }}> ({courseEx.rates.length} đánh giá)</span></div></Divider>
             <List
                 className="comment-list"
-                header={<div style={{fontWeight: 'bold', fontSize: 24}}>Đánh giá  <span style={{fontSize: 16}}> ({courseEx.rates.length} đánh giá)</span></div>}
                 itemLayout="horizontal"
-                dataSource={courseEx.rates}
+                dataSource={course.rates}
                 renderItem={item => (
-                <li>
-                    <Comment
-                        author={<b style={{color: 'black'}}>{item.user.name}</b>}
-                        avatar={
-                            <Avatar
-                            
-                            src= {item.user.avatar}
-                            alt= {courseEx.title}
-                            />
-                        }
-                        content={
-                            <div>
-                                <Rate allowHalf value={item.rateScore} disabled/>
-                                <p>{item.content}</p>
-                            </div>
-                            
-                        }
-                        datetime={
-                            <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                                <span style={{color: 'gray'}}>{moment(item.createdAt).fromNow()}</span>
-                            </Tooltip>
-                        }
-                    />
-                </li>
+                    <li>
+                        <Comment
+                            author={<b style={{ color: 'black' }}>{item.user.name}</b>}
+                            avatar={
+                                <Avatar
+                                    src={item.user.avatar}
+                                    alt={course.title}
+                                />
+                            }
+                            content={
+                                <div>
+                                    <Rate allowHalf value={item.rateScore} disabled />
+                                    <p>{item.content}</p>
+                                </div>
+                            }
+                            datetime={
+                                <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                                    <span style={{ color: 'gray' }}>{moment(item.createdAt).fromNow()}</span>
+                                </Tooltip>
+                            }
+                        />
+                    </li>
                 )}
             />
-            <br/>
+            <br />
             <Pagination defaultCurrent={1} total={50} />
-            <Divider/>
+            <Divider />
         </div>
     )
 }
