@@ -42,7 +42,7 @@ const Profile = ({ user, getProfile, editProfile }) => {
     //  props.toggleGlobalLoading(false);
     }
 
-  }, [])
+  }, [user])
 
 
   const onFinish = (values) => {

@@ -20,7 +20,7 @@ import Login from "../pages/authentication/login/Login";
 import ForgetPassword from "../pages/authentication/fogetPassword/ForgetPassword";
 import CourseDetail from "../pages/courseDetail/CourseDetail";
 import CourseListCategory from "../pages/courseListCategory/CourseListCategory";
-import Watchlist from "../pages/watchList/Watchlist";
+import WatchList from "../pages/watchList/Watchlist";
 import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 
@@ -71,7 +71,7 @@ function RouterOutlet(props) {
 
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/profile", "/courses/post"]}
+            path={["/", "/courses/:id", "/categories/:id", "/watch-list", "/profile", "/courses/post"]}
           >
             <RouteLayout {...rest}>
               <Switch>
@@ -87,8 +87,12 @@ function RouterOutlet(props) {
                 <Route exact path="/categories/:id">
                   <CourseListCategory />
                 </Route>
-                <Route exact path="/watchlist">
-                  <Watchlist />
+                <Route exact path="/watch-list">
+                {
+                    (isAuthenticated)
+                    ? <WatchList />
+                    : <Redirect to="/"/>
+                  }
                 </Route>
                 <Route exact path="/profile">      
                   {

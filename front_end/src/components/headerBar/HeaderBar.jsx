@@ -74,6 +74,13 @@ const HeaderBar = (props) =>{
                 (isAuthenticated)
                 ?
                 <div className="right-header-container">
+                    <div className="watch-list">
+                        <Button>
+                            <Link to='watch-list'>
+                            Watch list
+                            </Link>
+                        </Button>
+                    </div>
                     {
                     (!props.user)
                     ? null

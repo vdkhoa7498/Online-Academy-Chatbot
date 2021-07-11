@@ -1,9 +1,9 @@
 export function UserHttpService(options) {
-  function editProfile(query) {
-    const baseUrl = options.httpService.getUrl("users");
-    return options.httpService.get(baseUrl, query);
+  function getWatchList() {
+    const baseUrl = options.httpService.getUrl("users/watch-list");
+    return options.httpService.get(baseUrl);
   }
   return {
-      editProfile
+    getWatchList
   };
 }
