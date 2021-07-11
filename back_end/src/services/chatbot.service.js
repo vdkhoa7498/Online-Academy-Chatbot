@@ -1,9 +1,11 @@
 require('dotenv').config();
 const request = require('request');
+const categoryService = require('./category.service');
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const SAMPLE_IMAGE = "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg";
 
-function callSendAPI(sender_psid, response) {
+async function callSendAPI(sender_psid, response) {
     let request_body = {
         "recipient": {
             "id": sender_psid
@@ -11,7 +13,7 @@ function callSendAPI(sender_psid, response) {
         "message": response
     }
     
-    request({
+    await request({
         "uri": "https://graph.facebook.com/v9.0/me/messages",
         "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
@@ -44,44 +46,38 @@ function getUsername(sender_psid) {
     })
 }
 
-function getAllCategories() {
+async function getAllCategories() {
+
+    let allCategories = await categoryService.getAllCategories();
+    // Just get categories that have no parent
+    let allParentCategories = [];
+    allCategories.forEach(category => {
+        if (category.parentId == null) {
+            allParentCategories.push(category);
+        }
+    })
+    console.log(allParentCategories);
+
+    // Create template elements
+    let templateElements = [];
+    allParentCategories.forEach(category => {
+        templateElements.push({
+            title: category.name,
+            buttons: [{
+                type: "postback",
+                title: "Xem " + category.name,
+                payload: `show_list=${category.name}`
+            }]
+        });
+    });
+
+    // Create response
     let response = {
         "attachment": {
             "type": "template",
             "payload": {
                 "template_type": "generic",
-                "elements": [
-                    {
-                        "title": "Nghệ thuật",
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Nghệ thuật",
-                                "payload": "show_list",
-                            }
-                        ],
-                    },
-                    {
-                        "title": "Nghệ thuật",
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Nghệ thuật",
-                                "payload": "show_list",
-                            }
-                        ],
-                    },
-                    {
-                        "title": "Nghệ thuật",
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Nghệ thuật",
-                                "payload": "show_list",
-                            }
-                        ],
-                    }
-                ]
+                "elements": JSON.stringify(templateElements)
             }
         }
     };
@@ -97,7 +93,7 @@ function getListCourses() {
                 "elements": [
                     {
                         "title": "Tự học guitar",
-                        "image_url": "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
+                        "image_url": SAMPLE_IMAGE,
                         "buttons": [
                             {
                                 "type": "postback",
@@ -108,7 +104,7 @@ function getListCourses() {
                     },
                     {
                         "title": "Tự học guitar",
-                        "image_url": "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
+                        "image_url": SAMPLE_IMAGE,
                         "buttons": [
                             {
                                 "type": "postback",
@@ -119,7 +115,7 @@ function getListCourses() {
                     },
                     {
                         "title": "Tự học guitar",
-                        "image_url": "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
+                        "image_url": SAMPLE_IMAGE,
                         "buttons": [
                             {
                                 "type": "postback",
@@ -144,8 +140,7 @@ function getCourseDetail() {
                 "elements": [
                     {
                         "title": "Tự học guitar",
-                        "subtitle": "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tiết kiệm được nhiều chi phí.",
-                        "image_url": "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
+                        "image_url": SAMPLE_IMAGE,
                         "buttons": [
                             {
                                 "type": "postback",
@@ -166,9 +161,9 @@ let handleGetStarted = (sender_psid) => {
         try {
             let username = await getUsername(sender_psid);
             let response1 = { "text": `Chào mừng bạn ${username} đã đến với Online Academy, bạn có thể nhập từ khóa để tìm kiếm khóa học hoặc duyệt khóa học theo những danh mục sau:` }
-            let response2 = getAllCategories();
-            callSendAPI(sender_psid, response1);
-            callSendAPI(sender_psid, response2);
+            let response2 = await getAllCategories();
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
             resolve('done');
         } catch (e) {
             reject(e);
@@ -181,8 +176,8 @@ let handleGetListCoursesByQuery = (sender_psid, query) => {
         try {
             let response1 = { "text": `Danh sách khóa học ứng với từ khóa "${query}"` }
             let response2 = getListCourses();
-            callSendAPI(sender_psid, response1);
-            callSendAPI(sender_psid, response2);
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
             resolve('done');
         } catch (e) {
             reject(e);
@@ -195,8 +190,8 @@ let handleGetListCoursesByCategory = (sender_psid, category) => {
         try {
             let response1 = { "text": `Danh sách khóa học thuộc danh mục "${category}"` }
             let response2 = getListCourses();
-            callSendAPI(sender_psid, response1);
-            callSendAPI(sender_psid, response2);
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
             resolve('done');
         } catch (e) {
             reject(e);
@@ -207,8 +202,10 @@ let handleGetListCoursesByCategory = (sender_psid, category) => {
 let handleGetCourseDetail = (sender_psid) => {
     return new Promise(async(resolve, reject) => {
         try {
-            let response = getCourseDetail();
-            callSendAPI(sender_psid, response);
+            let response1 = getCourseDetail();
+            let response2 = { "text": "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tiết kiệm được nhiều chi phí." }
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
             resolve('done');
         } catch (e) {
             reject(e);

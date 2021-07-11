@@ -1,6 +1,9 @@
 import React from "react";
 import { Form, Input, Select, Modal, Button } from "antd";
-const EditUserForm = (props) => {
+
+
+
+const EditStudentForm = (props) => {
   const {
     visible,
     onCancel,
@@ -8,7 +11,7 @@ const EditUserForm = (props) => {
     currentRowData,
     onFinish
   } = props;
-  const { id, name, role, email } = currentRowData;
+  const { id, name, email } = currentRowData;
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -19,14 +22,14 @@ const EditUserForm = (props) => {
   };
   return (
     <Modal
-      title="Sửa thông tin user"
+      title="Cập nhật thông tin học viên"
       visible={visible}
       footer={[
         <Button key="cancel" onClick={onCancel}>
-          Cancel
+          Hủy bỏ
         </Button>,
         <Button key="submit" form="myForm" htmlType="submit" type="primary" onClick={onOk}>
-          Submit
+          Cập nhật
         </Button>,
       ]}
     >
@@ -40,15 +43,9 @@ const EditUserForm = (props) => {
         <Form.Item label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
           initialValue={name}><Input placeholder="Tên" />
         </Form.Item>
-        <Form.Item label="Vai trò" initialValue={role}><Select style={{ width: 120 }} disabled={id === "admin"}>
-          <Select.Option value="admin">admin</Select.Option>
-          <Select.Option value="teacher">teacher</Select.Option>
-          <Select.Option value="student">student</Select.Option>
-        </Select>
-        </Form.Item>
       </Form>
     </Modal>
   );
 }
 
-export default EditUserForm
+export default EditStudentForm
