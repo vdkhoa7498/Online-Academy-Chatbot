@@ -9,9 +9,19 @@ const EditCategoryForm = (props) => {
     onCancel,
     onOk,
     currentRowData,
-    onFinish
+    onFinish,
+    allCategories
   } = props;
-  const { id, name, parent, totalCourses } = currentRowData;
+  const { _id, name } = currentRowData;
+
+  // Get parent categories
+  const allParentCategories_ = [];
+  allCategories.forEach(category => {
+    if (category.parentId == null) {
+      allParentCategories_.push(category)
+    }
+  });
+
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -34,17 +44,19 @@ const EditCategoryForm = (props) => {
       ]}
     >
       <Form {...formItemLayout} onFinish={onFinish} id="myForm">
-        <Form.Item label="ID:" initialValue={id}><Input disabled />
+        <Form.Item label="ID:"><Input disabled value={_id}/>
         </Form.Item>
-        <Form.Item label="Tiêu đề:"
-          rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
-          initialValue={name}><Input placeholder="Tiêu đề" />
+        <Form.Item label="Tiêu đề:" rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}>
+          <Input placeholder="Tiêu đề" value={name}/>
         </Form.Item>
-        <Form.Item name="parent" label="Danh mục cha:" initialValue="none">
-          <Select>
-            <Select.Option value="none">Không có</Select.Option>
-            <Select.Option value="it">Công nghệ thông tin</Select.Option>
-            <Select.Option value="art">Nghệ thuật</Select.Option>
+        <Form.Item name="parent" label="Danh mục cha:">
+          <Select defaultValue={null}>
+            <Select.Option value={null}>Không có</Select.Option>
+            {
+              allParentCategories_.map(category =>
+                <Select.Option value={category._id}>{category.name}</Select.Option>
+              )
+            }
           </Select>
         </Form.Item>
       </Form>

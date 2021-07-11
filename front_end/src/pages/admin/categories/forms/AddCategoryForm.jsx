@@ -4,7 +4,16 @@ import { Form, Input, Select, Modal, Button } from "antd";
 
 
 const AddCategoryForm = (props) => {
-  const { visible, onCancel, onOk, onFinish } = props;
+  const { visible, onCancel, onOk, onFinish, allCategories } = props;
+
+  // Get parent categories
+  const allParentCategories_ = [];
+  allCategories.forEach(category => {
+    if (category.parentId == null) {
+      allParentCategories_.push(category)
+    }
+  });
+
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -32,11 +41,14 @@ const AddCategoryForm = (props) => {
           <Input placeholder="Tiêu đề" />
         </Form.Item>
 
-        <Form.Item name="parent" label="Danh mục cha:" initialValue="none">
-          <Select>
-            <Select.Option value="none">Không có</Select.Option>
-            <Select.Option value="it">Công nghệ thông tin</Select.Option>
-            <Select.Option value="art">Nghệ thuật</Select.Option>
+        <Form.Item name="parent" label="Danh mục cha:">
+          <Select defaultValue={null}>
+            <Select.Option value={null}>Không có</Select.Option>
+            {
+              allParentCategories_.map(category =>
+                <Select.Option value={category._id}>{category.name}</Select.Option>
+              )
+            }
           </Select>
         </Form.Item>
       </Form>

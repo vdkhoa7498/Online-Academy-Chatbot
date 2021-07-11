@@ -5,6 +5,7 @@ import { EditOutlined, DeleteOutlined, TagsOutlined, SearchOutlined } from "@ant
 import EditCategoryForm from "./forms/EditCategoryForm"
 import AddCategoryForm from "./forms/AddCategoryForm"
 import '../styles.scss'
+import { httpClient } from '../../../api'
 const { Column } = Table;
 
 const categoriesEx = [
@@ -29,12 +30,15 @@ const categoriesEx = [
 ]
 
 const Category = () => {
-  const [categories, setCategories] = useState(categoriesEx)
+  // All categories
+  const [categories, setCategories] = useState([])
+  // Edit
   const [editCategoryModalVisible, setEditCategoryModalVisible] = useState(false)
   const [currentRowData, setCurrentRowData] = useState({})
+  const [editCategoryFormData, setEditCategoryFormData] = useState()
+  // Add
   const [addCategoryModalVisible, setAddCategoryModalVisible] = useState(false)
   const [addCategoryFormData, setAddCategoryFormData] = useState()
-  const [editCategoryFormData, setEditCategoryFormData] = useState()
 
   const handleCancel = () => {
     setAddCategoryModalVisible(false)
@@ -62,7 +66,26 @@ const Category = () => {
   }
 
   useEffect(() => {
+    const fetchData = async () => {
+      const categories_ = await httpClient.category.getCategories({})
 
+      // Find parent name
+      categories_.forEach(category1 => {
+        // If has no parent
+        if (category1.parentId == null) {
+          category1.parent = "Không có";
+        } else { // Else
+          categories_.forEach(category2 => {
+            if (category1.parentId == category2._id) {
+              category1.parent = category2.name;
+            }
+          });
+        }
+      });
+
+      setCategories(categories_)
+    }
+    fetchData()
   }, [])
 
   return (
@@ -72,14 +95,14 @@ const Category = () => {
       <Card title={<span>
         <Button icon={<TagsOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddCategory}>Thêm danh mục</Button>
       </span>}>
-        <Table rowKey="id" dataSource={categories} pagination={false} size="middle">
-          <Column title="ID" dataIndex="id" key="id" align="center" />
+        <Table rowKey="_id" dataSource={categories} pagination={false} size="middle">
+          <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tiêu đề" dataIndex="name" key="name" align="center" />
           <Column title="Danh mục cha" dataIndex="parent" key="parent" align="center" />
           <Column title="Tổng số khóa học" dataIndex="totalCourses" key="totalCourses" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>
-              <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={handleEditCategory} />
+              <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditCategory(row)} />
               <Divider type="vertical" />
               <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteCategory} />
             </span>
@@ -93,12 +116,14 @@ const Category = () => {
         onCancel={handleCancel}
         onOk={handleEditCategoryOk}
         onFinish={(values => setEditCategoryFormData(values))}
+        allCategories={categories}
       />
       <AddCategoryForm
         visible={addCategoryModalVisible}
         onCancel={handleCancel}
         onOk={handleAddCategoryOk}
         onFinish={(values => console.log(values))}
+        allCategories={categories}
       />
     </div>
   );
