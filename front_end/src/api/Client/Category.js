@@ -8,8 +8,15 @@ export function CategoryHttpService(options) {
       const baseUrl = options.httpService.getUrl("categories");
       return options.httpService.post(baseUrl, form);
     }
+
+    function getCategoryById(id) {
+      const baseUrl = options.httpService.getUrl(`categories/${id}`);
+      return options.httpService.get(baseUrl);
+    }
+
     return {
         getCategories,
         createCategory,
+        getCategoryById,
     };
 }

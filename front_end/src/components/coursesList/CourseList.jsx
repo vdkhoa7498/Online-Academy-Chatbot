@@ -11,6 +11,7 @@ export default function CourseList({ titleList, courses,  isWatchList }) {
             <Divider/>
             <h1 className="title-page">{titleList}</h1>
             {
+              (!courses) ? null :
                 courses.map((item, index)=>{
                     return(
                        <CourseItem key={index} item={item} isWatchList={isWatchList} />       
