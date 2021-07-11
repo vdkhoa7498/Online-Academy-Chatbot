@@ -33,11 +33,20 @@ const addView = async (courseId) => {
   return course;
 };
 
+const findWithListId = async(coursesId) => {
+  const courses = await Course.find({
+    '_id': { $in: coursesId}
+  })
+
+  return courses;
+}
+
 module.exports = {
   createCourse,
   queryCourses,
   getAllCourses,
   addView,
+  findWithListId,
   getCourseById,
   queryCoursesByCategoryId,
 };
