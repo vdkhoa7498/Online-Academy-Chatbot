@@ -118,6 +118,7 @@ export function logout({ onSuccess, onFailure }) {
       dispatch(clearProfile());
       localStorage.removeItem("access_token");
       localStorage.removeItem("isAuthenticated");
+      window.location.replace("/");
       onSuccess();
     } catch (error) {
       onFailure(error);

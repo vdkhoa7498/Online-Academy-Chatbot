@@ -90,7 +90,6 @@ function RouterOutlet(props) {
                 <Route exact path="/watchlist">
                   <Watchlist />
                 </Route>
-
                 <Route exact path="/profile">      
                   {
                     (isAuthenticated)
