@@ -68,6 +68,7 @@ function RouterOutlet(props) {
           <Route exact path="/forget-password">
             <ForgetPassword />
           </Route>
+
           <Route
             exact
             path={["/", "/courses/:id", "/categories/:id", "/watchlist", "/profile", "/courses/post"]}
@@ -89,9 +90,15 @@ function RouterOutlet(props) {
                 <Route exact path="/watchlist">
                   <Watchlist />
                 </Route>
-                <Route exact path='/profile'>
-                  <Profile />
+
+                <Route exact path="/profile">      
+                  {
+                    (isAuthenticated)
+                    ? <Profile />
+                    : <Redirect to="/"/>
+                  }
                 </Route>
+
               </Switch>
             </RouteLayout>
           </Route>
