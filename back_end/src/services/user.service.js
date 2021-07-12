@@ -30,6 +30,23 @@ const editProfile = async ({ email, fullName }) => {
 
 }
 
+const registerCourse = async(id, user) => {
+  user.registeredCourses.push(id);
+
+  await user.save();
+
+  return true;
+}
+
+const addToFavorite = async(id, user) => {
+  user.favoriteCourses.push(id);
+
+  await user.save();
+
+  return true;
+}
+
+
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -99,6 +116,8 @@ module.exports = {
   createUser,
   getProfile,
   editProfile,
+  registerCourse,
+  addToFavorite,
   queryUsers,
   getUserById,
   getUserByEmail,

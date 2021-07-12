@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
 import moment from 'moment';
 import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, StarFilled, EditFilled, PlayCircleFilled, HeartOutlined, FormOutlined } from '@ant-design/icons'
+
 import './styles.scss'
 import { useParams } from 'react-router-dom'
+import { httpClient } from '../../api'
 
 const courseEx = {
     title: "Tự học guitar",
@@ -114,33 +116,56 @@ const courseEx = {
 }
 
 const CourseDetail = () => {
-    const [course, setCourse] = useState(courseEx)
+    const [course, setCourse] = useState({})
 
     const param = useParams()
-    console.log(Date.now())
+
+    useEffect(() => {
+        const fetchCourseDetail = async () => {
+            const course = await httpClient.course.getCourseById(param.id);
+            console.log("course", course)
+
+            setCourse(course);
+        }
+
+        fetchCourseDetail();
+    },[])
+
+
+    const handleRegisterCourse = async () => {
+        await httpClient.user.registerCourse(course.id).catch(error => console.log("Fail to register course"));
+    }
+
+    const handAddtoFavoriteList = async () => {
+        await httpClient.user.addToFavorite(course.id).catch(error => console.log("Fail to add to favorite course"));
+
+    }
+
+    if (!course)
+        return <div>loading</div>
 
     return (
         <div className="course-detail-container">
             <Row className="course-content">
                 <Col span={16}>
                     <h1 style={{ fontWeight: 'bold', marginTop: 15, fontSize: 30 }}>{course.title}</h1>
-                    <div style={{ fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>{course.short_description}</div>
+                    <div style={{ fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>{course.shortDescription}</div>
                     <div dangerouslySetInnerHTML={{ __html: course.description }} />
                     <div>
                         {course.rateScore} <Rate allowHalf value={course.rateScore} disabled /> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.studentNumber} học viên
                     </div>
                     <div>
-                        <CalendarOutlined /> Cập nhật lần cuối: {course.lastUpdate}
+                        <CalendarOutlined /> Cập nhật lần cuối: {new Date(course.updatedAt).toUTCString()}
                     </div>
                     <div style={{ marginTop: "20px" }}>
                         <Space>
-                            <Button type="primary" icon={<FormOutlined />}>Tham gia</Button>
-                            <Button icon={<HeartOutlined />}>Yêu thích</Button>
+                            <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Tham gia</Button>
+                            <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Yêu thích</Button>
                         </Space>
                     </div>
                 </Col>
                 <Col span={8}>
-                    <img className='img-item' alt={course.title} src={course.image} />
+                    <img className='img-item' alt={course.title} src={course.picture} />
                 </Col>
             </Row>
 
@@ -189,43 +214,43 @@ const CourseDetail = () => {
             />
 
             <Divider orientation="left"><div className="section">Thông tin giảng viên</div></Divider>
-            <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div>
-            <div>{course.lecturer.company}</div>
+            {/* <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div> */}
+            {/* <div>{course.lecturer.company}</div> */}
             <Row>
                 <Col span={3}>
-                    <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} />
+                    {/* <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} /> */}
                 </Col>
                 <Col span={21}>
                     <Row>
                         <Space>
                             <StarFilled />
-                            {course.lecturer.averageRating}
+                            {/* {course.lecturer.averageRating} */}
                             Đánh giá trung bình
                         </Space>
                     </Row>
                     <Row>
                         <Space>
                             <EditFilled />
-                            {course.lecturer.averageRating}
+                            {/* {course.lecturer.averageRating} */}
                             Đánh giá
                         </Space>
                     </Row>
                     <Row>
                         <Space>
                             <TeamOutlined />
-                            {course.lecturer.totalStudents}
+                            {/* {course.lecturer.totalStudents} */}
                             Học viên
                         </Space>
                     </Row>
                     <Row>
                         <Space>
                             <PlayCircleFilled />
-                            {course.lecturer.totalCourses}
+                            {/* {course.lecturer.totalCourses} */}
                             Khóa học
                         </Space>
                     </Row>
                     <Row>
-                        {course.lecturer.description}
+                        {/* {course.lecturer.description} */}
                     </Row>
                 </Col>
             </Row>

@@ -40,11 +40,27 @@ const getWatchList = catchAsync(async (req, res) => {
   res.send(watchList)
 })
 
+const registerCourse = catchAsync(async (req, res) => {
+  console.log(req.params.id, req.user);
+  const result = await userService.registerCourse(req.params.id, req.user);
+
+  res.status(httpStatus.CREATED).send(result);
+})
+
+const addToFavorite = catchAsync(async (req, res) => {
+  const result = await userService.addToFavorite(req.params.id, req.user);
+
+  res.status(httpStatus.CREATED).send(result);
+
+})
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
-  getWatchList
+  getWatchList,
+  registerCourse,
+  addToFavorite
 };
