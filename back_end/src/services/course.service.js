@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const Course = require('../models/courses.model');
+const Category = require('../models/category.model');
 const ApiError = require('../utils/ApiError');
 
 const createCourse = async (courseBody) => {
@@ -38,7 +39,14 @@ const findWithListId = async(coursesId) => {
     '_id': { $in: coursesId}
   })
 
-  return courses;
+  const cloneCourses = JSON.parse(JSON.stringify(courses));
+
+  for (let i = 0; i < courses.length; i++) {
+    const category = await Category.findById(cloneCourses[i].categoryId);
+    cloneCourses[i].category = category.name;
+  }
+
+  return cloneCourses;
 }
 
 module.exports = {
