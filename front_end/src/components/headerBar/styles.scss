@@ -29,11 +29,15 @@
     height: 100%;
     .watch-list {
       margin-right: 50px;
-      button {
-        color: #1890ff;
+      color: #1890ff;
 
-        border-radius: 5%;
-        font-weight: 600;
+      width: 100px;
+
+      border-radius: 5%;
+      font-weight: 600;
+
+      .heart-icon {
+        margin-right: 5px;
       }
     }
 

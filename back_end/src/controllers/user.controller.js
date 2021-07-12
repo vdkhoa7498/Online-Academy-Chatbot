@@ -35,9 +35,9 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 const getWatchList = catchAsync(async (req, res) => {
-  const coursesId = req.user.favoriteCourses.map(c => c._id);
+  const coursesId = req.user.favoriteCourses;
   const watchList = await courseService.findWithListId(coursesId);
-  res.send(watchList)
+  res.status(200).send(watchList)
 })
 
 const registerCourse = catchAsync(async (req, res) => {

@@ -118,7 +118,9 @@ const WatchList = (props) =>  {
           } else {
           //  props.toggleGlobalLoading(false);
           }
-    })
+    }, [])
+
+    console.log("watchList", props.watchList);
 
 
     return (

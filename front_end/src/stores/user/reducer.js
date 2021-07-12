@@ -9,7 +9,7 @@ export default function categoryReducer(state = initialState, action) {
     case ActionTypeUser.SetWatchList:
       return {
         ...state,
-        categories: action.payload
+        watchList: action.payload
       }
     case ActionTypeUser.Loading:
       return {
