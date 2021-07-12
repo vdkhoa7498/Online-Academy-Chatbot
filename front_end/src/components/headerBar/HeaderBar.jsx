@@ -76,7 +76,7 @@ const HeaderBar = (props) =>{
                 <div className="right-header-container">
                     <div className="watch-list">
                         <Button>
-                            <Link to='watch-list'>
+                            <Link to='/watch-list'>
                             Watch list
                             </Link>
                         </Button>

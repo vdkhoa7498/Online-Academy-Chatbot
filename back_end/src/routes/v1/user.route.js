@@ -8,8 +8,11 @@ const router = express.Router();
 
 router
   .route('/watch-list')
-  .get(auth(), userController.getWatchList)
+  .get(auth(), userController.getWatchList);
 
+router.post('/register-course/:id', auth(), userController.registerCourse);
+
+router.post('/add-favorite/:id', auth(), userController.addToFavorite);
 
 router
   .route('/')

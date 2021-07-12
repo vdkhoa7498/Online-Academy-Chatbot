@@ -151,7 +151,7 @@ function RouterOutlet(props) {
 
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/watch-list", "/user/profile", "/create-new-course"]}
+            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/watch-list", "/profile", "/create-new-course"]}
           >
             <RouteLayout {...rest}>
               <Switch>

@@ -28,21 +28,24 @@ const Profile = ({ user, getProfile, editProfile }) => {
       : null;
   const [isEdit, setIsEdit] = useState(false);
 
-  useEffect(()=>{
-    if (localStorage && localStorage.getItem('access_token')) {
-      getProfile({
-        onSuccess: () => {
-          localStorage.setItem("isAuthenticated", true)
-        },
-        onFailure: () => {
+  // useEffect(()=>{
+  //   if (localStorage && localStorage.getItem('access_token')) {
+  //     getProfile({
+  //       onSuccess: () => {
+  //         localStorage.setItem("isAuthenticated", true)
+  //       },
+  //       onFailure: () => {
           
-        }
-      });
-    } else {
-    //  props.toggleGlobalLoading(false);
-    }
+  //       }
+  //     });
+  //   } else {
+  //   //  props.toggleGlobalLoading(false);
+  //   }
 
-  }, [user])
+  // }, [user])
+
+  console.log("user", user);
+
 
 
   const onFinish = (values) => {
