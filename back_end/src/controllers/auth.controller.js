@@ -73,6 +73,12 @@ const getProfile = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const editProfile = catchAsync(async (req, res) => {
+  const user =  await userService.editProfile(req.body);
+
+  res.send(user);
+})
+
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.NO_CONTENT).send();
@@ -117,4 +123,5 @@ module.exports = {
   sendVerificationEmail,
   verifyEmail,
   getProfile,
+  editProfile
 };

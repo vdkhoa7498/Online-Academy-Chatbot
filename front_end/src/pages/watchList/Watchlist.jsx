@@ -1,4 +1,8 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { getWatchList } from '../../stores/user';
 import CoursesList from '../../components/coursesList/CourseList'
 
 const top10 = [
@@ -105,10 +109,31 @@ const top10 = [
 ]
 
 
-export default function Watchlist() {
-    const [courses, setCourses] = useState(top10);
+const WatchList = (props) =>  {
+    // const [courses, setCourses] = useState(top10);  
+
+    useEffect(() => {
+        if (localStorage && localStorage.getItem('access_token')) {
+            props.getWatchList();
+          } else {
+          //  props.toggleGlobalLoading(false);
+          }
+    }, [])
+
+    console.log("watchList", props.watchList);
+
 
     return (
-        <CoursesList titleList={"Danh sach yeu thich"} courses={courses}  isWatchList={true}/>
+        <CoursesList titleList={"Danh sách yêu thích"} courses={props.watchList}  isWatchList={true}/>
     );
 }
+
+
+const mapState = (state) => ({
+    watchList: state.user.watchList,
+  });
+const mapDispatch = dispatch => bindActionCreators({
+    getWatchList
+}, dispatch)
+  
+export default connect(mapState, mapDispatch)(WatchList); 

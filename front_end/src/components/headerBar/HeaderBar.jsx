@@ -1,5 +1,5 @@
 import { Input, Button, Menu, Dropdown, message, Tooltip } from 'antd'
-import { MoreOutlined } from '@ant-design/icons'
+import { MoreOutlined, HeartOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import Logo from '../../assets/img/logo_64.png';
 import { connect } from 'react-redux';
@@ -74,6 +74,12 @@ const HeaderBar = (props) =>{
                 (isAuthenticated)
                 ?
                 <div className="right-header-container">
+                    <div className="watch-list">
+                        <HeartOutlined  className="heart-icon"/>
+                        <Link to='/watch-list'>
+                        Watch list
+                        </Link>
+                    </div>
                     {
                     (!props.user)
                     ? null

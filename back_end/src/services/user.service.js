@@ -20,6 +20,33 @@ const getProfile = async (id) => {
   return await User.findOne({ _id: id });
 };
 
+const editProfile = async ({ email, fullName }) => {
+  const user = await User.findOne({ email });
+
+  user.fullName = fullName;
+  await user.save();
+
+  return user;
+
+}
+
+const registerCourse = async(id, user) => {
+  user.registeredCourses.push(id);
+
+  await user.save();
+
+  return true;
+}
+
+const addToFavorite = async(id, user) => {
+  user.favoriteCourses.push(id);
+
+  await user.save();
+
+  return true;
+}
+
+
 /**
  * Query for users
  * @param {Object} filter - Mongo filter
@@ -88,6 +115,9 @@ const deleteUserById = async (userId) => {
 module.exports = {
   createUser,
   getProfile,
+  editProfile,
+  registerCourse,
+  addToFavorite,
   queryUsers,
   getUserById,
   getUserByEmail,

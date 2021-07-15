@@ -119,8 +119,9 @@ const Login = (props) => {
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
+        {/* 501324381076690 */}
         <FacebookLogin
-          appId="501324381076690"
+          appId="182778097154038"
           autoLoad={false}
           callback={responseFacebook}
         />
