@@ -12,8 +12,8 @@ const EditCategoryForm = (props) => {
     onFinish,
     allCategories
   } = props;
-  const { _id, name } = currentRowData;
-
+  const { _id, name, parentId } = currentRowData;
+  
   // Get parent categories
   const allParentCategories_ = [];
   allCategories.forEach(category => {
@@ -49,8 +49,8 @@ const EditCategoryForm = (props) => {
         <Form.Item label="Tiêu đề:" rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}>
           <Input placeholder="Tiêu đề" value={name}/>
         </Form.Item>
-        <Form.Item name="parent" label="Danh mục cha:">
-          <Select defaultValue={null}>
+        <Form.Item name="parent" label="Danh mục cha:" rules={[{ required: true, message: "Vui lòng chọn danh mục cha!" }]}>
+          <Select>
             <Select.Option value={null}>Không có</Select.Option>
             {
               allParentCategories_.map(category =>

@@ -41,8 +41,8 @@ const AddCategoryForm = (props) => {
           <Input placeholder="Tiêu đề" />
         </Form.Item>
 
-        <Form.Item name="parent" label="Danh mục cha:">
-          <Select defaultValue={null}>
+        <Form.Item name="parent" label="Danh mục cha:" initialValue={null}>
+          <Select>
             <Select.Option value={null}>Không có</Select.Option>
             {
               allParentCategories_.map(category =>

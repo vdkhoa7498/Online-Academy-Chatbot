@@ -34,14 +34,12 @@ const EditLecturerForm = (props) => {
       ]}
     >
       <Form {...formItemLayout} onFinish={onFinish} id="myForm">
-        <Form.Item label="ID:" initialValue={id}><Input disabled />
+        <Form.Item label="ID:"><Input disabled value={id}/>
         </Form.Item>
         <Form.Item label="Email"
-          rules={[{ required: true, message: "Vui lòng nhập email!" }]}
-          initialValue={email}><Input placeholder="Email" />
+          rules={[{ required: true, message: "Vui lòng nhập email!" }]}><Input placeholder="Email" value={email}/>
         </Form.Item>
-        <Form.Item label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-          initialValue={name}><Input placeholder="Tên" />
+        <Form.Item label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}><Input placeholder="Tên" value={name}/>
         </Form.Item>
       </Form>
     </Modal>
