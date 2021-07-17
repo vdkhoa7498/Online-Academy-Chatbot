@@ -3,6 +3,7 @@ import { Card, Button, Table, message, Divider } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
 import EditStudentForm from "./forms/EditStudentForm"
 import '../styles.scss'
+import { httpClient } from '../../../api'
 const { Column } = Table;
 
 const studentsEx = [
@@ -24,7 +25,7 @@ const studentsEx = [
 ]
 
 const Student = () => {
-  const [students, setStudents] = useState(studentsEx)
+  const [students, setStudents] = useState([])
   const [editStudentModalVisible, setEditStudentModalVisible] = useState(false)
   const [currentRowData, setCurrentRowData] = useState({})
   const [editStudentFormData, setEditStudentFormData] = useState()
@@ -46,7 +47,11 @@ const Student = () => {
   }
 
   useEffect(() => {
-
+    const fetchData = async () => {
+      const students_ = await httpClient.user.getStudents();
+      setStudents(students_.results);
+    }
+    fetchData();
   }, [])
 
   return (
@@ -56,7 +61,7 @@ const Student = () => {
       <Card>
         <Table bordered rowKey="id" dataSource={students} pagination={false}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
-          <Column title="Tên" dataIndex="name" key="name" align="center" />
+          <Column title="Tên" dataIndex="fullName" key="fullName" align="center" />
           <Column title="Email" dataIndex="email" key="email" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>

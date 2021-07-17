@@ -37,7 +37,6 @@ const Course = () => {
   useEffect(() => {
     const fetchData = async () => {
       const courses_ = await httpClient.course.getCourses({});
-      console.log(courses_.results)
       setCourses(courses_.results);
     }
     fetchData()

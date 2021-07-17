@@ -16,10 +16,15 @@ export function UserHttpService(options) {
 
   }
 
+  function getStudents() {
+    const baseUrl = options.httpService.getUrl("users?role=student");
+    return options.httpService.get(baseUrl);
+  }
 
   return {
     getWatchList,
     registerCourse,
-    addToFavorite
+    addToFavorite,
+    getStudents
   };
 }
