@@ -3,6 +3,11 @@ export function CategoryHttpService(options) {
       const baseUrl = options.httpService.getUrl("categories");
       return options.httpService.get(baseUrl, query);
     }
+
+    function getCategoriesAdmin(query) {
+      const baseUrl = options.httpService.getUrl('admin/categories');
+      return options.httpService.get(baseUrl, query);
+    }
   
     function createCategory(form) {
       const baseUrl = options.httpService.getUrl("categories");
@@ -16,6 +21,7 @@ export function CategoryHttpService(options) {
 
     return {
         getCategories,
+        getCategoriesAdmin,
         createCategory,
         getCategoryById,
     };

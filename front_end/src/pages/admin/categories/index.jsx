@@ -67,7 +67,7 @@ const Category = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const categories_ = await httpClient.category.getCategories({})
+      const categories_ = await httpClient.category.getCategoriesAdmin({});
 
       // Find parent name
       categories_.forEach(category1 => {
