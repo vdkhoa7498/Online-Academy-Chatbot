@@ -1,9 +1,10 @@
 import React from "react";
 import { Row, Col, Rate, Button} from 'antd'
+
 import './styles.scss'
 
 export default function CourseItem({
- item, isWatchList 
+ item, isWatchList, onRemoveCourse 
 }) {
   const {
     title,
@@ -12,6 +13,7 @@ export default function CourseItem({
     numberOfRate,
     rateScore
   } = item;
+
 
   return (
     <div>
@@ -44,7 +46,7 @@ export default function CourseItem({
               <Rate allowHalf value={rateScore} disabled /> {numberOfRate} Lượt
               đánh giá
             </div>
-            { isWatchList && (<Button className="btn-remove-courses" type='danger'>
+            { isWatchList && (<Button className="btn-remove-courses" type='danger' onClick={onRemoveCourse}>
               Remove
             </Button>) }
             

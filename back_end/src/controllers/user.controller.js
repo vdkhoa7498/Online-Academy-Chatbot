@@ -51,6 +51,19 @@ const addToFavorite = catchAsync(async (req, res) => {
   const result = await userService.addToFavorite(req.params.id, req.user);
 
   res.status(httpStatus.CREATED).send(result);
+})
+
+const removeRegisterCourse = catchAsync(async (req, res)=> {
+  const result = await userService.removeRegister(req.params.id, req.user);
+
+  res.status(200).send(result);
+
+})
+
+const removeFavoriteCourse = catchAsync(async (req, res)=> {
+  const result = await userService.removeFavorite(req.params.id, req.user);
+
+  res.status(200).send(result);
 
 })
 
@@ -62,5 +75,8 @@ module.exports = {
   deleteUser,
   getWatchList,
   registerCourse,
-  addToFavorite
+  addToFavorite,
+  removeRegisterCourse,
+  removeFavoriteCourse,
+
 };

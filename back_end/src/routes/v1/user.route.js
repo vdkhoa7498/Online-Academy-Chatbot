@@ -11,8 +11,11 @@ router
   .get(auth(), userController.getWatchList);
 
 router.post('/register-course/:id', auth(), userController.registerCourse);
-
 router.post('/add-favorite/:id', auth(), userController.addToFavorite);
+router.post('/remove-register-course/:id', auth(), userController.removeRegisterCourse);
+router.post('/remove-favorite-course/:id', auth(), userController.removeFavoriteCourse);
+
+
 
 router
   .route('/')
