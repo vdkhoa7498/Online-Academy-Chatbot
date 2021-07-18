@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Form, Input, Select, Modal, Button } from "antd";
-
-
 
 const EditCategoryForm = (props) => {
   const {

@@ -31,7 +31,7 @@ const Student = () => {
   const [editStudentFormData, setEditStudentFormData] = useState()
 
   const handleCancel = () => {
-    setEditStudentModalVisible(false)
+    setEditStudentModalVisible(false);
   }
 
   const handleDeleteStudent = (row) => {
@@ -39,20 +39,29 @@ const Student = () => {
   }
 
   const handleEditStudent = (row) => {
-    setCurrentRowData(row)
-    setEditStudentModalVisible(true)
-  };
-
-  const handleEditStudentOk = () => {
+    setCurrentRowData(row);
+    setEditStudentModalVisible(true);
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const students_ = await httpClient.user.getStudents();
-      setStudents(students_.results);
-    }
-    fetchData();
-  }, [])
+  const handleEditStudentOk = () => {
+
+  }
+
+  const handleEditStudentFinish = async (form) => {
+    await httpClient.user.editStudent(form);
+    await fetchData();
+    setEditStudentModalVisible(false);
+    message.success('Cập nhật thành công');
+  }
+
+  useEffect(async () => {
+    await fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const students_ = await httpClient.user.getStudents();
+    setStudents(students_.results);
+  }
 
   return (
     <div className="app-container">
@@ -78,7 +87,7 @@ const Student = () => {
         visible={editStudentModalVisible}
         onCancel={handleCancel}
         onOk={handleEditStudentOk}
-        onFinish={(values => setEditStudentFormData(values))}
+        onFinish={handleEditStudentFinish}
       />
     </div>
   );

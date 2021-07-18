@@ -25,8 +25,10 @@ router
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
- 
 
+router
+  .route('/student')
+  .put(userController.editStudent);
 
 module.exports = router;
 
