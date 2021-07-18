@@ -33,10 +33,17 @@ const addView = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(course);
 });
 
+const getVideoOfCourse = catchAsync(async (req, res) => {
+  const videos = await courseService.getVideosOfCourse(req.params.courseId)
+  console.log("videos", videos);
+  res.status(httpStatus.OK).send(videos)
+})
+
 module.exports = {
   getCourses,
   createCourse,
   addView,
   getCoursesByCategoryId,
   getCourseById,
+  getVideoOfCourse
 };

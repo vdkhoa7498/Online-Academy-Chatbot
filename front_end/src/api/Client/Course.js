@@ -21,10 +21,16 @@ export function CourseHttpService(options) {
       return options.httpService.get(baseUrl);
     }
 
+    function getVideoOfCourse(courseId) {
+      const baseUrl = options.httpService.getUrl(`courses/learning/${courseId}`);
+      return options.httpService.get(baseUrl)
+    }
+
     return {
       getCourses,
       createCourse,
       getCourseById,
       getCoursesByCategoryId,
+      getVideoOfCourse
     };
 }
