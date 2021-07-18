@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const Course = require('../models/courses.model');
 const Category = require('../models/category.model');
 const ApiError = require('../utils/ApiError');
+const Video = require('../models/video.model');
 
 const createCourse = async (courseBody) => {
   const course = await Course.create(courseBody);
@@ -34,6 +35,12 @@ const addView = async (courseId) => {
   return course;
 };
 
+const getVideosOfCourse = async(courseId) => {
+  const videos = await Video.find({ courseId });
+
+  return videos;
+}
+
 const findWithListId = async(coursesId) => {
   const courses = await Course.find({
     '_id': { $in: coursesId}
@@ -54,6 +61,7 @@ module.exports = {
   queryCourses,
   getAllCourses,
   addView,
+  getVideosOfCourse,
   findWithListId,
   getCourseById,
   queryCoursesByCategoryId,
