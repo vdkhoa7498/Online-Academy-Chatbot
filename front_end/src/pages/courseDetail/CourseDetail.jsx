@@ -120,16 +120,6 @@ const CourseDetail = () => {
 
     const param = useParams()
 
-    useEffect(() => {
-        const fetchCourseDetail = async () => {
-            const course = await httpClient.course.getCourseById(param.id);
-            console.log("course", course)
-
-            setCourse(course);
-        }
-
-        fetchCourseDetail();
-    },[])
 
 
     const handleRegisterCourse = async () => {

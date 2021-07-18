@@ -30,6 +30,11 @@ export function CourseHttpService(options) {
       const baseUrl = options.httpService.getUrl(`courses/${courseId}`);
       return await options.httpService.del(baseUrl);
     }
+    
+    function getVideoOfCourse(courseId) {
+      const baseUrl = options.httpService.getUrl(`courses/learning/${courseId}`);
+      return options.httpService.get(baseUrl)
+    }
 
     return {
       getCourses,
@@ -37,6 +42,7 @@ export function CourseHttpService(options) {
       createCourse,
       getCourseById,
       getCoursesByCategoryId,
-      deleteCourse
+      deleteCourse,
+      getVideoOfCourse
     };
 }

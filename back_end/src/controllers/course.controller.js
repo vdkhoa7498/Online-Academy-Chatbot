@@ -43,6 +43,12 @@ const deleteCourse = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(message);
 })
 
+const getVideoOfCourse = catchAsync(async (req, res) => {
+  const videos = await courseService.getVideosOfCourse(req.params.courseId)
+  console.log("videos", videos);
+  res.status(httpStatus.OK).send(videos)
+})
+
 module.exports = {
   getCourses,
   getAllCourses,
@@ -50,5 +56,6 @@ module.exports = {
   addView,
   getCoursesByCategoryId,
   getCourseById,
-  deleteCourse
+  deleteCourse,
+  getVideoOfCourse
 };
