@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getWatchList } from '../../stores/user';
+import { getWatchList, removeFavoriteCourse } from '../../stores/user';
 import CoursesList from '../../components/coursesList/CourseList'
 
 const top10 = [
@@ -124,7 +124,11 @@ const WatchList = (props) =>  {
 
 
     return (
-        <CoursesList titleList={"Danh sách yêu thích"} courses={props.watchList}  isWatchList={true}/>
+        <CoursesList 
+            titleList={"Danh sách yêu thích"} 
+            courses={props.watchList}
+            onHandleRemoveFavoriteCourse={props.removeFavoriteCourse}
+            isWatchList={true}/>
     );
 }
 
@@ -133,7 +137,8 @@ const mapState = (state) => ({
     watchList: state.user.watchList,
   });
 const mapDispatch = dispatch => bindActionCreators({
-    getWatchList
+    getWatchList,
+    removeFavoriteCourse
 }, dispatch)
   
 export default connect(mapState, mapDispatch)(WatchList); 

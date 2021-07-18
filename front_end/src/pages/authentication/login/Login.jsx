@@ -26,7 +26,7 @@ const Login = (props) => {
       form,
       onSuccess: (model) => {
         message.success(`Welcome, ${model.fullName}!`);
-        history.push("/");
+        window.location.replace("/");
       },
       onFailure: (error) => {
         console.log(error);
@@ -43,7 +43,7 @@ const Login = (props) => {
       tokenId: response.tokenId,
       onSuccess: (model) => {
         message.success(`Welcome, ${model.fullName}!`);
-        history.push("/");
+        window.location.replace("/");
       },
       onFailure: (error) => {
         console.log(error);
@@ -57,7 +57,7 @@ const Login = (props) => {
       userInfoLogin: { accessToken, userId: userID },
       onSuccess: (model) => {
         message.success(`Welcome, ${model.fullName}!`);
-        history.push("/");
+        window.location.replace("/");
       },
       onFailure: (error) => {
         console.log(error);

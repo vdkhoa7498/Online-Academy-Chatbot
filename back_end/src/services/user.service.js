@@ -31,19 +31,39 @@ const editProfile = async ({ email, fullName }) => {
 }
 
 const registerCourse = async(id, user) => {
-  user.registeredCourses.push(id);
-
-  await user.save();
+  const result = user.registeredCourses.find(x => x===id);
+  if (!result){
+    user.registeredCourses.push(id); 
+  
+    await user.save();
+  }
 
   return true;
 }
 
 const addToFavorite = async(id, user) => {
-  user.favoriteCourses.push(id);
+  const result = user.favoriteCourses.find(x => x===id);
+  if (!result){
+    user.favoriteCourses.push(id);
 
-  await user.save();
+    await user.save();  
+  }
 
   return true;
+}
+
+const removeRegister = async(id, user) => {
+  user.registeredCourses = user.registeredCourses.filter(c => c !== id);
+  await user.save();
+  return user.registeredCourses;
+
+}
+
+const removeFavorite= async(id, user) => {
+  user.favoriteCourses = user.favoriteCourses.filter(c => c !== id);
+  await user.save();
+  return user.favoriteCourses ;
+
 }
 
 
@@ -118,6 +138,8 @@ module.exports = {
   editProfile,
   registerCourse,
   addToFavorite,
+  removeRegister,
+  removeFavorite,
   queryUsers,
   getUserById,
   getUserByEmail,
