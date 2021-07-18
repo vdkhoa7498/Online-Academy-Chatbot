@@ -39,6 +39,7 @@ const EditCategoryForm = (props) => {
   };
   return (
     <Modal
+      width='50%'
       title="Cập nhật danh mục"
       visible={visible}
       footer={[

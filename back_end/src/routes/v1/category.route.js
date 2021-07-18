@@ -9,6 +9,9 @@ router.route('/')
     .get(categoryController.getCategories)
     .post(validate(categoryValidate), categoryController.createCategory)
     .put(validate(categoryValidate), categoryController.editCategory);
-router.route('/:categoryId').get(categoryController.getCategoryById)
+
+router.route('/:categoryId')
+    .get(categoryController.getCategoryById)
+    .delete(categoryController.deleteCategory)
 
 module.exports = router;

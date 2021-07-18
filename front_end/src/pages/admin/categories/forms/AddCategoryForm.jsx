@@ -40,8 +40,7 @@ const AddCategoryForm = (props) => {
         <Form.Item name="name" label="Tiêu đề:" rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}>
           <Input placeholder="Tiêu đề" />
         </Form.Item>
-
-        <Form.Item name="parent" label="Danh mục cha:" initialValue={null}>
+        <Form.Item name="parentId" label="Danh mục cha:" initialValue={null}>
           <Select>
             <Select.Option value={null}>Không có</Select.Option>
             {

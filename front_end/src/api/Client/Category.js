@@ -1,27 +1,32 @@
 export function CategoryHttpService(options) {
-    function getCategories(query) {
+    async function getCategories(query) {
       const baseUrl = options.httpService.getUrl("categories");
-      return options.httpService.get(baseUrl, query);
+      return await options.httpService.get(baseUrl, query);
     }
 
-    function getCategoriesAdmin(query) {
+    async function getCategoriesAdmin(query) {
       const baseUrl = options.httpService.getUrl('admin/categories');
-      return options.httpService.get(baseUrl, query);
+      return await options.httpService.get(baseUrl, query);
     }
   
-    function createCategory(form) {
+    async function createCategory(form) {
       const baseUrl = options.httpService.getUrl("categories");
-      return options.httpService.post(baseUrl, form);
+      return await options.httpService.post(baseUrl, form);
     }
 
-    function getCategoryById(id) {
+    async function getCategoryById(id) {
       const baseUrl = options.httpService.getUrl(`categories/${id}`);
-      return options.httpService.get(baseUrl);
+      return await options.httpService.get(baseUrl);
     }
 
-    function editCategory(form) {
+    async function editCategory(form) {
       const baseUrl = options.httpService.getUrl("categories");
-      return options.httpService.put(baseUrl, form);
+      return await options.httpService.put(baseUrl, form);
+    }
+
+    async function deleteCategory(categoryId) {
+      const baseUrl = options.httpService.getUrl(`categories/${categoryId}`);
+      return await options.httpService.del(baseUrl);
     }
 
     return {
@@ -29,6 +34,7 @@ export function CategoryHttpService(options) {
         getCategoriesAdmin,
         createCategory,
         getCategoryById,
-        editCategory
+        editCategory,
+        deleteCategory
     };
 }

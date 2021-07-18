@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, Divider, Input, Space } from "antd";
+import { Card, Button, Table, Divider, Input, Space, Popconfirm, message } from "antd";
 import Highlighter from 'react-highlight-words';
-import { EditOutlined, DeleteOutlined, TagsOutlined, SearchOutlined } from "@ant-design/icons"
-import EditCategoryForm from "./forms/EditCategoryForm"
-import AddCategoryForm from "./forms/AddCategoryForm"
-import '../styles.scss'
-import { httpClient } from '../../../api'
+import { EditOutlined, DeleteOutlined, TagsOutlined, SearchOutlined } from "@ant-design/icons";
+import EditCategoryForm from "./forms/EditCategoryForm";
+import AddCategoryForm from "./forms/AddCategoryForm";
+import '../styles.scss';
+import { httpClient } from '../../../api';
 const { Column } = Table;
 
 const categoriesEx = [
@@ -41,26 +41,39 @@ const Category = () => {
   const [addCategoryFormData, setAddCategoryFormData] = useState()
 
   const handleCancel = () => {
-    setAddCategoryModalVisible(false)
-    setEditCategoryModalVisible(false)
+    setAddCategoryModalVisible(false);
+    setEditCategoryModalVisible(false);
   }
 
-  const handleDeleteCategory = (row) => {
-
+  const handleDeleteCategory = async (row) => {
+    if (row.totalCourses > 0) {
+      message.error('Không được xóa danh mục đã có khóa học');
+      return;
+    }
+    const msg = await httpClient.category.deleteCategory(row._id);
+    await fetchData();
+    message.success('Bạn đã xóa một danh mục');
   }
 
   const handleAddCategory = (row) => {
-    setAddCategoryModalVisible(true)
-  };
+    setAddCategoryModalVisible(true);
+  }
 
   const handleAddCategoryOk = () => {
-    console.log(addCategoryFormData)
+
+  }
+
+  const handleAddCategoryFinish = async (values) => {
+    await httpClient.category.createCategory(values);
+    await fetchData();
+    setAddCategoryModalVisible(false);
+    message.success('Bạn đã thêm một danh mục');
   }
 
   const handleEditCategory = (row) => {
-    setCurrentRowData(row)
-    setEditCategoryModalVisible(true)
-  };
+    setCurrentRowData(row);
+    setEditCategoryModalVisible(true);
+  }
 
   const handleEditCategoryOk = () => {
     
@@ -70,6 +83,7 @@ const Category = () => {
     await httpClient.category.editCategory(values);
     await fetchData();
     setEditCategoryModalVisible(false);
+    message.success('Cập nhật thành công');
   }
 
   useEffect(async () => {
@@ -112,7 +126,13 @@ const Category = () => {
             <span>
               <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditCategory(row)} />
               <Divider type="vertical" />
-              <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteCategory} />
+              <Popconfirm
+                title="Bạn có chắc là muốn xóa danh mục này không?"
+                onConfirm={() => handleDeleteCategory(row)}
+                okText="Có"
+                cancelText="Không">
+                <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá"/>
+              </Popconfirm>
             </span>
           )} />
         </Table>
@@ -130,7 +150,7 @@ const Category = () => {
         visible={addCategoryModalVisible}
         onCancel={handleCancel}
         onOk={handleAddCategoryOk}
-        onFinish={values => console.log(values)}
+        onFinish={handleAddCategoryFinish}
         allCategories={categories}
       />
     </div>

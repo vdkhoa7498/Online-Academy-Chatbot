@@ -72,11 +72,17 @@ const editCategory = async (categoryBody) => {
   return category;
 };
 
+const deleteCategory = async (categoryId) => {
+  await Category.deleteOne({ _id: categoryId })
+  return 'success';
+}
+
 module.exports = {
   createCategory,
   queryCategory,
   getAllCategories,
   getAllCategoriesAdmin,
   getCategoryById,
-  editCategory
+  editCategory,
+  deleteCategory
 };

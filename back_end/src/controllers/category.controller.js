@@ -27,4 +27,9 @@ const editCategory = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(category);
 });
 
-module.exports = { getCategories, getCategoriesAdmin, createCategory, getCategoryById, editCategory };
+const deleteCategory = catchAsync(async (req, res) => {
+  const message = await categoryService.deleteCategory(req.params.categoryId);
+  res.status(httpStatus.OK).send(message);
+})
+
+module.exports = { getCategories, getCategoriesAdmin, createCategory, getCategoryById, editCategory, deleteCategory };
