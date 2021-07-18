@@ -5,6 +5,11 @@ export function CourseHttpService(options) {
         params: {...query}
       });
     }
+
+    async function getAllCourses() {
+      const baseUrl = options.httpService.getUrl("admin/courses");
+      return await options.httpService.get(baseUrl);
+    }
   
     function createCourse(form) {
       const baseUrl = options.httpService.getUrl("courses");
@@ -21,10 +26,17 @@ export function CourseHttpService(options) {
       return options.httpService.get(baseUrl);
     }
 
+    async function deleteCourse(courseId) {
+      const baseUrl = options.httpService.getUrl(`courses/${courseId}`);
+      return await options.httpService.del(baseUrl);
+    }
+
     return {
       getCourses,
+      getAllCourses,
       createCourse,
       getCourseById,
       getCoursesByCategoryId,
+      deleteCourse
     };
 }

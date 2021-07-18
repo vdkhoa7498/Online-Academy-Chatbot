@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, message, Divider } from "antd";
+import { Card, Button, Table, message, Divider, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons"
 import '../styles.scss'
 import { httpClient } from '../../../api'
@@ -30,17 +30,24 @@ const Course = () => {
   const [courses, setCourses] = useState([])
   const [currentRowData, setCurrentRowData] = useState({})
 
-  const handleDeleteCourse = (row) => {
-
+  const handleDeleteCourse = async (row) => {
+    await httpClient.course.deleteCourse(row._id);
+    await fetchData();
+    message.success('Bạn đã gỡ bỏ một khóa học');
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const courses_ = await httpClient.course.getCourses({});
-      setCourses(courses_.results);
-    }
-    fetchData()
+  useEffect(async () => {
+    await fetchData();
   }, [])
+
+  const fetchData = async () => {
+    const courses_ = await httpClient.course.getAllCourses();
+    // Set category name
+    courses_.forEach(course => {
+      course.categoryName = course.category[0].name;
+    });
+    setCourses(courses_);
+  }
 
   return (
     <div className="app-container">
@@ -48,12 +55,19 @@ const Course = () => {
       {/* <br /> */}
       <Card>
         <Table bordered rowKey="id" dataSource={courses} pagination={false}>
-          <Column title="ID" dataIndex="id" key="id" align="center" />
+          <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tên khóa học" dataIndex="title" key="title" align="center" />
           <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" />
           <Column title="Giảng viên" dataIndex="lecturer" key="lecturer" align="center" />
-          <Column title="Gỡ bỏ khóa học" key="action" width={195} align="center" render={(text, row) => (
-            <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteCourse} />
+          <Column title="Danh mục" dataIndex="categoryName" key="categoryName" align="center" />
+          <Column title="Gỡ bỏ" key="action" align="center" render={(text, row) => (
+            <Popconfirm
+              title="Bạn có chắc là muốn gỡ bỏ khóa học này không?"
+              onConfirm={() => handleDeleteCourse(row)}
+              okText="Có"
+              cancelText="Không">
+              <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá"/>
+            </Popconfirm>
           )} />
         </Table>
       </Card>
