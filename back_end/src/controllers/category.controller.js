@@ -22,4 +22,9 @@ const getCategoryById = catchAsync(async (req, res) => {
   res.send(category);
 });
 
-module.exports = { getCategories, getCategoriesAdmin, createCategory, getCategoryById };
+const editCategory = catchAsync(async (req, res) => {
+  const category = await categoryService.editCategory(req.body);
+  res.status(httpStatus.OK).send(category);
+});
+
+module.exports = { getCategories, getCategoriesAdmin, createCategory, getCategoryById, editCategory };

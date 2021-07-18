@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Select, Modal, Button } from "antd";
 
 
@@ -22,6 +22,13 @@ const EditCategoryForm = (props) => {
     }
   });
 
+  const [form] = Form.useForm();
+  form.setFieldsValue({
+    _id: _id,
+    name: name,
+    parentId: parentId,
+  })
+
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -43,13 +50,13 @@ const EditCategoryForm = (props) => {
         </Button>,
       ]}
     >
-      <Form {...formItemLayout} onFinish={onFinish} id="myForm">
-        <Form.Item label="ID:"><Input disabled value={_id}/>
+      <Form {...formItemLayout} form={form} onFinish={onFinish} id="myForm">
+        <Form.Item name="_id" label="ID:"><Input disabled/>
         </Form.Item>
-        <Form.Item label="Tiêu đề:" rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}>
-          <Input placeholder="Tiêu đề" value={name}/>
+        <Form.Item name="name" label="Tiêu đề:" rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}>
+          <Input placeholder="Tiêu đề"/>
         </Form.Item>
-        <Form.Item name="parent" label="Danh mục cha:" rules={[{ required: true, message: "Vui lòng chọn danh mục cha!" }]}>
+        <Form.Item name="parentId" label="Danh mục cha:">
           <Select>
             <Select.Option value={null}>Không có</Select.Option>
             {

@@ -19,10 +19,16 @@ export function CategoryHttpService(options) {
       return options.httpService.get(baseUrl);
     }
 
+    function editCategory(form) {
+      const baseUrl = options.httpService.getUrl("categories");
+      return options.httpService.put(baseUrl, form);
+    }
+
     return {
         getCategories,
         getCategoriesAdmin,
         createCategory,
         getCategoryById,
+        editCategory
     };
 }

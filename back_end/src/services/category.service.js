@@ -46,7 +46,6 @@ const getAllCategoriesAdmin = async () => {
   for (let i = 0; i < allCategories.length; i++) {
     for (let j = 0; j < allCategories.length; j++) {
       if (allCategories[i]._id.equals(allCategories[j].parentId)) {
-        console.log('found');
         allCategories[i].totalCourses += allCategories[j].totalCourses;
       }
     }
@@ -65,10 +64,19 @@ const getCategoryById = async (categoryId) => {
   return category
 };
 
+const editCategory = async (categoryBody) => {
+  const category = await Category.findOne({ _id: categoryBody._id })
+  category.name = categoryBody.name;
+  category.parentId = categoryBody.parentId;
+  category.save();
+  return category;
+};
+
 module.exports = {
   createCategory,
   queryCategory,
   getAllCategories,
   getAllCategoriesAdmin,
   getCategoryById,
+  editCategory
 };

@@ -10,21 +10,21 @@ const { Column } = Table;
 
 const categoriesEx = [
   {
-    id: 1,
+    _id: 1,
     name: "Công nghệ thông tin",
-    parent: null,
+    parentId: null,
     totalCourses: 20
   },
   {
-    id: 2,
+    _id: 2,
     name: "Lập trình Web",
-    parent: "Công nghệ thông tin",
+    parentId: 1,
     totalCourses: 10
   },
   {
-    id: 3,
+    _id: 3,
     name: "Lập trình game",
-    parent: "Công nghệ thông tin",
+    parentId: 1,
     totalCourses: 10
   },
 ]
@@ -63,30 +63,38 @@ const Category = () => {
   };
 
   const handleEditCategoryOk = () => {
+    
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const categories_ = await httpClient.category.getCategoriesAdmin({});
+  const handleEditCategoryFinish = async (values) => {
+    await httpClient.category.editCategory(values);
+    await fetchData();
+    setEditCategoryModalVisible(false);
+  }
 
-      // Find parent name
-      categories_.forEach(category1 => {
-        // If has no parent
-        if (category1.parentId == null) {
-          category1.parent = "Không có";
-        } else { // Else
-          categories_.forEach(category2 => {
-            if (category1.parentId == category2._id) {
-              category1.parent = category2.name;
-            }
-          });
-        }
-      });
+  useEffect(async () => {
+    await fetchData();
+  }, []);
 
-      setCategories(categories_)
-    }
-    fetchData()
-  }, [])
+  const fetchData = async () => {
+    const categories_ = await httpClient.category.getCategoriesAdmin({});
+
+    // Find parent name
+    categories_.forEach(category1 => {
+      // If has no parent
+      if (category1.parentId == null) {
+        category1.parent = "Không có";
+      } else { // Else
+        categories_.forEach(category2 => {
+          if (category1.parentId == category2._id) {
+            category1.parent = category2.name;
+          }
+        });
+      }
+    });
+
+    setCategories(categories_);
+  }
 
   return (
     <div className="app-container">
@@ -115,14 +123,14 @@ const Category = () => {
         visible={editCategoryModalVisible}
         onCancel={handleCancel}
         onOk={handleEditCategoryOk}
-        onFinish={(values => setEditCategoryFormData(values))}
+        onFinish={handleEditCategoryFinish}
         allCategories={categories}
       />
       <AddCategoryForm
         visible={addCategoryModalVisible}
         onCancel={handleCancel}
         onOk={handleAddCategoryOk}
-        onFinish={(values => console.log(values))}
+        onFinish={values => console.log(values)}
         allCategories={categories}
       />
     </div>

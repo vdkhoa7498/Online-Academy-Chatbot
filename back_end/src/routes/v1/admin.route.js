@@ -5,6 +5,6 @@ const categoryValidate = require('../../validations/index');
 
 const router = express.Router();
 
-router.route('/categories').get(categoryController.getCategoriesAdmin).post(validate(categoryValidate), categoryController.createCategory);
+router.route('/categories').get(categoryController.getCategoriesAdmin)
 
 module.exports = router;
