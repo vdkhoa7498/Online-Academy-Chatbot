@@ -1,17 +1,32 @@
 import React from "react";
 import { Form, Input, Select, Modal, Button } from "antd";
 
-
-
 const EditCategoryForm = (props) => {
   const {
     visible,
     onCancel,
     onOk,
     currentRowData,
-    onFinish
+    onFinish,
+    allCategories
   } = props;
-  const { id, name, parent, totalCourses } = currentRowData;
+  const { _id, name, parentId } = currentRowData;
+  
+  // Get parent categories
+  const allParentCategories_ = [];
+  allCategories.forEach(category => {
+    if (category.parentId == null) {
+      allParentCategories_.push(category)
+    }
+  });
+
+  const [form] = Form.useForm();
+  form.setFieldsValue({
+    _id: _id,
+    name: name,
+    parentId: parentId,
+  })
+
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -22,6 +37,7 @@ const EditCategoryForm = (props) => {
   };
   return (
     <Modal
+      width='50%'
       title="Cập nhật danh mục"
       visible={visible}
       footer={[
@@ -33,18 +49,20 @@ const EditCategoryForm = (props) => {
         </Button>,
       ]}
     >
-      <Form {...formItemLayout} onFinish={onFinish} id="myForm">
-        <Form.Item label="ID:" initialValue={id}><Input disabled />
+      <Form {...formItemLayout} form={form} onFinish={onFinish} id="myForm">
+        <Form.Item name="_id" label="ID:"><Input disabled/>
         </Form.Item>
-        <Form.Item label="Tiêu đề:"
-          rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
-          initialValue={name}><Input placeholder="Tiêu đề" />
+        <Form.Item name="name" label="Tiêu đề:" rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}>
+          <Input placeholder="Tiêu đề"/>
         </Form.Item>
-        <Form.Item name="parent" label="Danh mục cha:" initialValue="none">
+        <Form.Item name="parentId" label="Danh mục cha:">
           <Select>
-            <Select.Option value="none">Không có</Select.Option>
-            <Select.Option value="it">Công nghệ thông tin</Select.Option>
-            <Select.Option value="art">Nghệ thuật</Select.Option>
+            <Select.Option value={null}>Không có</Select.Option>
+            {
+              allParentCategories_.map(category =>
+                <Select.Option value={category._id}>{category.name}</Select.Option>
+              )
+            }
           </Select>
         </Form.Item>
       </Form>

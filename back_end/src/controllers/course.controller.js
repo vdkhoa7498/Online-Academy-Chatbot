@@ -10,6 +10,11 @@ const getCourses = catchAsync(async (req, res) => {
   res.send(courses);
 });
 
+const getAllCourses = catchAsync(async (req, res) => {
+  const allCategories = await courseService.getAllCourses();
+  res.send(allCategories);
+})
+
 const getCoursesByCategoryId = catchAsync(async (req, res) => {
   const filter = pick(req.params, ['categoryId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -33,6 +38,11 @@ const addView = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(course);
 });
 
+const deleteCourse = catchAsync(async (req, res) => {
+  const message = await courseService.deleteCourse(req.params.courseId);
+  res.status(httpStatus.OK).send(message);
+})
+
 const getVideoOfCourse = catchAsync(async (req, res) => {
   const videos = await courseService.getVideosOfCourse(req.params.courseId)
   console.log("videos", videos);
@@ -41,9 +51,11 @@ const getVideoOfCourse = catchAsync(async (req, res) => {
 
 module.exports = {
   getCourses,
+  getAllCourses,
   createCourse,
   addView,
   getCoursesByCategoryId,
   getCourseById,
+  deleteCourse,
   getVideoOfCourse
 };

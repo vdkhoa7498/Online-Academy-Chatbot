@@ -74,7 +74,7 @@ const Lecturer = () => {
           <Column title="Email" dataIndex="email" key="email" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>
-              <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={handleEditLecturer} />
+              <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditLecturer(row)} />
               <Divider type="vertical" />
               <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteLecturer} />
             </span>

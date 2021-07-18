@@ -132,6 +132,13 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const editStudent = async (studentBody) => {
+  const student = await User.findOne({ _id: studentBody.id });
+  student.fullName = studentBody.fullName;
+  student.save();
+  return student;
+}
+
 module.exports = {
   createUser,
   getProfile,
@@ -145,4 +152,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  editStudent
 };

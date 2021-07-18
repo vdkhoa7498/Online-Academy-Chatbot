@@ -1,8 +1,6 @@
 import React from "react";
 import { Form, Input, Select, Modal, Button } from "antd";
 
-
-
 const EditStudentForm = (props) => {
   const {
     visible,
@@ -11,7 +9,15 @@ const EditStudentForm = (props) => {
     currentRowData,
     onFinish
   } = props;
-  const { id, name, email } = currentRowData;
+  const { id, fullName, email } = currentRowData;
+
+  const [form] = Form.useForm();
+  form.setFieldsValue({
+    id: id,
+    fullName: fullName,
+    email: email
+  })
+
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -33,15 +39,13 @@ const EditStudentForm = (props) => {
         </Button>,
       ]}
     >
-      <Form {...formItemLayout} onFinish={onFinish} id="myForm">
-        <Form.Item label="ID:" initialValue={id}><Input disabled />
+      <Form form={form} {...formItemLayout} onFinish={onFinish} id="myForm">
+        <Form.Item name="id" label="ID:"><Input disabled/>
         </Form.Item>
-        <Form.Item label="Email"
-          rules={[{ required: true, message: "Vui lòng nhập email!" }]}
-          initialValue={email}><Input placeholder="Email" />
+        <Form.Item name="email" label="Email"
+          rules={[{ required: true, message: "Vui lòng nhập email!" }]}><Input disabled placeholder="Email"/>
         </Form.Item>
-        <Form.Item label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-          initialValue={name}><Input placeholder="Tên" />
+        <Form.Item name="fullName" label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}><Input placeholder="Tên"/>
         </Form.Item>
       </Form>
     </Modal>

@@ -67,6 +67,11 @@ const removeFavoriteCourse = catchAsync(async (req, res)=> {
 
 })
 
+const editStudent = catchAsync(async (req, res) => {
+  const result = await userService.editStudent(req.body);
+  res.status(httpStatus.OK).send(result);
+})
+
 module.exports = {
   createUser,
   getUsers,
@@ -76,7 +81,7 @@ module.exports = {
   getWatchList,
   registerCourse,
   addToFavorite,
+  editStudent,
   removeRegisterCourse,
   removeFavoriteCourse,
-
 };

@@ -23,8 +23,13 @@ const queryVideos = async (filter, options) => {
   return videos;
 };
 
+const deleteByCourseId = async (courseId) => {
+  return await Video.deleteMany({ courseId: courseId });
+}
+
 module.exports = {
   createVideos,
   queryVideos,
   getAllVideos,
+  deleteByCourseId
 };

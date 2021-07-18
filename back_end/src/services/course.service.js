@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const Course = require('../models/courses.model');
 const Category = require('../models/category.model');
 const ApiError = require('../utils/ApiError');
+const videoService = require('./video.service');
 const Video = require('../models/video.model');
 
 const createCourse = async (courseBody) => {
@@ -10,7 +11,16 @@ const createCourse = async (courseBody) => {
 };
 
 const getAllCourses = async () => {
-  return await Course.find();
+  return await Course.aggregate([
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'categoryId',
+        foreignField: '_id',
+        as: 'category'
+      }
+    }
+  ]);
 };
 
 const queryCourses = async (filter, options) => {
@@ -56,6 +66,12 @@ const findWithListId = async(coursesId) => {
   return cloneCourses;
 }
 
+const deleteCourse = async (courseId) => {
+  await videoService.deleteByCourseId(courseId);
+  await Course.deleteOne({ _id: courseId });
+  return 'success';
+}
+
 module.exports = {
   createCourse,
   queryCourses,
@@ -65,4 +81,5 @@ module.exports = {
   findWithListId,
   getCourseById,
   queryCoursesByCategoryId,
+  deleteCourse
 };

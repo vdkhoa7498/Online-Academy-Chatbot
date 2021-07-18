@@ -27,11 +27,22 @@ export function UserHttpService(options) {
 
   }
 
+  async function getStudents() {
+    const baseUrl = options.httpService.getUrl('users?role=student');
+    return await options.httpService.get(baseUrl);
+  }
+
+  async function editStudent(form) {
+    const baseUrl = options.httpService.getUrl('users/student');
+    return await options.httpService.put(baseUrl, form)
+  }
 
   return {
     getWatchList,
     registerCourse,
     addToFavorite,
+    getStudents,
+    editStudent,
     removeRegisterCourse,
     removeFavoriteCourse
   };
