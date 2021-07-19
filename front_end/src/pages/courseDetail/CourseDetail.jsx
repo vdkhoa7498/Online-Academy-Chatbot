@@ -120,6 +120,17 @@ const CourseDetail = () => {
 
     const param = useParams()
 
+    useEffect(() => {
+        const fetchCourseDetail = async () => {
+            const course = await httpClient.course.getCourseById(param.id);
+            console.log("course", course)
+
+            setCourse(course);
+        }
+
+        fetchCourseDetail();
+    },[])
+
 
 
     const handleRegisterCourse = async () => {
@@ -130,6 +141,7 @@ const CourseDetail = () => {
         await httpClient.user.addToFavorite(course.id).catch(error => console.log("Fail to add to favorite course"));
 
     }
+
 
     if (!course)
         return <div>loading</div>
