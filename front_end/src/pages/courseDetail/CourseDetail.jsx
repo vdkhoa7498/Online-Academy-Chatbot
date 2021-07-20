@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
 import moment from 'moment';
 import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, StarFilled, EditFilled, PlayCircleFilled, HeartOutlined, FormOutlined } from '@ant-design/icons'
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { useParams, Link } from 'react-router-dom'
 
 import './styles.scss'
-import { useParams } from 'react-router-dom'
 import { httpClient } from '../../api'
 
 const courseEx = {
@@ -115,24 +117,31 @@ const courseEx = {
     ]
 }
 
-const CourseDetail = () => {
+const CourseDetail = ({user}) => {
     const [course, setCourse] = useState({})
+    const [isLike, setIsLike] = useState(false);
+    const [isRegister, setIsRegister] = useState(false);
 
     const param = useParams()
 
     useEffect(() => {
         const fetchCourseDetail = async () => {
             const course = await httpClient.course.getCourseById(param.id);
-            console.log("course", course)
-
             setCourse(course);
         }
+        const fetchUserCourseInfo = async () => {
+            const result = await httpClient.user.getInfoCourse(param.id);
+            console.log("result", result);
+            setIsLike(result.isLike);
+            setIsRegister(result.isRegister);
+        }
+
 
         fetchCourseDetail();
-    },[])
+        fetchUserCourseInfo();
 
-
-
+    },[param.id])
+    
     const handleRegisterCourse = async () => {
         await httpClient.user.registerCourse(course.id).catch(error => console.log("Fail to register course"));
     }
@@ -142,6 +151,9 @@ const CourseDetail = () => {
 
     }
 
+    const handleLearning  = async() => {
+
+    }
 
     if (!course)
         return <div>loading</div>
@@ -161,8 +173,33 @@ const CourseDetail = () => {
                     </div>
                     <div style={{ marginTop: "20px" }}>
                         <Space>
-                            <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Tham gia</Button>
-                            <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Yêu thích</Button>
+                            {user && (
+                            <div>
+                                {!isRegister ? (
+                                <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Tham gia</Button>
+                                ) : (
+                                <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Huỷ tham gia</Button>
+                                )
+                                }
+                                {!isLike ? (
+                                <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Yêu thích</Button>
+                                ) : (
+                                <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Huỷ yêu thích</Button>
+                                )
+                                }
+
+                                {isRegister  && user && (
+                                <div className="learing">
+                                    <Link to={`/courses/learning/${param.id}`}>
+                                    Học ngay
+                                    </Link>
+                                </div>
+                                ) }
+                            </div>
+                            )}
+                            
+                            
+
                         </Space>
                     </div>
                 </Col>
@@ -294,4 +331,15 @@ const CourseDetail = () => {
     )
 }
 
-export default CourseDetail
+const mapState = (state) => ({
+    loading: state.auth.loading,
+    user: state.auth.user,
+  });
+  const mapDispatch = (dispatch) =>
+    bindActionCreators(
+      {
+
+      },
+      dispatch
+    );
+  export default connect(mapState, mapDispatch)(CourseDetail);

@@ -45,7 +45,6 @@ const addToFavorite = async(id, user) => {
   const result = user.favoriteCourses.find(x => x===id);
   if (!result){
     user.favoriteCourses.push(id);
-
     await user.save();  
   }
 
@@ -64,6 +63,15 @@ const removeFavorite= async(id, user) => {
   await user.save();
   return user.favoriteCourses ;
 
+}
+
+const getInfoCourse = async(id, user) => {
+  const isLike = await user.favoriteCourses.find(c => c === id);
+  const isRegister = await user.registeredCourses.find(c => c === id);
+
+  console.log("isRegister", isRegister)
+
+  return { isLike: !!isLike, isRegister: !!isRegister}
 }
 
 
@@ -152,5 +160,6 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
-  editStudent
+  editStudent,
+  getInfoCourse,
 };

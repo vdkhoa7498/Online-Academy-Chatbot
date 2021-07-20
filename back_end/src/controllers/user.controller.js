@@ -72,6 +72,12 @@ const editStudent = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(result);
 })
 
+const getInfoCourse = catchAsync(async (req, res) => {  
+  const result = await userService.getInfoCourse(req.params.id, req.user);
+
+  res.status(httpStatus.OK).send(result);
+})
+
 module.exports = {
   createUser,
   getUsers,
@@ -84,4 +90,5 @@ module.exports = {
   editStudent,
   removeRegisterCourse,
   removeFavoriteCourse,
+  getInfoCourse
 };
