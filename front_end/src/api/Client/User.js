@@ -37,6 +37,12 @@ export function UserHttpService(options) {
     return await options.httpService.put(baseUrl, form)
   }
 
+  async function getInfoCourse(id) {
+    const baseUrl = options.httpService.getUrl(`users/get-info-course/${id}`);
+    return await options.httpService.get(baseUrl)
+
+  }
+
   return {
     getWatchList,
     registerCourse,
@@ -44,6 +50,7 @@ export function UserHttpService(options) {
     getStudents,
     editStudent,
     removeRegisterCourse,
-    removeFavoriteCourse
+    removeFavoriteCourse,
+    getInfoCourse
   };
 }
