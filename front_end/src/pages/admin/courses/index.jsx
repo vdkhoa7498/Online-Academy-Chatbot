@@ -54,7 +54,7 @@ const Course = () => {
       <div className="title">Danh sách khóa học</div>
       {/* <br /> */}
       <Card>
-        <Table bordered rowKey="id" dataSource={courses} pagination={false}>
+        <Table bordered rowKey="_id" dataSource={courses} pagination={false}>
           <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tên khóa học" dataIndex="title" key="title" align="center" />
           <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" />

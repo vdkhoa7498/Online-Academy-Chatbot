@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Table, message, Divider } from "antd";
-import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons"
-import EditLecturerForm from "./forms/EditLecturerForm"
-import AddLecturerForm from "./forms/AddLecturerForm"
-import '../styles.scss'
+import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
+import EditLecturerForm from "./forms/EditLecturerForm";
+import AddLecturerForm from "./forms/AddLecturerForm";
+import '../styles.scss';
+import { httpClient } from '../../../api';
 const { Column } = Table;
 
 const lecturersEx = [
@@ -25,7 +26,7 @@ const lecturersEx = [
 ]
 
 const Lecturer = () => {
-  const [lecturers, setLecturers] = useState(lecturersEx)
+  const [lecturers, setLecturers] = useState([])
   const [editLecturerModalVisible, setEditLecturerModalVisible] = useState(false)
   const [currentRowData, setCurrentRowData] = useState({})
   const [addLecturerModalVisible, setAddLecturerModalVisible] = useState(false)
@@ -41,12 +42,19 @@ const Lecturer = () => {
 
   }
 
-  const handleAddLecturer = (row) => {
+  const handleAddLecturer = () => {
     setAddLecturerModalVisible(true)
   };
 
   const handleAddLecturerOk = () => {
-    console.log(addLecturerFormData)
+
+  }
+
+  const handleAddLecturerFinish = async (form) => {
+    await httpClient.user.createLecturer(form);
+    await fetchData();
+    setAddLecturerModalVisible(false);
+    message.success('Cấp tài khoản giảng viên thành công')
   }
 
   const handleEditLecturer = (row) => {
@@ -57,20 +65,25 @@ const Lecturer = () => {
   const handleEditLecturerOk = () => {
   }
 
-  useEffect(() => {
+  useEffect(async () => {
+    await fetchData();
+  }, []);
 
-  }, [])
+  const fetchData = async () => {
+    const lecturers_ = await httpClient.user.getLecturers();
+    setLecturers(lecturers_.results);
+  }
 
   return (
     <div className="app-container">
       <div className="title">Danh sách giảng viên</div>
       {/* <br /> */}
       <Card title={<span>
-        <Button icon={<UserAddOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddLecturer}>Thêm giảng viên</Button>
+        <Button icon={<UserAddOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddLecturer}>Cấp tài khoản giảng viên</Button>
       </span>}>
-        <Table bordered rowKey="id" dataSource={lecturers} pagination={false}>
+        <Table bordered rowKey="_id" dataSource={lecturers} pagination={false}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
-          <Column title="Tên" dataIndex="name" key="name" align="center" />
+          <Column title="Tên" dataIndex="fullName" key="fullName" align="center" />
           <Column title="Email" dataIndex="email" key="email" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>
@@ -93,7 +106,7 @@ const Lecturer = () => {
         visible={addLecturerModalVisible}
         onCancel={handleCancel}
         onOk={handleAddLecturerOk}
-        onFinish={(values => console.log(values))}
+        onFinish={handleAddLecturerFinish}
       />
     </div>
   );

@@ -34,7 +34,23 @@ export function UserHttpService(options) {
 
   async function editStudent(form) {
     const baseUrl = options.httpService.getUrl('users/student');
-    return await options.httpService.put(baseUrl, form)
+    return await options.httpService.put(baseUrl, form);
+  }
+
+  async function createLecturer(form) {
+    const baseUrl = options.httpService.getUrl('users');
+    const body = {
+      email: form.email,
+      fullName: form.fullName,
+      password: form.password,
+      role: 'lecturer'
+    }
+    return await options.httpService.post(baseUrl, body);
+  }
+
+  async function getLecturers() {
+    const baseUrl = options.httpService.getUrl('users?role=lecturer');
+    return await options.httpService.get(baseUrl);
   }
 
   return {
@@ -44,6 +60,8 @@ export function UserHttpService(options) {
     getStudents,
     editStudent,
     removeRegisterCourse,
-    removeFavoriteCourse
+    removeFavoriteCourse,
+    createLecturer,
+    getLecturers
   };
 }
