@@ -3,6 +3,10 @@ export function UserHttpService(options) {
     const baseUrl = options.httpService.getUrl("users/watch-list");
     return options.httpService.get(baseUrl);
   }
+  function getMyCourses() {
+    const baseUrl = options.httpService.getUrl("users/my-courses");
+    return options.httpService.get(baseUrl);
+  }
 
 
   function registerCourse(courseId) {
@@ -45,6 +49,7 @@ export function UserHttpService(options) {
 
   return {
     getWatchList,
+    getMyCourses,
     registerCourse,
     addToFavorite,
     getStudents,

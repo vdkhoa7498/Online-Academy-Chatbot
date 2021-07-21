@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
 import moment from 'moment';
-import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, StarFilled, EditFilled, PlayCircleFilled, HeartOutlined, FormOutlined } from '@ant-design/icons'
+import { TeamOutlined, CalendarOutlined, PlayCircleOutlined, VideoCameraOutlined, StarFilled, EditFilled, PlayCircleFilled, HeartOutlined, FormOutlined } from '@ant-design/icons'
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useParams, Link } from 'react-router-dom'
@@ -144,16 +144,35 @@ const CourseDetail = ({user}) => {
     
     const handleRegisterCourse = async () => {
         await httpClient.user.registerCourse(course.id).catch(error => console.log("Fail to register course"));
+        setIsRegister(true);
     }
 
     const handAddtoFavoriteList = async () => {
         await httpClient.user.addToFavorite(course.id).catch(error => console.log("Fail to add to favorite course"));
+        setIsLike(true)
+    }   
 
+    const handleDislikeCourse = async () =>{
+        try {
+          await httpClient.user.removeFavoriteCourse(course.id);
+            setIsLike(false)
+
+        }
+        catch(error) {
+          console.log("error", error)
+        };
+    }
+    const handleUnRegisterCourses = async(id) => {
+        try {
+            await httpClient.user.removeRegisterCourse(course.id);
+            setIsRegister(false);
+
+          }
+          catch(error) {
+            console.log("error", error)
+          };
     }
 
-    const handleLearning  = async() => {
-
-    }
 
     if (!course)
         return <div>loading</div>
@@ -178,20 +197,22 @@ const CourseDetail = ({user}) => {
                                 {!isRegister ? (
                                 <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Tham gia</Button>
                                 ) : (
-                                <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Huỷ tham gia</Button>
+                                <Button type="primary" icon={<FormOutlined />} onClick={handleUnRegisterCourses}>Huỷ tham gia</Button>
                                 )
                                 }
                                 {!isLike ? (
                                 <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Yêu thích</Button>
                                 ) : (
-                                <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Huỷ yêu thích</Button>
+                                <Button icon={<HeartOutlined /> }   onClick={handleDislikeCourse}>Huỷ yêu thích</Button>
                                 )
                                 }
 
-                                {isRegister  && user && (
+                                {isRegister && user && (
                                 <div className="learing">
                                     <Link to={`/courses/learning/${param.id}`}>
-                                    Học ngay
+                                    <VideoCameraOutlined />
+                                    {" "}
+                                        Học ngay
                                     </Link>
                                 </div>
                                 ) }

@@ -40,6 +40,14 @@ const getWatchList = catchAsync(async (req, res) => {
   res.status(200).send(watchList)
 })
 
+const getMyCourses = catchAsync(async (req, res) => {
+  const coursesId = req.user.registeredCourses;
+  console.log("coursesId",req.user);
+  const registeredCourses = await courseService.findWithListId(coursesId);
+  res.status(200).send(registeredCourses)
+})
+
+
 const registerCourse = catchAsync(async (req, res) => {
   console.log(req.params.id, req.user);
   const result = await userService.registerCourse(req.params.id, req.user);
@@ -85,6 +93,7 @@ module.exports = {
   updateUser,
   deleteUser,
   getWatchList,
+  getMyCourses,
   registerCourse,
   addToFavorite,
   editStudent,
