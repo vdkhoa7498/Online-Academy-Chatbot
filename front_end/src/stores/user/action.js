@@ -13,3 +13,11 @@ export function setWatchList(payload) {
     payload
   }
 }
+
+
+export function setMyCourses(payload) {
+  return {
+    type: ActionTypeUser.SetMyCourses,
+    payload
+  }
+}

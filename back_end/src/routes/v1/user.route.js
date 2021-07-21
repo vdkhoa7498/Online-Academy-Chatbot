@@ -10,6 +10,11 @@ router
   .route('/watch-list')
   .get(auth(), userController.getWatchList);
 
+
+router
+  .route('/my-courses')
+  .get(auth(), userController.getMyCourses);
+
 router
   .route('/get-info-course/:id')
   .get(auth(),  userController.getInfoCourse)
