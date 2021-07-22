@@ -21,3 +21,10 @@ export function setMyCourses(payload) {
     payload
   }
 }
+
+export function getMyCourses(payload){
+  return {
+    type: ActionTypeUser.GetMyCourses,
+    payload
+  }
+}

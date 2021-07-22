@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getMyCourses, removeFavoriteCourse } from '../../stores/user';
+import { getMyCourses, removeRegisterCourse } from '../../stores/user';
 import CoursesList from '../../components/coursesList/CourseList'
 
 const top10 = [
@@ -126,7 +126,7 @@ const MyCourses = (props) =>  {
         <CoursesList 
             titleList={"Khoá học của tôi"} 
             courses={props.myCourses}
-            onHandleRemoveFavoriteCourse={props.removeFavoriteCourse}
+            onHandleRemove={props.removeRegisterCourse}
             isWatchList={true}/>
     );
 }
@@ -137,7 +137,7 @@ const mapState = (state) => ({
   });
 const mapDispatch = dispatch => bindActionCreators({
     getMyCourses,
-    removeFavoriteCourse
+    removeRegisterCourse
 }, dispatch)
   
 export default connect(mapState, mapDispatch)(MyCourses); 
