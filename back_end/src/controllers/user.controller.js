@@ -5,8 +5,9 @@ const catchAsync = require('../utils/catchAsync');
 const { userService, courseService } = require('../services');
 
 const createUser = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  const response = await userService.createUser(req.body);
+  console.log(response.message);
+  res.status(httpStatus.CREATED).send(response);
 });
 
 const getUsers = catchAsync(async (req, res) => {
@@ -30,8 +31,8 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-  await userService.deleteUserById(req.params.userId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const message = await userService.deleteUserById(req.params.userId);
+  res.status(httpStatus.OK).send(message);
 });
 
 const getWatchList = catchAsync(async (req, res) => {
@@ -67,8 +68,8 @@ const removeFavoriteCourse = catchAsync(async (req, res)=> {
 
 })
 
-const editStudent = catchAsync(async (req, res) => {
-  const result = await userService.editStudent(req.body);
+const editUserAdmin = catchAsync(async (req, res) => {
+  const result = await userService.editUser(req.params.userId, req.body);
   res.status(httpStatus.OK).send(result);
 })
 
@@ -81,7 +82,7 @@ module.exports = {
   getWatchList,
   registerCourse,
   addToFavorite,
-  editStudent,
+  editUserAdmin,
   removeRegisterCourse,
   removeFavoriteCourse,
 };

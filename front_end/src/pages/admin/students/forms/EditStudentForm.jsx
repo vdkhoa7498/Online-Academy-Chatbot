@@ -16,7 +16,7 @@ const EditStudentForm = (props) => {
     id: id,
     fullName: fullName,
     email: email
-  })
+  });
 
   const formItemLayout = {
     labelCol: {

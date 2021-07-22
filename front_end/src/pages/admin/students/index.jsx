@@ -48,7 +48,7 @@ const Student = () => {
   }
 
   const handleEditStudentFinish = async (form) => {
-    await httpClient.user.editStudent(form);
+    await httpClient.user.editUser(form);
     await fetchData();
     setEditStudentModalVisible(false);
     message.success('Cập nhật thành công');

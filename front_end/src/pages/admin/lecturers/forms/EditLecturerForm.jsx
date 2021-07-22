@@ -11,7 +11,15 @@ const EditLecturerForm = (props) => {
     currentRowData,
     onFinish
   } = props;
-  const { id, name, email } = currentRowData;
+  const { id, fullName, email } = currentRowData;
+
+  const [form] = Form.useForm();
+  form.setFieldsValue({
+    id: id,
+    fullName: fullName,
+    email: email
+  });
+
   const formItemLayout = {
     labelCol: {
       sm: { span: 4 },
@@ -33,13 +41,13 @@ const EditLecturerForm = (props) => {
         </Button>,
       ]}
     >
-      <Form {...formItemLayout} onFinish={onFinish} id="myForm">
-        <Form.Item label="ID:"><Input disabled value={id}/>
+      <Form form={form} {...formItemLayout} onFinish={onFinish} id="myForm">
+        <Form.Item name="id" label="ID:"><Input disabled/>
         </Form.Item>
-        <Form.Item label="Email"
-          rules={[{ required: true, message: "Vui lòng nhập email!" }]}><Input placeholder="Email" value={email}/>
+        <Form.Item name="email" label="Email"
+          rules={[{ required: true, message: "Vui lòng nhập email!" }]}><Input disabled placeholder="Email"/>
         </Form.Item>
-        <Form.Item label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}><Input placeholder="Tên" value={name}/>
+        <Form.Item name="fullName" label="Tên:" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}><Input placeholder="Tên"/>
         </Form.Item>
       </Form>
     </Modal>

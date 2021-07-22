@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, message, Divider } from "antd";
+import { Card, Button, Table, message, Divider, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 import EditLecturerForm from "./forms/EditLecturerForm";
 import AddLecturerForm from "./forms/AddLecturerForm";
@@ -38,8 +38,10 @@ const Lecturer = () => {
     setEditLecturerModalVisible(false)
   }
 
-  const handleDeleteLecturer = (row) => {
-
+  const handleDeleteLecturer = async (row) => {
+    const msg = await httpClient.user.deleteUser(row.id);
+    await fetchData();
+    message.success('Bạn đã xóa một giảng viên');
   }
 
   const handleAddLecturer = () => {
@@ -51,18 +53,32 @@ const Lecturer = () => {
   }
 
   const handleAddLecturerFinish = async (form) => {
-    await httpClient.user.createLecturer(form);
-    await fetchData();
-    setAddLecturerModalVisible(false);
-    message.success('Cấp tài khoản giảng viên thành công')
+    try {
+      await httpClient.user.createLecturer(form);
+      await fetchData();
+      setAddLecturerModalVisible(false);
+      message.success('Cấp tài khoản giảng viên thành công');
+    } catch (err) {
+      if (err.message == 'Email already taken') {
+        message.error('Email đã tồn tại!');
+      }
+    }
   }
 
   const handleEditLecturer = (row) => {
     setCurrentRowData(row)
     setEditLecturerModalVisible(true)
-  };
+  }
 
   const handleEditLecturerOk = () => {
+
+  }
+
+  const handleEditLecturerFinish = async (form) => {
+    await httpClient.user.editUser(form);
+    await fetchData();
+    setEditLecturerModalVisible(false);
+    message.success('Cập nhật thành công');
   }
 
   useEffect(async () => {
@@ -81,7 +97,7 @@ const Lecturer = () => {
       <Card title={<span>
         <Button icon={<UserAddOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddLecturer}>Cấp tài khoản giảng viên</Button>
       </span>}>
-        <Table bordered rowKey="_id" dataSource={lecturers} pagination={false}>
+        <Table bordered rowKey="id" dataSource={lecturers} pagination={false}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
           <Column title="Tên" dataIndex="fullName" key="fullName" align="center" />
           <Column title="Email" dataIndex="email" key="email" align="center" />
@@ -89,7 +105,13 @@ const Lecturer = () => {
             <span>
               <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditLecturer(row)} />
               <Divider type="vertical" />
-              <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteLecturer} />
+              <Popconfirm
+                title="Bạn có chắc là muốn xóa giảng viên này không?"
+                onConfirm={() => handleDeleteLecturer(row)}
+                okText="Có"
+                cancelText="Không">
+                <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" />
+              </Popconfirm>
             </span>
           )} />
         </Table>
@@ -100,7 +122,7 @@ const Lecturer = () => {
         visible={editLecturerModalVisible}
         onCancel={handleCancel}
         onOk={handleEditLecturerOk}
-        onFinish={(values => setEditLecturerFormData(values))}
+        onFinish={handleEditLecturerFinish}
       />
       <AddLecturerForm
         visible={addLecturerModalVisible}
