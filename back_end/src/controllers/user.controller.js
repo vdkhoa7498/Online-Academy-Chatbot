@@ -42,7 +42,6 @@ const getWatchList = catchAsync(async (req, res) => {
 
 const getMyCourses = catchAsync(async (req, res) => {
   const coursesId = req.user.registeredCourses;
-  console.log("coursesId",req.user);
   const registeredCourses = await courseService.findWithListId(coursesId);
   res.status(200).send(registeredCourses)
 })

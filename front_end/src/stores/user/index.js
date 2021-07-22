@@ -1,4 +1,4 @@
-import { setWatchListLoading, setWatchList, setMyCourses } from './action';
+import { setWatchListLoading, setWatchList, setMyCourses, GetMyCourses } from './action';
 import { httpClient } from '../../api';
 
 export function getWatchList() {
@@ -30,7 +30,17 @@ export function removeFavoriteCourse(id){
     try {
       const result = await httpClient.user.removeFavoriteCourse(id);
       dispatch(setWatchList(result));
+    } catch (error) {
       dispatch(setWatchListLoading(true));
+    }
+  }
+}
+
+export function removeRegisterCourse(id){
+  return async (dispatch) => {
+    try {
+      const result = await httpClient.user.removeRegisterCourse(id);
+      dispatch(setMyCourses(result));
     } catch (error) {
       dispatch(setWatchListLoading(true));
     }

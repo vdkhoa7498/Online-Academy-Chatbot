@@ -129,7 +129,6 @@ function RouterOutlet(props) {
   const { ...rest } = props;
   rest.isAuthenticated = isAuthenticated;
 
-  console.log("isAuthenticated", isAuthenticated)
 
   return (
     <Suspense fallback={null}>

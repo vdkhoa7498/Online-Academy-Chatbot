@@ -120,14 +120,11 @@ const WatchList = (props) =>  {
           }
     }, [])
 
-    console.log("watchList", props.watchList);
-
-
     return (
         <CoursesList 
             titleList={"Danh sách yêu thích"} 
             courses={props.watchList}
-            onHandleRemoveFavoriteCourse={props.removeFavoriteCourse}
+            onHandleRemove={props.removeFavoriteCourse}
             isWatchList={true}/>
     );
 }
