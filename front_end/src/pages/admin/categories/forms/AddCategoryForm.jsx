@@ -16,15 +16,14 @@ const AddCategoryForm = (props) => {
 
   const formItemLayout = {
     labelCol: {
-      sm: { span: 4 },
+      sm: { span: 5 },
     },
     wrapperCol: {
-      sm: { span: 16 },
+      sm: { span: 19 },
     },
   };
   return (
     <Modal
-      width='50%'
       title="Tạo danh mục"
       visible={visible}
       footer={[

@@ -16,9 +16,9 @@ export function CourseHttpService(options) {
       return options.httpService.post(baseUrl, form);
     }
 
-    function getCourseById(courseId) {
+    async function getCourseById(courseId) {
       const baseUrl = options.httpService.getUrl(`courses/${courseId}`);
-      return options.httpService.get(baseUrl);
+      return await options.httpService.get(baseUrl);
     }
 
     function getCoursesByCategoryId(categoryId) {

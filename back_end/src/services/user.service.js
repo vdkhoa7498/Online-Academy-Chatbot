@@ -138,8 +138,15 @@ const deleteUserById = async (userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   await user.remove();
-  return user;
+  return 'success';
 };
+
+const editUser = async (userId, body) => {
+  const user = await User.findOne({ _id: userId });
+  user.fullName = body.fullName;
+  user.save();
+  return user;
+}
 
 const editStudent = async (studentBody) => {
   const student = await User.findOne({ _id: studentBody.id });
@@ -161,6 +168,7 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  editUser,
   editStudent,
   getInfoCourse,
 };

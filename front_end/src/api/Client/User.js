@@ -36,9 +36,30 @@ export function UserHttpService(options) {
     return await options.httpService.get(baseUrl);
   }
 
-  async function editStudent(form) {
-    const baseUrl = options.httpService.getUrl('users/student');
-    return await options.httpService.put(baseUrl, form)
+  async function editUser(form) {
+    const baseUrl = options.httpService.getUrl('admin/users/' + form.id);
+    return await options.httpService.put(baseUrl, form);
+  }
+
+  async function deleteUser(userId) {
+    const baseUrl = options.httpService.getUrl('admin/users/' + userId);
+    return await options.httpService.del(baseUrl);
+  }
+
+  async function createLecturer(form) {
+    const baseUrl = options.httpService.getUrl('users');
+    const body = {
+      email: form.email,
+      fullName: form.fullName,
+      password: form.password,
+      role: 'lecturer'
+    }
+    return await options.httpService.post(baseUrl, body);
+  }
+
+  async function getLecturers() {
+    const baseUrl = options.httpService.getUrl('users?role=lecturer');
+    return await options.httpService.get(baseUrl);
   }
 
   async function getInfoCourse(id) {
@@ -53,9 +74,12 @@ export function UserHttpService(options) {
     registerCourse,
     addToFavorite,
     getStudents,
-    editStudent,
+    editUser,
+    deleteUser,
     removeRegisterCourse,
     removeFavoriteCourse,
+    createLecturer,
+    getLecturers,
     getInfoCourse
   };
 }

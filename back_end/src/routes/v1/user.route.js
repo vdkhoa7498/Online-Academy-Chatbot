@@ -29,8 +29,9 @@ router.post('/remove-favorite-course/:id', auth(), userController.removeFavorite
 
 router
   .route('/')
-  .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
+  //.post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   //.get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+  .post(validate(userValidation.createUser), userController.createUser)
   .get(validate(userValidation.getUsers), userController.getUsers);
 
 router
@@ -38,10 +39,6 @@ router
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
-
-router
-  .route('/student')
-  .put(userController.editStudent);
 
 module.exports = router;
 

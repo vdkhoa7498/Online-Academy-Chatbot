@@ -23,7 +23,18 @@ const getCoursesByCategoryId = catchAsync(async (req, res) => {
 });
 
 const getCourseById = catchAsync(async (req, res) => {
-  const course = await courseService.getCourseById(req.params.courseId);
+  // Basic info
+  let course = await courseService.getCourseById(req.params.courseId);
+  course = course.toObject();
+
+  // Lectures
+  const lectures = await courseService.getLectureListByCourseId(req.params.courseId);
+  course.lectures = lectures;
+
+  // Other courses
+  const otherCourses = await courseService.getOtherCourses(course.categoryId);
+  course.otherCourses = otherCourses;
+
   res.send(course);
 });
 
