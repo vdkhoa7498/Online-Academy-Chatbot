@@ -148,6 +148,13 @@ const editUser = async (userId, body) => {
   return user;
 }
 
+const editStudent = async (studentBody) => {
+  const student = await User.findOne({ _id: studentBody.id });
+  student.fullName = studentBody.fullName;
+  student.save();
+  return student;
+}
+
 module.exports = {
   createUser,
   getProfile,

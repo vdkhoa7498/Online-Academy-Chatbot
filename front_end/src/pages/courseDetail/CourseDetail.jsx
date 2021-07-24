@@ -117,7 +117,7 @@ const courseEx = {
     ]
 }
 
-const CourseDetail = ({user}) => {
+const CourseDetail = ({ user }) => {
     const [course, setCourse] = useState({})
     const [isLike, setIsLike] = useState(false);
     const [isRegister, setIsRegister] = useState(false);
@@ -127,21 +127,25 @@ const CourseDetail = ({user}) => {
     useEffect(() => {
         const fetchCourseDetail = async () => {
             const course = await httpClient.course.getCourseById(param.id);
+            console.log(course);
             setCourse(course);
         }
         const fetchUserCourseInfo = async () => {
-            const result = await httpClient.user.getInfoCourse(param.id);
-            console.log("result", result);
-            setIsLike(result.isLike);
-            setIsRegister(result.isRegister);
+            try {
+                const result = await httpClient.user.getInfoCourse(param.id);
+                console.log("result", result);
+                setIsLike(result.isLike);
+                setIsRegister(result.isRegister);
+            } catch (error) {
+                console.log("error", error);
+            }
         }
-
 
         fetchCourseDetail();
         fetchUserCourseInfo();
 
-    },[param.id])
-    
+    }, [param.id])
+
     const handleRegisterCourse = async () => {
         await httpClient.user.registerCourse(course.id).catch(error => console.log("Fail to register course"));
         setIsRegister(true);
@@ -150,27 +154,27 @@ const CourseDetail = ({user}) => {
     const handAddtoFavoriteList = async () => {
         await httpClient.user.addToFavorite(course.id).catch(error => console.log("Fail to add to favorite course"));
         setIsLike(true)
-    }   
+    }
 
-    const handleDislikeCourse = async () =>{
+    const handleDislikeCourse = async () => {
         try {
-          await httpClient.user.removeFavoriteCourse(course.id);
+            await httpClient.user.removeFavoriteCourse(course.id);
             setIsLike(false)
 
         }
-        catch(error) {
-          console.log("error", error)
+        catch (error) {
+            console.log("error", error)
         };
     }
-    const handleUnRegisterCourses = async(id) => {
+    const handleUnRegisterCourses = async (id) => {
         try {
             await httpClient.user.removeRegisterCourse(course.id);
             setIsRegister(false);
 
-          }
-          catch(error) {
+        }
+        catch (error) {
             console.log("error", error)
-          };
+        };
     }
 
 
@@ -193,33 +197,33 @@ const CourseDetail = ({user}) => {
                     <div style={{ marginTop: "20px" }}>
                         <Space>
                             {user && (
-                            <div>
-                                {!isRegister ? (
-                                <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Tham gia</Button>
-                                ) : (
-                                <Button type="primary" icon={<FormOutlined />} onClick={handleUnRegisterCourses}>Huỷ tham gia</Button>
-                                )
-                                }
-                                {!isLike ? (
-                                <Button icon={<HeartOutlined /> }   onClick={handAddtoFavoriteList}>Yêu thích</Button>
-                                ) : (
-                                <Button icon={<HeartOutlined /> }   onClick={handleDislikeCourse}>Huỷ yêu thích</Button>
-                                )
-                                }
+                                <div>
+                                    {!isRegister ? (
+                                        <Button type="primary" icon={<FormOutlined />} onClick={handleRegisterCourse}>Tham gia</Button>
+                                    ) : (
+                                        <Button type="primary" icon={<FormOutlined />} onClick={handleUnRegisterCourses}>Huỷ tham gia</Button>
+                                    )
+                                    }
+                                    {!isLike ? (
+                                        <Button icon={<HeartOutlined />} onClick={handAddtoFavoriteList}>Yêu thích</Button>
+                                    ) : (
+                                        <Button icon={<HeartOutlined />} onClick={handleDislikeCourse}>Huỷ yêu thích</Button>
+                                    )
+                                    }
 
-                                {isRegister && user && (
-                                <div className="learing">
-                                    <Link to={`/courses/learning/${param.id}`}>
-                                    <VideoCameraOutlined />
-                                    {" "}
-                                        Học ngay
-                                    </Link>
+                                    {isRegister && user && (
+                                        <div className="learing">
+                                            <Link to={`/courses/learning/${param.id}`}>
+                                                <VideoCameraOutlined />
+                                                {" "}
+                                                Học ngay
+                                            </Link>
+                                        </div>
+                                    )}
                                 </div>
-                                ) }
-                            </div>
                             )}
-                            
-                            
+
+
 
                         </Space>
                     </div>
@@ -239,7 +243,7 @@ const CourseDetail = ({user}) => {
                         <div>
                             <Space>
                                 <PlayCircleOutlined />
-                                <b>{item.name}</b>
+                                <b>{item.title}</b>
                             </Space>
                         </div>
                         <div>
@@ -259,9 +263,9 @@ const CourseDetail = ({user}) => {
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<Avatar shape="square" size={64} src={item.image} />}
+                            avatar={<Avatar shape="square" size={64} src={item.picture} />}
                             title={<a href="#">{item.title}</a>}
-                            description={item.short_description}
+                            description={item.shortDescription}
                         />
                         <div>
                             <Rate allowHalf value={item.rateScore} disabled />
@@ -355,12 +359,12 @@ const CourseDetail = ({user}) => {
 const mapState = (state) => ({
     loading: state.auth.loading,
     user: state.auth.user,
-  });
-  const mapDispatch = (dispatch) =>
+});
+const mapDispatch = (dispatch) =>
     bindActionCreators(
-      {
+        {
 
-      },
-      dispatch
+        },
+        dispatch
     );
-  export default connect(mapState, mapDispatch)(CourseDetail);
+export default connect(mapState, mapDispatch)(CourseDetail);

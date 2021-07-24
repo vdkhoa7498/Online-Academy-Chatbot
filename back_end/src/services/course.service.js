@@ -35,8 +35,18 @@ const queryCoursesByCategoryId = async (filter, options) => {
 
 const getCourseById = async (courseId) => {
   const course =  await Course.findById(courseId);
-  return course
+  return course;
 };
+
+const getLectureListByCourseId = async (courseId) => {
+  const lectureList = await Video.find({ courseId: courseId});
+  return lectureList;
+}
+
+const getOtherCourses = async (currentCourseId, categoryId) => {
+  const otherCourses = await Course.find({ categoryId: categoryId, courseId: { $ne: currentCourseId }});
+  return otherCourses;
+}
 
 const addView = async (courseId) => {
   const course = await Course.findOne({_id: courseId})
@@ -80,6 +90,8 @@ module.exports = {
   getVideosOfCourse,
   findWithListId,
   getCourseById,
+  getLectureListByCourseId,
+  getOtherCourses,
   queryCoursesByCategoryId,
   deleteCourse
 };
