@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const courseService = require("./course.service")
 
 /**
  * Create a user
@@ -45,7 +46,6 @@ const addToFavorite = async(id, user) => {
   const result = user.favoriteCourses.find(x => x===id);
   if (!result){
     user.favoriteCourses.push(id);
-
     await user.save();  
   }
 
@@ -55,15 +55,24 @@ const addToFavorite = async(id, user) => {
 const removeRegister = async(id, user) => {
   user.registeredCourses = user.registeredCourses.filter(c => c !== id);
   await user.save();
-  return user.registeredCourses;
 
+  const newCourses = await courseService.findWithListId(user.registeredCourses);
+
+  return newCourses;
 }
 
 const removeFavorite= async(id, user) => {
   user.favoriteCourses = user.favoriteCourses.filter(c => c !== id);
   await user.save();
-  return user.favoriteCourses ;
+  return await courseService.findWithListId(user.favoriteCourses);
 
+}
+
+const getInfoCourse = async(id, user) => {
+  const isLike = await user.favoriteCourses.find(c => c === id);
+  const isRegister = await user.registeredCourses.find(c => c === id);
+
+  return { isLike: !!isLike, isRegister: !!isRegister}
 }
 
 
@@ -152,5 +161,7 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
-  editUser
+  editUser,
+  editStudent,
+  getInfoCourse,
 };

@@ -6,16 +6,7 @@ import { httpClient } from "../../api";
 
 import './styles.scss'
 
-export default function CourseList({ titleList, courses,  isWatchList, onHandleRemoveFavoriteCourse  }) {
-
-  const handleRemoveCourse = async (id) =>{
-    try {
-      await httpClient.user.removeFavoriteCourse(id);
-    }
-    catch(error) {
-      console.log("error", error)
-    };
-  }
+export default function CourseList({ titleList, courses,  isWatchList, onHandleRemove  }) {
 
   return (
     <div>
@@ -27,7 +18,7 @@ export default function CourseList({ titleList, courses,  isWatchList, onHandleR
                 courses.map((item, index)=>{
                     return(
                        <CourseItem key={index} item={item} isWatchList={isWatchList} 
-                       onRemoveCourse={ () => onHandleRemoveFavoriteCourse(item.id)} />       
+                       onRemoveCourse={ () => onHandleRemove(item.id)} />       
                     )
                 })
             }

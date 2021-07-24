@@ -12,6 +12,7 @@ export function httpClientService(options) {
     auth: AuthHttpService({ httpService }),
     category: CategoryHttpService({ httpService }),
     course: CourseHttpService({ httpService }),
-    user: UserHttpService({ httpService })
+    user: UserHttpService({ httpService }),
+    video: VideosHttpService({ httpService }),
   }
 }

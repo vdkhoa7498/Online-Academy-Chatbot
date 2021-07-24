@@ -1,8 +1,10 @@
 import React, { useState, useEffect} from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Redirect } from 'react-router-dom'
 import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
 import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 import "video-react/dist/video-react.css"; 
 
@@ -10,7 +12,7 @@ import { httpClient } from '../../api'
 import './styles.scss';
 
 
-export default function Learning() {
+ const  Learning = ({user}) => {
   const [videos, setVideos] = useState([])
 
   const [video, setVideo] = useState({});
@@ -31,12 +33,12 @@ export default function Learning() {
       setVideo(video);
     
   }
+  if (!user){
+    <Redirect to="/"/>
+  }
 
-
-  if (videos.length===0)
-    return <div>Loading</div>
-
-  console.log("video.url", video.url)
+  if (videos.length === 0)
+    return <div>Fail to load videos</div>
 
   return (
     <div>
@@ -57,7 +59,7 @@ export default function Learning() {
               size="small"
               bordered
               dataSource={videos}
-              renderItem={item => <List.Item onClick={() => handleChangeVideo(item)}>{item.title}</List.Item>}
+              renderItem={item => <List.Item className="title" onClick={() => handleChangeVideo(item)}>{item.title}</List.Item>}
             />
           </div>
         </Col>
@@ -65,3 +67,15 @@ export default function Learning() {
     </div>
   )
 }
+const mapState = (state) => ({
+  loading: state.auth.loading,
+  user: state.auth.user,
+});
+const mapDispatch = (dispatch) =>
+  bindActionCreators(
+    {
+
+    },
+    dispatch
+  );
+export default connect(mapState, mapDispatch)(Learning);

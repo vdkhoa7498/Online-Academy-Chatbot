@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getWatchList, removeFavoriteCourse } from '../../stores/user';
+import { getMyCourses, removeRegisterCourse } from '../../stores/user';
 import CoursesList from '../../components/coursesList/CourseList'
 
 const top10 = [
@@ -109,33 +109,35 @@ const top10 = [
 ]
 
 
-const WatchList = (props) =>  {
-    // const [courses, setCourses] = useState(top10);  
+const MyCourses = (props) =>  {
+    // const [courses, setCourses] = useState("");  
 
     useEffect(() => {
         if (localStorage && localStorage.getItem('access_token')) {
-            props.getWatchList();
+            props.getMyCourses();
           } else {
           //  props.toggleGlobalLoading(false);
           }
     }, [])
 
+
+
     return (
         <CoursesList 
-            titleList={"Danh sách yêu thích"} 
-            courses={props.watchList}
-            onHandleRemove={props.removeFavoriteCourse}
+            titleList={"Khoá học của tôi"} 
+            courses={props.myCourses}
+            onHandleRemove={props.removeRegisterCourse}
             isWatchList={true}/>
     );
 }
 
 
 const mapState = (state) => ({
-    watchList: state.user.watchList,
+    myCourses: state.user.myCourses,
   });
 const mapDispatch = dispatch => bindActionCreators({
-    getWatchList,
-    removeFavoriteCourse
+    getMyCourses,
+    removeRegisterCourse
 }, dispatch)
   
-export default connect(mapState, mapDispatch)(WatchList); 
+export default connect(mapState, mapDispatch)(MyCourses); 

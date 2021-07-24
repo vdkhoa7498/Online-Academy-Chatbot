@@ -35,6 +35,7 @@ import WatchList from "../pages/watchList/Watchlist";
 import Profile from '../pages/profile/Profile';
 import PostCourse from '../pages/postCourse/PostCourse';
 import Learning from "../pages/Leaning/Learning";
+import MyCourses from '../pages/myCourses/MyCourses';
 
 import Categories from "../pages/admin/categories";
 import Course from "../pages/admin/courses";
@@ -128,7 +129,6 @@ function RouterOutlet(props) {
   const { ...rest } = props;
   rest.isAuthenticated = isAuthenticated;
 
-  console.log("isAuthenticated", isAuthenticated)
 
   return (
     <Suspense fallback={null}>
@@ -154,7 +154,7 @@ function RouterOutlet(props) {
 
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/courses/learning/:id", "/watch-list", "/profile", "/create-new-course"]}
+            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/courses/learning/:id", "/watch-list", "/my-courses",  "/profile", "/create-new-course"]}
           >
             <RouteLayout {...rest}>
               <Switch>
@@ -180,6 +180,13 @@ function RouterOutlet(props) {
                 {
                     (isAuthenticated)
                     ? <WatchList />
+                    : <Redirect to="/"/>
+                  }
+                </Route>
+                <Route exact path="/my-courses">
+                {
+                    (isAuthenticated)
+                    ? <MyCourses />
                     : <Redirect to="/"/>
                   }
                 </Route>
