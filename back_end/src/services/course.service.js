@@ -28,6 +28,18 @@ const queryCourses = async (filter, options) => {
     filter.$text= {$search: filter.search}
     delete filter.search
   }
+  if (filter.rateScoreFilter){
+    filter.rateScore = {$gte: filter.rateScoreFilter}
+    delete filter.rateScoreFilter
+  }
+  if (filter.priceFilter){
+    if (filter.priceFilter ==0){
+      filter.price = 0
+    }
+    else {
+      filter.price = {$ne: 0}
+    }
+  }
   console.log(filter)
   const courses = await Course.paginate(filter, options);
   return courses;

@@ -41,6 +41,23 @@ const courseSchema = mongoose.Schema({
     type: Number, 
     default: 0 
   },
+  rateScore:{
+    type: Number,
+    default: 0
+  },
+  ratings:{
+    type: Number,
+    default: 0
+  },
+  lecturerId:{
+    type: mongoose.SchemaTypes.ObjectId, 
+    required: true, 
+    ref: 'User' 
+  },
+  studentNumber:{
+    type: Number,
+    default: 0
+  },
   preView: {
     type: Number,
     default: 0,
