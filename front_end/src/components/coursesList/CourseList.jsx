@@ -1,5 +1,5 @@
 import React from 'react'
-import { Divider,  Pagination } from 'antd'
+import { Divider,  Pagination, Empty } from 'antd'
 import CourseItem from '../../components/courseItem/CourseItem'
 import { httpClient } from "../../api";
 
@@ -14,7 +14,7 @@ export default function CourseList({ titleList, courses,  isWatchList, onHandleR
             <Divider/>
             <h1 className="title-page">{titleList}</h1>
             {
-              (!courses) ? null :
+              (!courses) ? <Empty/> :
                 courses.map((item, index)=>{
                     return(
                        <CourseItem key={index} item={item} isWatchList={isWatchList} 

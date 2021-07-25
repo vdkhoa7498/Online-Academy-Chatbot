@@ -41,6 +41,23 @@ const courseSchema = mongoose.Schema({
     type: Number, 
     default: 0 
   },
+  rateScore:{
+    type: Number,
+    default: 0
+  },
+  ratings:{
+    type: Number,
+    default: 0
+  },
+  lecturerId:{
+    type: mongoose.SchemaTypes.ObjectId, 
+    required: true, 
+    ref: 'User' 
+  },
+  studentNumber:{
+    type: Number,
+    default: 0
+  },
   preView: {
     type: Number,
     default: 0,
@@ -54,6 +71,8 @@ const courseSchema = mongoose.Schema({
 // add plugin that converts mongoose to json
 courseSchema.plugin(toJSON);
 courseSchema.plugin(paginate);
+
+courseSchema.index({title: 'text', description: 'text', shortDescription: 'text'})
 
 const Course = mongoose.model('Course', courseSchema);
 
