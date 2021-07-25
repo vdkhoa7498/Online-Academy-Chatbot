@@ -24,6 +24,11 @@ const getAllCourses = async () => {
 };
 
 const queryCourses = async (filter, options) => {
+  if (filter.search){
+    filter.$text= {$search: filter.search}
+    delete filter.search
+  }
+  console.log(filter)
   const courses = await Course.paginate(filter, options);
   return courses;
 };

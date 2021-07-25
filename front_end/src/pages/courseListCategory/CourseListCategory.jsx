@@ -22,7 +22,7 @@ const CourseListCategory = () => {
       console.log(category_);
     };
     fetchData();
-  }, []);
+  }, [categoryId]);
 
   return (
     <CourseList

@@ -55,6 +55,8 @@ const courseSchema = mongoose.Schema({
 courseSchema.plugin(toJSON);
 courseSchema.plugin(paginate);
 
+courseSchema.index({title: 'text', description: 'text', shortDescription: 'text'})
+
 const Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;
