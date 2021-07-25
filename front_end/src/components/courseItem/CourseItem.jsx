@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, Rate, Button} from 'antd'
+import { Link } from 'react-router-dom'
 
 import './styles.scss'
 
@@ -17,6 +18,7 @@ export default function CourseItem({
 
   return (
     <div>
+      <Link to={`/courses/${item.id}`}>
       <Row className="list-container">
         <Col span={8}>
           <img className="image-item" alt={item.title} src={item.picture} />
@@ -54,6 +56,8 @@ export default function CourseItem({
          
         </Col>
       </Row>
+      </Link>
+      
     </div>
   );
 }
