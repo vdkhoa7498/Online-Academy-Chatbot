@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useSelector } from 'react';
 import { Form, Input, Button, Radio, Row, Col } from 'antd';
-import toastr from 'toastr';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getProfile, editProfile } from '../../stores/auth';
@@ -44,8 +45,6 @@ const Profile = ({ user, getProfile, editProfile }) => {
 
   // }, [user])
 
-  console.log("user", user);
-
 
 
   const onFinish = (values) => {
@@ -53,10 +52,10 @@ const Profile = ({ user, getProfile, editProfile }) => {
     editProfile({
       form: newUser,
       onSuccess: () => {
-        toastr.success("Edit successful");
+        toast("Edit successful");
       },
       onFailure: () => {
-        toastr.error("Edit fail");
+        toast("Edit fail");
       }
     })
     setIsEdit(false);
@@ -69,6 +68,7 @@ const Profile = ({ user, getProfile, editProfile }) => {
 
     <Row>
       <Col span={4}></Col>
+      <ToastContainer />
         <Col span={16} >
         <h1 className="title-page">Thông tin tài khoản</h1>
         <Form
