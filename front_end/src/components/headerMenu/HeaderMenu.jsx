@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu, Dropdown, Button } from "antd";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
@@ -27,10 +27,18 @@ const HeaderMenu = (props) => {
   return (
     <div className="header-menu">
       <div className="logo" />
-      <Menu theme="light" mode="horizontal" defaultSelectedKeys={["-1"]}>
+      <Menu theme="light" mode="horizontal" defaultSelectedKeys={["-2"]}>
+        <Menu.Item key="-2">
+          <Link to="/">
+            <HomeOutlined />
+            {` Home`}
+          </Link>
+        </Menu.Item>
         <Menu.Item key="-1">
-          <HomeOutlined />
-          Home
+          <Link>
+            <AppstoreOutlined />
+            {` Tất cả`}
+          </Link>
         </Menu.Item>
         {menu.map((item, index) => {
           if (!item.parentId) {
