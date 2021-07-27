@@ -19,7 +19,7 @@ export function login({ form, onSuccess, onFailure }) {
       localStorage.setItem("refresh_token", result.tokens.refresh.token);
       localStorage.setItem("access_token", result.tokens.access.token);
       localStorage.setItem("isAuthenticated", JSON.stringify(true));
-      localStorage.setItem("user", result.user);
+      localStorage.setItem("user", JSON.stringify(result.user));
       onSuccess(result.user);
       dispatch(setAuthLoading(false));
     } catch (error) {
@@ -55,7 +55,7 @@ export function loginWithGoogle({ tokenId, onSuccess, onFailure }) {
       localStorage.setItem("refresh_token", result.tokens.refresh.token);
       localStorage.setItem("access_token", result.tokens.access.token);
       localStorage.setItem("isAuthenticated", JSON.stringify(true));
-      localStorage.setItem("user", result.user);
+      localStorage.setItem("user", JSON.stringify(result.user));
       onSuccess(result.user);
       dispatch(setAuthLoading(false));
     } catch (error) {
@@ -76,7 +76,7 @@ export function loginWithFacebook({ userInfoLogin, onSuccess, onFailure }) {
       localStorage.setItem("refresh_token", result.tokens.refresh.token);
       localStorage.setItem("access_token", result.tokens.access.token);
       localStorage.setItem("isAuthenticated", JSON.stringify(true));
-      localStorage.setItem("user", result.user);
+      localStorage.setItem("user", JSON.stringify(result.user));
       onSuccess(result.user);
       dispatch(setAuthLoading(false));
     } catch (error) {
