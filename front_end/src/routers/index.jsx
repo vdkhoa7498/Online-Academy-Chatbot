@@ -42,6 +42,7 @@ import Course from "../pages/admin/courses";
 import Student from "../pages/admin/students";
 import Lecturer from "../pages/admin/lecturers";
 import SearchList from "../pages/searchList/SearchList";
+import { AdminRoute } from "./AdminRoute";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -127,9 +128,9 @@ function AdminRouteLayout(props) {
 
 function RouterOutlet(props) {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
+  
   const { ...rest } = props;
   rest.isAuthenticated = isAuthenticated;
-
 
   return (
     <Suspense fallback={null}>
@@ -205,25 +206,19 @@ function RouterOutlet(props) {
               </Switch>
             </RouteLayout>
           </Route>
-          <Route
+          <AdminRoute
             exact
             path={["/admin/categories", "/admin/courses", "/admin/students", "/admin/lecturers"]}
           >
             <AdminRouteLayout>
               <Switch>
                 <Route exact path="/admin/categories" component={Categories} />
-              </Switch>
-              <Switch>
                 <Route exact path="/admin/courses" component={Course} />
-              </Switch>
-              <Switch>
                 <Route exact path="/admin/students" component={Student} />
-              </Switch>
-              <Switch>
                 <Route exact path="/admin/lecturers" component={Lecturer} />
               </Switch>
             </AdminRouteLayout>
-          </Route>
+          </AdminRoute>
           <Route path="*">
             <NotFound />
           </Route>

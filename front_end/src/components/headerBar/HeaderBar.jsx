@@ -10,6 +10,7 @@ import './styles.scss'
 const { Search } = Input
 
 const HeaderBar = (props) =>{
+    const user = JSON.parse(localStorage.getItem("user"))
     const onLogout = () =>{
         props.logout({
         onSuccess: () => {
@@ -90,19 +91,19 @@ const HeaderBar = (props) =>{
                         </Link>
                     </div>
                     {
-                    (!props.user)
+                    (!user)
                     ? null
                     :<Link to="/profile" className="profile-container">
                         <div className="avatar">
                         {
-                            (!props.user.picture)
-                            ? props.user.fullName[0]
-                            : <img alt="Avatar" src={props.user.picture}></img>
+                            (!user.picture)
+                            ? user.fullName[0]
+                            : <img alt="Avatar" src={user.picture}></img>
                         }
                         </div>
-                    <Tooltip title={`${props.user.fullName}`} color="#00152a" >
+                    <Tooltip title={`${user.fullName}`} color="#00152a" >
                         <div className="name">
-                            {props.user.fullName}
+                            {user.fullName}
                         </div>
                         </Tooltip>
                     </Link>
