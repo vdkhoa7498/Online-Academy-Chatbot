@@ -41,6 +41,7 @@ import Categories from "../pages/admin/categories";
 import Course from "../pages/admin/courses";
 import Student from "../pages/admin/students";
 import Lecturer from "../pages/admin/lecturers";
+import SearchList from "../pages/searchList/SearchList";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -154,12 +155,15 @@ function RouterOutlet(props) {
 
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/courses/learning/:id", "/watch-list", "/my-courses",  "/profile", "/create-new-course"]}
+            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/courses/learning/:id", "/watch-list", "/my-courses",  "/profile", "/create-new-course", "/search"]}
           >
             <RouteLayout {...rest}>
               <Switch>
                 <Route exact path="/" {...rest}>
                   <Home />
+                </Route>
+                <Route exact path="/search">
+                  <SearchList/>
                 </Route>
                 <Route exact path="/create-new-course">
                   <PostCourse />
