@@ -4,13 +4,12 @@ import {
   Route,
   BrowserRouter as Router,
   Redirect,
-  Link
+  Link,
 } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { PrivateRoute } from "./privateRoute";
-import './styles.scss'
+import "./styles.scss";
 
 import {
   MenuUnfoldOutlined,
@@ -18,8 +17,8 @@ import {
   TeamOutlined,
   AppstoreOutlined,
   BookOutlined,
-  SolutionOutlined
-} from '@ant-design/icons';
+  SolutionOutlined,
+} from "@ant-design/icons";
 
 import HeaderBar from "../components/headerBar/HeaderBar";
 import HeaderMenu from "../components/headerMenu/HeaderMenu";
@@ -32,16 +31,21 @@ import ForgetPassword from "../pages/authentication/fogetPassword/ForgetPassword
 import CourseDetail from "../pages/courseDetail/CourseDetail";
 import CourseListCategory from "../pages/courseListCategory/CourseListCategory";
 import WatchList from "../pages/watchList/Watchlist";
-import Profile from '../pages/profile/Profile';
-import PostCourse from '../pages/postCourse/PostCourse';
+import Profile from "../pages/profile/Profile";
+import PostCourse from "../pages/postCourse/PostCourse";
 import Learning from "../pages/Leaning/Learning";
-import MyCourses from '../pages/myCourses/MyCourses';
+import MyCourses from "../pages/myCourses/MyCourses";
 
 import Categories from "../pages/admin/categories";
 import Course from "../pages/admin/courses";
 import Student from "../pages/admin/students";
 import Lecturer from "../pages/admin/lecturers";
 import SearchList from "../pages/searchList/SearchList";
+
+import AdminRoute from "./AdminRoute";
+import StudentRoute from "./StudentRoute";
+import LecturerRoute from "./LecturerRoute";
+import PrivateRoute from "./privateRoute";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -64,7 +68,7 @@ function RouteLayout(props) {
 
 function AdminRouteLayout(props) {
   const [collapsed, setCollapsed] = useState(false);
-  const [menuIndex, setMenuIndex] = useState(1)
+  const [menuIndex, setMenuIndex] = useState(1);
 
   return (
     <Layout className="private-layout-container">
@@ -74,7 +78,15 @@ function AdminRouteLayout(props) {
       <Layout>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="logo" />
-          <Menu theme="dark" mode="inline" onClick={(value) => { setMenuIndex(value.key); console.log(menuIndex) }} defaultSelectedKeys={['1']}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            onClick={(value) => {
+              setMenuIndex(value.key);
+              console.log(menuIndex);
+            }}
+            defaultSelectedKeys={["1"]}
+          >
             <Menu.Item key="1">
               <Link to="/admin/categories">
                 <AppstoreOutlined />
@@ -102,16 +114,24 @@ function AdminRouteLayout(props) {
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 15, display: "flex", }}>
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: 'trigger',
-              onClick: () => { setCollapsed(!collapsed) },
-            })}
+          <Header
+            className="site-layout-background"
+            style={{ padding: 15, display: "flex" }}
+          >
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => {
+                  setCollapsed(!collapsed);
+                },
+              }
+            )}
           </Header>
           <Content
             className="site-layout-background"
             style={{
-              margin: '24px 16px',
+              margin: "24px 16px",
               padding: 24,
               minHeight: 775,
             }}
@@ -120,34 +140,25 @@ function AdminRouteLayout(props) {
           </Content>
         </Layout>
       </Layout>
-
     </Layout>
   );
 }
 
 function RouterOutlet(props) {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
+
   const { ...rest } = props;
   rest.isAuthenticated = isAuthenticated;
-
 
   return (
     <Suspense fallback={null}>
       <Router>
         <Switch>
           <Route exact path="/register">
-            {
-              (!isAuthenticated)
-                ? <Register />
-                : <Redirect to="/" />
-            }
+            {!isAuthenticated ? <Register /> : <Redirect to="/" />}
           </Route>
           <Route exact path="/login">
-            {
-              (!isAuthenticated)
-                ? <Login />
-                : <Redirect to="/" />
-            }
+            {!isAuthenticated ? <Login /> : <Redirect to="/" />}
           </Route>
           <Route exact path="/forget-password">
             <ForgetPassword />
@@ -155,7 +166,15 @@ function RouterOutlet(props) {
 
           <Route
             exact
-            path={["/", "/courses/:id", "/categories/:id", "/courses/category/:categoryId", "/courses/learning/:id", "/watch-list", "/my-courses",  "/profile", "/create-new-course", "/search"]}
+            path={[
+              "/",
+              "/courses/:id",
+              "/categories/:id",
+              "/courses/category/:categoryId",
+              "/courses/learning/:id",
+              "/profile",
+              "/search",
+            ]}
           >
             <RouteLayout {...rest}>
               <Switch>
@@ -163,10 +182,7 @@ function RouterOutlet(props) {
                   <Home />
                 </Route>
                 <Route exact path="/search">
-                  <SearchList/>
-                </Route>
-                <Route exact path="/create-new-course">
-                  <PostCourse />
+                  <SearchList />
                 </Route>
                 <Route exact path="/courses/:id">
                   <CourseDetail />
@@ -180,50 +196,50 @@ function RouterOutlet(props) {
                 <Route exact path="/categories/:id">
                   <CourseListCategory />
                 </Route>
-                <Route exact path="/watch-list">
-                {
-                    (isAuthenticated)
-                    ? <WatchList />
-                    : <Redirect to="/"/>
-                  }
-                </Route>
-                <Route exact path="/my-courses">
-                {
-                    (isAuthenticated)
-                    ? <MyCourses />
-                    : <Redirect to="/"/>
-                  }
-                </Route>
-                <Route exact path="/profile">      
-                  {
-                    (isAuthenticated)
-                    ? <Profile />
-                    : <Redirect to="/"/>
-                  }
-                </Route>
-
+                <PrivateRoute exact path="/profile">
+                  <Profile />
+                </PrivateRoute>
               </Switch>
             </RouteLayout>
           </Route>
-          <Route
+
+          <StudentRoute exact path={["/watch-list", "/my-courses"]}>
+            <RouteLayout {...rest}>
+              <Switch>
+                <Route exact path="/watch-list" component={WatchList} />
+                <Route exact path="/my-courses" component={MyCourses} />
+              </Switch>
+            </RouteLayout>
+          </StudentRoute>
+
+          <LecturerRoute exact path={["/create-new-course"]}>
+            <RouteLayout {...rest}>
+              <Switch>
+                <Route exact path="/create-new-course">
+                  <PostCourse />
+                </Route>
+              </Switch>
+            </RouteLayout>
+          </LecturerRoute>
+
+          <AdminRoute
             exact
-            path={["/admin/categories", "/admin/courses", "/admin/students", "/admin/lecturers"]}
+            path={[
+              "/admin/categories",
+              "/admin/courses",
+              "/admin/students",
+              "/admin/lecturers",
+            ]}
           >
             <AdminRouteLayout>
               <Switch>
                 <Route exact path="/admin/categories" component={Categories} />
-              </Switch>
-              <Switch>
                 <Route exact path="/admin/courses" component={Course} />
-              </Switch>
-              <Switch>
                 <Route exact path="/admin/students" component={Student} />
-              </Switch>
-              <Switch>
                 <Route exact path="/admin/lecturers" component={Lecturer} />
               </Switch>
             </AdminRouteLayout>
-          </Route>
+          </AdminRoute>
           <Route path="*">
             <NotFound />
           </Route>
@@ -234,7 +250,7 @@ function RouterOutlet(props) {
 }
 
 const mapState = (state) => ({
-  user: state.auth.user
+  user: state.auth.user,
 });
 const mapDispatch = (dispatch) =>
   bindActionCreators(

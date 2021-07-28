@@ -17,71 +17,76 @@ const getAllCourses = async () => {
         from: 'categories',
         localField: 'categoryId',
         foreignField: '_id',
-        as: 'category'
-      }
-    }
+        as: 'category',
+      },
+    },
   ]);
 };
 
 const queryCourses = async (filter, options) => {
-  if (filter.search){
-    filter.$text= {$search: filter.search}
-    delete filter.search
+  if (filter.search) {
+    filter.$text = { $search: filter.search };
+    delete filter.search;
   }
-  if (filter.rateScoreFilter){
-    filter.rateScore = {$gte: filter.rateScoreFilter}
-    delete filter.rateScoreFilter
+  if (filter.rateScoreFilter) {
+    filter.rateScore = { $gte: filter.rateScoreFilter };
+    delete filter.rateScoreFilter;
   }
-  if (filter.priceFilter){
-    if (filter.priceFilter ==0){
-      filter.price = 0
+  if (filter.priceFilter) {
+    if (filter.priceFilter == 0) {
+      filter.price = 0;
+    } else {
+      filter.price = { $ne: 0 };
     }
-    else {
-      filter.price = {$ne: 0}
-    }
   }
-  console.log(filter)
+  console.log(filter);
   const courses = await Course.paginate(filter, options);
   return courses;
 };
 
 const queryCoursesByCategoryId = async (filter, options) => {
+  if (filter.categoryId) {
+    const categories = await Category.find({ parentId: filter.categoryId });
+    if (categories.length > 0) {
+      filter.categoryId = { $in: [...categories] };
+    }
+  }
   const courses = await Course.paginate(filter, options);
   return courses;
 };
 
 const getCourseById = async (courseId) => {
-  const course =  await Course.findById(courseId);
+  const course = await Course.findById(courseId);
   return course;
 };
 
 const getLectureListByCourseId = async (courseId) => {
-  const lectureList = await Video.find({ courseId: courseId});
+  const lectureList = await Video.find({ courseId: courseId });
   return lectureList;
-}
+};
 
 const getOtherCourses = async (currentCourseId, categoryId) => {
-  const otherCourses = await Course.find({ categoryId: categoryId, courseId: { $ne: currentCourseId }});
+  const otherCourses = await Course.find({ categoryId: categoryId, courseId: { $ne: currentCourseId } });
   return otherCourses;
-}
+};
 
 const addView = async (courseId) => {
-  const course = await Course.findOne({_id: courseId})
+  const course = await Course.findOne({ _id: courseId });
   course.view = course.view + 1;
   await course.save();
   return course;
 };
 
-const getVideosOfCourse = async(courseId) => {
+const getVideosOfCourse = async (courseId) => {
   const videos = await Video.find({ courseId });
 
   return videos;
-}
+};
 
-const findWithListId = async(coursesId) => {
+const findWithListId = async (coursesId) => {
   const courses = await Course.find({
-    '_id': { $in: coursesId}
-  })
+    _id: { $in: coursesId },
+  });
 
   const cloneCourses = JSON.parse(JSON.stringify(courses));
 
@@ -91,13 +96,13 @@ const findWithListId = async(coursesId) => {
   }
 
   return cloneCourses;
-}
+};
 
 const deleteCourse = async (courseId) => {
   await videoService.deleteByCourseId(courseId);
   await Course.deleteOne({ _id: courseId });
   return 'success';
-}
+};
 
 module.exports = {
   createCourse,
@@ -110,5 +115,5 @@ module.exports = {
   getLectureListByCourseId,
   getOtherCourses,
   queryCoursesByCategoryId,
-  deleteCourse
+  deleteCourse,
 };
