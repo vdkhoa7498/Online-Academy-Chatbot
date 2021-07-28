@@ -108,7 +108,7 @@ const HeaderBar = (props) => {
                     </Button>
                   </Link>
                   <div className="dashboard">
-                    <Link to="/admin/categories">
+                    <Link to="/lecturer/create-new-course">
                       <PicLeftOutlined /> Lecturer Dashboard
                     </Link>
                   </div>
