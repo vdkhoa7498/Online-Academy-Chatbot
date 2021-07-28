@@ -111,6 +111,19 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const sendOtp = catchAsync(async (req, res) => {
+  await authService.sendOtp(req.body)
+  res.status(httpStatus.OK).send({
+    success: true,
+    otpExpirationSeconds: config.otpExpirationSeconds,
+  })
+});
+
+const validateOtp = catchAsync(async (req, res) => {
+  await authService.validateOtp(req.body)
+  res.status(httpStatus.OK).send({success: true})
+});
+
 module.exports = {
   register,
   login,
@@ -123,5 +136,7 @@ module.exports = {
   sendVerificationEmail,
   verifyEmail,
   getProfile,
-  editProfile
+  editProfile,
+  sendOtp,
+  validateOtp,
 };

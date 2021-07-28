@@ -18,6 +18,8 @@ router.post('/send-verification-email', auth(), authController.sendVerificationE
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 router.post('/loginwithgoogle', authController.loginWithGoogle);
 router.post('/loginwithfacebook', authController.loginWithFacebook);
+router.post('/send-otp', validate(authValidation.sendOtp), authController.sendOtp);
+router.post('/validate-otp', validate(authValidation.validateOtp), authController.validateOtp);
 
 module.exports = router;
 
