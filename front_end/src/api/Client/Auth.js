@@ -29,12 +29,25 @@ export function AuthHttpService(options) {
 
     return options.httpService.post(baseUrl, { userInfoLogin });
   }
+
+  function sendOtp(form) {
+    const baseUrl = options.httpService.getUrl("auth/send-otp");
+    return options.httpService.post(baseUrl, form);
+  }
+
+  function validateOtp(form) {
+    const baseUrl = options.httpService.getUrl("auth/validate-otp");
+    return options.httpService.post(baseUrl, form);
+  }
+
   return {
     register,
     login,
     loginWithGoogle,
     loginWithFacebook,
     getProfile,
-    editProfile
+    editProfile,
+    sendOtp,
+    validateOtp
   };
 }
