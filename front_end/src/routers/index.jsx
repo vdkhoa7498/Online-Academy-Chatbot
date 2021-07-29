@@ -144,6 +144,72 @@ function AdminRouteLayout(props) {
   );
 }
 
+function LecturerRouteLayout(props) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [menuIndex, setMenuIndex] = useState(1);
+
+  return (
+    <Layout className="private-layout-container">
+      <Header className="header">
+        <HeaderBar />
+      </Header>
+      <Layout>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            mode="inline"
+            onClick={(value) => {
+              setMenuIndex(value.key);
+              console.log(menuIndex);
+            }}
+            defaultSelectedKeys={["1"]}
+          >
+            <Menu.Item key="1">
+              <Link to="/lecturer/create-new-course">
+                <AppstoreOutlined />
+                <span>Khoá học của tôi</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/lecturer/create-new-course">
+                <BookOutlined />
+                <span>Tạo khoá học mới</span>
+              </Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout className="site-layout">
+          <Header
+            className="site-layout-background"
+            style={{ padding: 15, display: "flex" }}
+          >
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => {
+                  setCollapsed(!collapsed);
+                },
+              }
+            )}
+          </Header>
+          <Content
+            className="site-layout-background"
+            style={{
+              margin: "24px 16px",
+              padding: 24,
+              minHeight: 775,
+            }}
+          >
+            {props.children}
+          </Content>
+        </Layout>
+      </Layout>
+    </Layout>
+  );
+}
+
 function RouterOutlet(props) {
   const isAuthenticated = localStorage.getItem("isAuthenticated");
 
@@ -212,14 +278,14 @@ function RouterOutlet(props) {
             </RouteLayout>
           </StudentRoute>
 
-          <LecturerRoute exact path={["/create-new-course"]}>
-            <RouteLayout {...rest}>
+          <LecturerRoute exact path={["/lecturer/create-new-course"]}>
+            <LecturerRouteLayout>
               <Switch>
-                <Route exact path="/create-new-course">
+                <Route exact path="/lecturer/create-new-course">
                   <PostCourse />
                 </Route>
               </Switch>
-            </RouteLayout>
+            </LecturerRouteLayout>
           </LecturerRoute>
 
           <AdminRoute

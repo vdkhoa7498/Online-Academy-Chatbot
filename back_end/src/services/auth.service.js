@@ -2,9 +2,12 @@ const httpStatus = require('http-status');
 const tokenService = require('./token.service');
 const userService = require('./user.service');
 const Token = require('../models/token.model');
+const Otp = require('../models/otp.model')
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-
+const config= require('../config/config')
+const otpGenerator = require('otp-generator');
+const { sendOtpEmail } = require('./email.service')
 /**
  * Login with username and password
  * @param {string} email
@@ -90,10 +93,51 @@ const verifyEmail = async (verifyEmailToken) => {
   }
 };
 
+
+const sendOtp = async ({email}) => {
+  await Otp.deleteMany({ email: email });
+
+  const currentTime = Date.now()
+  const expires = new Date( currentTime + config.otpExpirationSeconds*1000 );
+
+  const newOtp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+
+  const otp = await Otp.create({
+    email: email,
+    otp: newOtp,
+    expires: expires
+  })
+
+  await sendOtpEmail(otp)
+  return otp;
+};
+
+/**
+* Send reset password email
+* @param {string} otp
+* @param {string} authenticationKey
+* @returns {Promise}
+*/
+
+const validateOtp = async ({email, otp}) =>{
+  const validOtp = await Otp.findOne({otp: otp, email: email})
+  if (!validOtp){
+    throw new ApiError(httpStatus.NOT_FOUND, 'Email or OTP not valid!')
+  }
+  console.log(new Date(validOtp.expires).getTime() ,Date.now())
+  if (new Date(validOtp.expires).getTime() < Date.now()){
+    throw new ApiError(httpStatus.BAD_REQUEST, 'This Otp has expired!')
+  }
+  await Otp.deleteMany({ email: email })
+  return true
+}
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
   refreshAuth,
   resetPassword,
   verifyEmail,
+  sendOtp,
+  validateOtp,
 };

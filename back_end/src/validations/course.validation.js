@@ -8,6 +8,7 @@ const createCourse = {
     description: Joi.string().required(),
     shortDescription: Joi.string().required(),
     categoryId: Joi.string().required().custom(objectId),
+    lecturerId: Joi.string().required().custom(objectId),
     price: Joi.number(),
     voucher: Joi.number(),
     status: Joi.string(),
