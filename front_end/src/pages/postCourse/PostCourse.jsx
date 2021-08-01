@@ -398,11 +398,11 @@ const PostCourse = ({ categories }) => {
                               ".mp4, .mkv, .mpeg-4, mpeg-2, .avi, .mov, .flv, .wmv, .webm"
                             }
                             beforeUpload={() => false}
-                            listType="picture"
-                            fileList={videos}
-                            onChange={({ fileList }) => {
-                              setVideos([...videos, fileList]);
-                            }}
+                            // listType="picture"
+                            // fileList={videos}
+                            // onChange={({ fileList }) => {
+                            //   setVideos([...videos, fileList]);
+                            // }}
                             maxCount={1}
                           >
                             <Button icon={<VerticalAlignTopOutlined />}>
