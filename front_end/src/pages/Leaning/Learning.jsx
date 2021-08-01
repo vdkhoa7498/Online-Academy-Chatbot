@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react'
 import { useParams, Redirect } from 'react-router-dom'
 import { Player } from 'video-react';
 import ReactPlayer from 'react-player'
-import { Rate, Comment, Tooltip, Avatar, Divider, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
+import {  PageHeader, List, Pagination, Row, Col, Space, Image, Button } from 'antd'
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
@@ -10,10 +10,12 @@ import "video-react/dist/video-react.css";
 
 import { httpClient } from '../../api'
 import './styles.scss';
+import ReviewModal from './components/ReviewModal';
 
 
  const  Learning = ({user}) => {
   const [videos, setVideos] = useState([])
+  const [visible, setVisible] = React.useState(false);
 
   const [video, setVideo] = useState({});
 
@@ -33,6 +35,18 @@ import './styles.scss';
       setVideo(video);
     
   }
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setVisible(false);
+  };
+
+  
+
   if (!user){
     <Redirect to="/"/>
   }
@@ -42,6 +56,15 @@ import './styles.scss';
 
   return (
     <div>
+      <div className="video-header">
+      {/* <PageHeader
+          className="site-page-header"
+          title={video.title}
+        /> */}
+        <header className="video-title">{video.title}</header>
+      <Button className="review" color="secondary" onClick={showModal}>Đánh giá khoá học</Button>
+
+      </div>
       <Row className="video">
         <Col span={16}>
           <Player
@@ -64,6 +87,7 @@ import './styles.scss';
           </div>
         </Col>
       </Row>
+      <ReviewModal visible={visible} setVisible={setVisible} courseId={param.id} onCancel={handleCancel} />
     </div>
   )
 }
