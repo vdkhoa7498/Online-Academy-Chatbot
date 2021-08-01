@@ -24,7 +24,6 @@ export default function ReviewModal({ visible, courseId, setVisible, confirmLoad
       rate
     }
     const result = await httpClient.rate.createRate(courseId, content);
-    console.log("result",result);
     if (result)
       toast("Đánh giá thành công");
     else 
