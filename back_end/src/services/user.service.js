@@ -31,6 +31,18 @@ const editProfile = async ({ email, fullName }) => {
 
 }
 
+const changePassword = async (email, oldPassword, newPassword) => {
+  const user = await User.findOne({ email: email });
+  if (!user || !(await user.isPasswordMatch(oldPassword))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Vui lòng nhập đúng mật khẩu cũ');
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  return user;
+}
+
 const registerCourse = async(id, user) => {
   const result = user.registeredCourses.find(x => x===id);
   if (!result){
@@ -159,6 +171,7 @@ module.exports = {
   createUser,
   getProfile,
   editProfile,
+  changePassword,
   registerCourse,
   addToFavorite,
   removeRegister,

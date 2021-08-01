@@ -27,6 +27,7 @@ import Home from "../pages/home/Home";
 import NotFound from "../pages/notFound/NotFound";
 import Register from "../pages/authentication/register/Register";
 import Login from "../pages/authentication/login/Login";
+import ChangePassword from "../pages/authentication/changePassword/ChangePassword";
 import ForgetPassword from "../pages/authentication/fogetPassword/ForgetPassword";
 import CourseDetail from "../pages/courseDetail/CourseDetail";
 import CourseListCategory from "../pages/courseListCategory/CourseListCategory";
@@ -228,6 +229,9 @@ function RouterOutlet(props) {
           </Route>
           <Route exact path="/forget-password">
             <ForgetPassword />
+          </Route>
+          <Route exact path="/change-password">
+            <ChangePassword />
           </Route>
 
           <Route
