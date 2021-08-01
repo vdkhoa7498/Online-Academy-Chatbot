@@ -1333,6 +1333,11 @@ bluebird@3.5.1:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha512-MKiLiV+I1AA596t9w1sQJ8jkiSr5+ZKi0WKrYGUn6d1Fx+Ij4tIj+m2WMQSGczs5jZVxV339chE8iwk6F64wjA==
 
+bluebird@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
+
 bodec@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/bodec/-/bodec-0.1.0.tgz#bc851555430f23c9f7650a75ef64c6a94c3418cc"
@@ -5160,6 +5165,11 @@ optionator@^0.9.1:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
     word-wrap "^1.2.3"
+
+otp-generator@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/otp-generator/-/otp-generator-2.0.1.tgz#c7bb1e2fd5e030dc18fb84c1076c89efb83376cf"
+  integrity sha512-NqeZDT3DW1ajeS6I0qRJcjvrvTHMkS/bAbmS1KoeWx0t8exuZEva01cRAOheolNZa7IUV86Wl/0msB07eq5Spg==
 
 p-cancelable@^1.0.0:
   version "1.1.0"

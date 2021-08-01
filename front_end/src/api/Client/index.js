@@ -4,6 +4,7 @@ import { CategoryHttpService } from "./Category";
 import { CourseHttpService } from "./Course";
 import { UserHttpService } from "./User";
 import { VideosHttpService } from "./Video";
+import { RateHttpService } from './Rate'
 
 export function httpClientService(options) {
   const httpService = HttpService(options);
@@ -14,5 +15,6 @@ export function httpClientService(options) {
     course: CourseHttpService({ httpService }),
     user: UserHttpService({ httpService }),
     video: VideosHttpService({ httpService }),
+    rate: RateHttpService({ httpService })
   }
 }

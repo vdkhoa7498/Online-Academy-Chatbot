@@ -122,6 +122,8 @@ const CourseDetail = ({ user }) => {
     const [isLike, setIsLike] = useState(false);
     const [isRegister, setIsRegister] = useState(false);
 
+
+
     const param = useParams()
 
     useEffect(() => {
