@@ -5,7 +5,6 @@ const Rate = require('../models/rate.model');
 const createRate = async (userId, courseId, content) => {
   const rate = await Rate.findOne({courseId: courseId, userId: userId })
   if (rate) {
-    console.log("rate", rate);
     return null;
   }
   const newRate = new Rate();

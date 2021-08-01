@@ -129,11 +129,8 @@ export function logout({ onSuccess, onFailure }) {
 export function changePassword({ form, onSuccess, onFailure }) {
   return async (dispatch) => {
     try {
-      dispatch(clearAuthMessage());
-      const result = await httpClient.user.changePassword(form);
-      if (result) {
-        onSuccess();
-      }
+      const result = await httpClient.auth.changePassword(form);
+      onSuccess();
     } catch (error) {
       dispatch(setAuthMessage(error.message || error));
       onFailure(error);

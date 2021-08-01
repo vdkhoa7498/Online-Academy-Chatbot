@@ -4,6 +4,11 @@ export function AuthHttpService(options) {
     return options.httpService.post(baseUrl, form);
   }
 
+  function changePassword(form){
+    const baseUrl = options.httpService.getUrl("auth/change-password");
+    return options.httpService.post(baseUrl, form);
+  }
+
   function login({ email, password }) {
     const baseUrl = options.httpService.getUrl("auth/login");
     return options.httpService.post(baseUrl, { email, password });
@@ -42,6 +47,7 @@ export function AuthHttpService(options) {
 
   return {
     register,
+    changePassword,
     login,
     loginWithGoogle,
     loginWithFacebook,

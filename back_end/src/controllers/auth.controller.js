@@ -15,6 +15,13 @@ const register = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const user = await userService.changePassword(req.user.email, req.body.oldPassword, req.body.newPassword);
+
+  console.log("user controller", user);
+  res.status(204).send(user);
+})
+
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
@@ -126,6 +133,7 @@ const validateOtp = catchAsync(async (req, res) => {
 
 module.exports = {
   register,
+  changePassword,
   login,
   loginWithGoogle,
   loginWithFacebook,

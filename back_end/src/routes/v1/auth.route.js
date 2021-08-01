@@ -7,6 +7,7 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
+router.post('/change-password', auth(), validate(authValidation.changePassword), authController.changePassword);
 router.post('/login', validate(authValidation.login), authController.login);
 router.get('/me', auth(), authController.getProfile);
 router.post('/edit-profile', auth(), authController.editProfile);
