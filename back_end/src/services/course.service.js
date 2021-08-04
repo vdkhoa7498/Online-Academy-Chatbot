@@ -18,8 +18,8 @@ const getAllCourses = async () => {
         localField: 'categoryId',
         foreignField: '_id',
         as: 'category',
-      },
-    },
+      }
+    }
   ]);
 };
 

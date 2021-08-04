@@ -86,32 +86,32 @@ const courseEx = {
     rates: [
         {
             user: {
-                id: 0,
+                _id: 0,
                 avatar: "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
-                name: "abc"
+                fullName: "abc"
             },
             content: "Hay qua!",
-            rateScore: 5,
+            point: 5,
             createdAt: 1621611357961
         },
         {
             user: {
-                id: 1,
+                _id: 1,
                 avatar: "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
-                name: "Vivi"
+                fullName: "Vivi"
             },
             content: "Hay qua!",
-            rateScore: 4,
+            point: 4,
             createdAt: 1621611343961
         },
         {
             user: {
-                id: 1,
+                _id: 2,
                 avatar: "https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg",
-                name: "Khung long con"
+                fullName: "Khung long con"
             },
             content: "So so",
-            rateScore: 3,
+            point: 3,
             createdAt: 1621611351261
         }
     ]
@@ -129,7 +129,6 @@ const CourseDetail = ({ user }) => {
     useEffect(() => {
         const fetchCourseDetail = async () => {
             const course = await httpClient.course.getCourseById(param.id);
-            console.log(course);
             setCourse(course);
         }
         const fetchUserCourseInfo = async () => {
@@ -329,16 +328,16 @@ const CourseDetail = ({ user }) => {
                 renderItem={item => (
                     <li>
                         <Comment
-                            author={<b style={{ color: 'black' }}>{item.user.name}</b>}
+                            author={<b style={{ color: 'black' }}>{item.user[0].fullName}</b>}
                             avatar={
                                 <Avatar
-                                    src={item.user.avatar}
+                                    src={item.user[0].avatar}
                                     alt={course.title}
                                 />
                             }
                             content={
                                 <div>
-                                    <Rate allowHalf value={item.rateScore} disabled />
+                                    <Rate allowHalf value={item.point} disabled />
                                     <p>{item.content}</p>
                                 </div>
                             }
@@ -352,7 +351,7 @@ const CourseDetail = ({ user }) => {
                 )}
             />
             <br />
-            <Pagination defaultCurrent={1} total={50} />
+            {/* <Pagination defaultCurrent={1} total={50} /> */}
             <Divider />
         </div>
     )

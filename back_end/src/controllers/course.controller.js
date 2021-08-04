@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
-const { courseService } = require('../services/index');
+const { courseService, rateService } = require('../services/index');
 
 const getCourses = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'category', 'search', 'rateScoreFilter', 'priceFilter']);
@@ -34,6 +34,15 @@ const getCourseById = catchAsync(async (req, res) => {
   // Other courses
   const otherCourses = await courseService.getOtherCourses(course.categoryId);
   course.otherCourses = otherCourses;
+
+  // Rates
+  let rates = await rateService.getRateListByCourseId(req.params.courseId);
+  course.rates = rates;
+  let rateScore = 0;
+  rates.forEach(rate => { rateScore += rate.point});
+  rateScore /= rates.length;
+  course.rateScore = rateScore;
+  course.ratings = rates.length;
 
   res.send(course);
 });
