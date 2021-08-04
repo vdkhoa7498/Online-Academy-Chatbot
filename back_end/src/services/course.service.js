@@ -17,7 +17,15 @@ const getAllCourses = async () => {
         from: 'categories',
         localField: 'categoryId',
         foreignField: '_id',
-        as: 'category',
+        as: 'category'
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'lecturerId',
+        foreignField: '_id',
+        as: 'lecturer'
       }
     }
   ]);

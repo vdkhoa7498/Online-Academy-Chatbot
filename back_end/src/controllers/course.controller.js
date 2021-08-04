@@ -11,8 +11,8 @@ const getCourses = catchAsync(async (req, res) => {
 });
 
 const getAllCourses = catchAsync(async (req, res) => {
-  const allCategories = await courseService.getAllCourses();
-  res.send(allCategories);
+  const allCourses = await courseService.getAllCourses();
+  res.send(allCourses);
 })
 
 const getCoursesByCategoryId = catchAsync(async (req, res) => {
