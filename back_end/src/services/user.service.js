@@ -167,6 +167,10 @@ const editStudent = async (studentBody) => {
   return student;
 }
 
+const countStudentsByCourseId = async (courseId) => {
+  return await User.countDocuments({ registeredCourses: courseId });
+}
+
 module.exports = {
   createUser,
   getProfile,
@@ -184,4 +188,5 @@ module.exports = {
   editUser,
   editStudent,
   getInfoCourse,
+  countStudentsByCourseId
 };

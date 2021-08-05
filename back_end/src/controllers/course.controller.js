@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
-const { courseService, rateService } = require('../services/index');
+const { courseService, rateService, userService } = require('../services/index');
 
 const getCourses = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'category', 'search', 'rateScoreFilter', 'priceFilter']);
@@ -26,6 +26,11 @@ const getCourseById = catchAsync(async (req, res) => {
   // Basic info
   let course = await courseService.getCourseById(req.params.courseId);
   course = course.toObject();
+
+  // Count students
+  let countStudents = await userService.countStudentsByCourseId(req.params.courseId);
+  course.countStudents = countStudents;
+  console.log(countStudents);
 
   // Lectures
   const lectures = await courseService.getLectureListByCourseId(req.params.courseId);

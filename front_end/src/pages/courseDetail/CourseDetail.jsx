@@ -190,7 +190,7 @@ const CourseDetail = ({ user }) => {
                     <div style={{ fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>{course.shortDescription}</div>
                     <div dangerouslySetInnerHTML={{ __html: course.description }} />
                     <div>
-                        {course.rateScore} <Rate allowHalf value={course.rateScore} disabled /> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.studentNumber} học viên
+                        {course.rateScore} <Rate allowHalf value={course.rateScore} disabled /> ({course.ratings} đánh giá) <TeamOutlined className="student-number" /> {course.countStudents} học viên
                     </div>
                     <div>
                         <CalendarOutlined /> Cập nhật lần cuối: {new Date(course.updatedAt).toUTCString()}
