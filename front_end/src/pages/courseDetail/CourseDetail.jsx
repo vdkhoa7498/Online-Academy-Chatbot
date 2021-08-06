@@ -132,10 +132,10 @@ const CourseDetail = ({ user }) => {
             console.log(course);
             setCourse(course);
         }
+        
         const fetchUserCourseInfo = async () => {
             try {
                 const result = await httpClient.user.getInfoCourse(param.id);
-                console.log("result", result);
                 setIsLike(result.isLike);
                 setIsRegister(result.isRegister);
             } catch (error) {
@@ -144,23 +144,26 @@ const CourseDetail = ({ user }) => {
         }
 
         fetchCourseDetail();
-        fetchUserCourseInfo();
 
-    }, [param.id])
+        if (user)
+            fetchUserCourseInfo();
+
+    }, [param.id, user])
 
     const handleRegisterCourse = async () => {
-        await httpClient.user.registerCourse(course.id).catch(error => console.log("Fail to register course"));
+        console.log("course", course._id)
+        await httpClient.user.registerCourse(course._id).catch(error => console.log("Fail to register course"));
         setIsRegister(true);
     }
 
     const handAddtoFavoriteList = async () => {
-        await httpClient.user.addToFavorite(course.id).catch(error => console.log("Fail to add to favorite course"));
+        await httpClient.user.addToFavorite(course._id).catch(error => console.log("Fail to add to favorite course"));
         setIsLike(true)
     }
 
     const handleDislikeCourse = async () => {
         try {
-            await httpClient.user.removeFavoriteCourse(course.id);
+            await httpClient.user.removeFavoriteCourse(course._id);
             setIsLike(false)
 
         }
@@ -170,7 +173,7 @@ const CourseDetail = ({ user }) => {
     }
     const handleUnRegisterCourses = async (id) => {
         try {
-            await httpClient.user.removeRegisterCourse(course.id);
+            await httpClient.user.removeRegisterCourse(course._id);
             setIsRegister(false);
 
         }
