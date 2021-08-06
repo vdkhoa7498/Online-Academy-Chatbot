@@ -132,10 +132,10 @@ const CourseDetail = ({ user }) => {
             console.log(course);
             setCourse(course);
         }
+        
         const fetchUserCourseInfo = async () => {
             try {
                 const result = await httpClient.user.getInfoCourse(param.id);
-                console.log("result", result);
                 setIsLike(result.isLike);
                 setIsRegister(result.isRegister);
             } catch (error) {
@@ -144,7 +144,8 @@ const CourseDetail = ({ user }) => {
         }
 
         fetchCourseDetail();
-        fetchUserCourseInfo();
+        if (user)
+            fetchUserCourseInfo();
 
     }, [param.id])
 
