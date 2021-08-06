@@ -18,7 +18,6 @@ const register = catchAsync(async (req, res) => {
 const changePassword = catchAsync(async (req, res) => {
   const user = await userService.changePassword(req.user.email, req.body.oldPassword, req.body.newPassword);
 
-  console.log("user controller", user);
   res.status(204).send(user);
 })
 
@@ -43,7 +42,7 @@ const loginWithGoogle = catchAsync(async (req, res) => {
     const newUser = await userService.createUser({
       email,
       fullName: name,
-      password: email + config.jwt.secret,
+      password: email + config.jwt.secret + 1232,
     });
     const tokens = await tokenService.generateAuthTokens(newUser);
     return res.status(httpStatus.CREATED).send({ user: newUser, tokens });
