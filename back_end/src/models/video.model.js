@@ -15,6 +15,12 @@ const videoSchema = mongoose.Schema({
     type: String, 
     required: true 
   },
+  lastWatchTime: [
+    { 
+      userId: mongoose.SchemaTypes.ObjectId, 
+      time: String,
+    }
+  ]
 },
 {
   timestamps: true,
