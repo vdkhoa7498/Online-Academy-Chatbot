@@ -4,13 +4,13 @@ const { objectId } = require('./custom.validation');
 const video = Joi.object().keys({
   title: Joi.string().required(),
   url: Joi.string().required(),
-})
+});
 
 const createVideos = {
-    body: Joi.object().keys({
-      courseId: Joi.string().required().custom(objectId),
-      videoList: Joi.array().items(video).required(),
-    })
+  body: Joi.object().keys({
+    courseId: Joi.string().required().custom(objectId),
+    videoList: Joi.array().items(video).required(),
+  }),
 };
 
 const getVideos = {
@@ -22,7 +22,16 @@ const getVideos = {
   }),
 };
 
+const setCurrentTime = {
+  body: Joi.object().keys({
+    videoId: Joi.string().required().custom(objectId),
+    userId: Joi.string().required().custom(objectId),
+    currentTime: Joi.number().required(),
+  }),
+};
+
 module.exports = {
   createVideos,
   getVideos,
+  setCurrentTime,
 };
