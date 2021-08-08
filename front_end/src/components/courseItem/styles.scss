@@ -9,6 +9,7 @@
   }
 
   .content-item {
+    color: Black;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -18,13 +19,23 @@
     width: 100%;
     background-color: white;
     font-size: 14px;
-    .title {
-      font-weight: bold;
-      margin-right: 10px;
-    }
-    .value {
-      font-size: 20px;
-      font-weight: 600px;
+    .content-detail {
+      color: Black;
+      display: flex;
+      justify-content: flex-start;
+      .title {
+        // display: flex;
+        // justify-content: flex-start;
+        color: Black;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .value {
+        color: Black;
+
+        font-size: 20px;
+        font-weight: 600px;
+      }
     }
   }
   .btn-remove-courses {
