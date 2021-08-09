@@ -4,7 +4,7 @@ const pick = require('../utils/pick');
 const { courseService } = require('../services/index');
 
 const getCourses = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['title', 'category', 'search', 'rateScoreFilter', 'priceFilter']);
+  const filter = pick(req.query, ['title', 'category', 'lecturerId', 'search', 'rateScoreFilter', 'priceFilter']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const courses = await courseService.queryCourses(filter, options);
   res.send(courses);
@@ -13,7 +13,7 @@ const getCourses = catchAsync(async (req, res) => {
 const getAllCourses = catchAsync(async (req, res) => {
   const allCategories = await courseService.getAllCourses();
   res.send(allCategories);
-})
+});
 
 const getCoursesByCategoryId = catchAsync(async (req, res) => {
   const filter = pick(req.params, ['categoryId']);
@@ -52,12 +52,12 @@ const addView = catchAsync(async (req, res) => {
 const deleteCourse = catchAsync(async (req, res) => {
   const message = await courseService.deleteCourse(req.params.courseId);
   res.status(httpStatus.OK).send(message);
-})
+});
 
 const getVideoOfCourse = catchAsync(async (req, res) => {
-  const videos = await courseService.getVideosOfCourse(req.params.courseId)
-  res.status(httpStatus.OK).send(videos)
-})
+  const videos = await courseService.getVideosOfCourse(req.params.courseId);
+  res.status(httpStatus.OK).send(videos);
+});
 
 module.exports = {
   getCourses,
@@ -67,5 +67,5 @@ module.exports = {
   getCoursesByCategoryId,
   getCourseById,
   deleteCourse,
-  getVideoOfCourse
+  getVideoOfCourse,
 };
