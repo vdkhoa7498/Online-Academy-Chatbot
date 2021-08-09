@@ -4,7 +4,7 @@ const pick = require('../utils/pick');
 const { videoService } = require('../services/index');
 
 const getVideos = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['title', 'category']);
+  const filter = pick(req.query, ['courseId']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const courses = await videoService.queryVideos(filter, options);
   res.send(courses);
