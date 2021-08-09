@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Button,
-  Table,
-  message,
-  Divider,
-  Popconfirm,
-  Row,
-  Col,
-  Drawer,
-  Rate
-} from "antd";
-import { Markup } from "interweave";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Card, Button, Table, message, Popconfirm } from "antd";
+import { Link } from "react-router-dom";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { httpClient } from "../../../api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,18 +9,8 @@ import "./styles.scss";
 import DetailCourse from "./DetailCourse";
 const { Column } = Table;
 
-const DescriptionItem = ({ title, content }) => (
-  <div className="site-description-item-profile-wrapper">
-    <p className="site-description-item-profile-p-label">
-      <strong>{title}:</strong>
-    </p>
-    {content}
-  </div>
-);
-
 const ListCourse = (props) => {
   const { categories } = props;
-  const user = JSON.parse(localStorage.getItem("user"));
   let categoryNameList = [];
   categories.map((item) => {
     categoryNameList[item._id] = item.name;
@@ -64,17 +43,16 @@ const ListCourse = (props) => {
       lecturerId,
     });
     const courses_ = response.results;
-    console.log(categoryNameList);
-    // Set category name
-    // courses_.forEach((course) => {
-    //   course.categoryName = course.category[0].name;
-    // });
     setCourses(courses_);
   };
 
   return (
     <div className="app-container">
-      <DetailCourse selectedCourse={selectedCourse} visible={visible} onClose={onClose} />
+      <DetailCourse
+        selectedCourse={selectedCourse}
+        visible={visible}
+        onClose={onClose}
+      />
       <div className="title">Danh sách khóa học của tôi</div>
       {/* <br /> */}
       <Card>
@@ -110,10 +88,17 @@ const ListCourse = (props) => {
             dataIndex="categoryId"
             key="categoryName"
             align="center"
+            render={(text, row) => <p>{categoryNameList[row.categoryId]}</p>}
+          />
+          <Column
+            title="Chỉnh sửa"
+            key="action"
+            align="center"
             render={(text, row) => (
-              <p>{categoryNameList[row.categoryId]}</p>
+              <Link to={`/lecturer/edit-my-course/${row.id}`}>
+                <EditOutlined />
+              </Link>
             )}
-            
           />
           <Column
             title="Gỡ bỏ"

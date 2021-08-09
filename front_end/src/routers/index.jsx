@@ -33,7 +33,6 @@ import CourseDetail from "../pages/courseDetail/CourseDetail";
 import CourseListCategory from "../pages/courseListCategory/CourseListCategory";
 import WatchList from "../pages/watchList/Watchlist";
 import Profile from "../pages/profile/Profile";
-import PostCourse from "../pages/lecturer/postCourse/PostCourse";
 import Learning from "../pages/Leaning/Learning";
 import MyCourses from "../pages/myCourses/MyCourses";
 
@@ -47,7 +46,10 @@ import AdminRoute from "./AdminRoute";
 import StudentRoute from "./StudentRoute";
 import LecturerRoute from "./LecturerRoute";
 import PrivateRoute from "./privateRoute";
+
 import ListCourse from "../pages/lecturer/listCourse/ListCourse";
+import PostCourse from "../pages/lecturer/postCourse/PostCourse";
+import EditCourse from "../pages/lecturer/editCourse/EditCourse";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -285,7 +287,7 @@ function RouterOutlet(props) {
 
           <LecturerRoute
             exact
-            path={["/lecturer/create-new-course", "/lecturer/my-courses"]}
+            path={["/lecturer/create-new-course", "/lecturer/my-courses", "/lecturer/edit-my-course/:courseId"]}
           >
             <LecturerRouteLayout>
               <Switch>
@@ -294,6 +296,9 @@ function RouterOutlet(props) {
                 </Route>
                 <Route exact path="/lecturer/my-courses">
                   <ListCourse />
+                </Route>
+                <Route exact path="/lecturer/edit-my-course/:courseId">
+                  <EditCourse/>
                 </Route>
               </Switch>
             </LecturerRouteLayout>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Table, Divider, Row, Col, Drawer, Rate } from "antd";
+import { Modal, Button, Divider, Row, Col, Drawer, Rate } from "antd";
+import { PlaySquareOutlined } from "@ant-design/icons";
 import { Markup } from "interweave";
 import { Player } from "video-react";
 import { httpClient } from "../../../api";
@@ -65,13 +66,13 @@ const DetailCourse = (props) => {
         width={750}
       >
         <Player
-              fluid={false}
-              height={400}
-              width={711}
-              playsInline
-              poster="./logo_32.png"
-              src={selectedVideo.url}
-            />
+          fluid={false}
+          height={400}
+          width={711}
+          playsInline
+          poster="./logo_32.png"
+          src={selectedVideo.url}
+        />
       </Modal>
       <p
         className="site-description-item-profile-p"
@@ -147,7 +148,12 @@ const DetailCourse = (props) => {
             <DescriptionItem
               title={video.title}
               content={
-                <Button onClick={() => watchVideo(video)}>Xem Video</Button>
+                <Button
+                  onClick={() => watchVideo(video)}
+                  icon={<PlaySquareOutlined />}
+                >
+                  Xem Video
+                </Button>
               }
             />
           </Col>
