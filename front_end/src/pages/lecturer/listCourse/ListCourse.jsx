@@ -38,10 +38,12 @@ const ListCourse = (props) => {
   }, []);
 
   const fetchData = async () => {
-    const lecturerId = localStorage.getItem("user").id;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const lecturerId = user.id;
     const response = await httpClient.course.getCourses({
       lecturerId,
     });
+    console.log(lecturerId);
     const courses_ = response.results;
     setCourses(courses_);
   };
