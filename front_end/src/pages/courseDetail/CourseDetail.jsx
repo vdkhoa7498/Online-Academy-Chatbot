@@ -279,7 +279,8 @@ const CourseDetail = ({ user }) => {
             />
 
             <Divider orientation="left"><div className="section">Thông tin giảng viên</div></Divider>
-            {/* <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div> */}
+            { course.lecturerInfo ? (<div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerInfo.fullName}</div>) :
+            (<div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>ABC</div>)}
             {/* <div>{course.lecturer.company}</div> */}
             <Row>
                 <Col span={3}>

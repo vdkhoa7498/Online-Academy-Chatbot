@@ -16,7 +16,6 @@ const createUser = async (userBody) => {
   return user;
 };
 
-
 const getProfile = async (id) => {
   return await User.findOne({ _id: id });
 };
@@ -171,6 +170,10 @@ const countStudentsByCourseId = async (courseId) => {
   return await User.countDocuments({ registeredCourses: courseId });
 }
 
+const getLecturerInfo = async (lecturerId) => {
+  return await User.findOne({ _id: lecturerId });
+}
+
 module.exports = {
   createUser,
   getProfile,
@@ -188,5 +191,6 @@ module.exports = {
   editUser,
   editStudent,
   getInfoCourse,
-  countStudentsByCourseId
+  countStudentsByCourseId,
+  getLecturerInfo
 };

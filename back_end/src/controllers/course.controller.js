@@ -30,7 +30,6 @@ const getCourseById = catchAsync(async (req, res) => {
   // Count students
   let countStudents = await userService.countStudentsByCourseId(req.params.courseId);
   course.countStudents = countStudents;
-  console.log(countStudents);
 
   // Lectures
   const lectures = await courseService.getLectureListByCourseId(req.params.courseId);
@@ -39,6 +38,10 @@ const getCourseById = catchAsync(async (req, res) => {
   // Other courses
   const otherCourses = await courseService.getOtherCourses(course.categoryId);
   course.otherCourses = otherCourses;
+
+  // Lecturer info
+  const lecturerInfo = await userService.getLecturerInfo(course.lecturerId);
+  course.lecturerInfo = lecturerInfo;
 
   // Rates
   let rates = await rateService.getRateListByCourseId(req.params.courseId);
