@@ -121,55 +121,58 @@ const PostCourse = ({ categories }) => {
   );
 
   const onFinish = async (values) => {
-    console.log(values.description)
-    console.log(typeof values.description)
-    // setIsPageLoading(true);
-    // let picture = "";
-    // await handleUpload(values.picture)
-    //   .then((data) => (picture = data.location))
-    //   .catch((err) => console.error(err));
+    setIsPageLoading(true);
+    let picture = "";
+    await handleUpload(values.picture)
+      .then((data) => (picture = data.location))
+      .catch((err) => console.error(err));
 
-    // const course = {
-    //   title: values.title,
-    //   picture: picture,
-    //   shortDescription: values.shortDescription,
-    //   description: values.description,
-    //   categoryId: values.categoryId,
-    //   status: values.status,
-    //   price: price,
-    //   lecturerId: user.id,
-    // };
-    // console.log(course);
-    // let videos = [];
+    const course = {
+      title: values.title,
+      picture: picture,
+      shortDescription: values.shortDescription,
+      description: values.description,
+      categoryId: values.categoryId,
+      status: values.status,
+      price: price,
+      lecturerId: user.id,
+    };
+    console.log(course);
+    let videos = [];
 
-    // await Promise.mapSeries(values.videoList, async (item) => {
-    //   await handleUpload(item.video)
-    //     .then((data) => {
-    //       videos = [...videos, { title: item.videoName, url: data.location }];
-    //     })
-    //     .catch((err) => console.error(err));
-    // });
+    await Promise.mapSeries(values.videoList, async (item) => {
+      await handleUpload(item.video)
+        .then((data) => {
+          videos = [...videos, { title: item.videoName, url: data.location }];
+        })
+        .catch((err) => console.error(err));
+    });
 
-    // await httpClient.course
-    //   .createCourse(course)
-    //   .then(async (res) => {
-    //     const videoForm = {
-    //       courseId: res.id,
-    //       videoList: videos,
-    //     };
-    //     await httpClient.video.createVideos(videoForm).then((res) => {
-    //       message.success("Upload khoá học mới thành công!");
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     message.error("Upload bài học lỗi, vui lòng thử lại sau!");
-    //   });
-    // setIsPageLoading(false);
-    // history.push("/");
+    await httpClient.course
+      .createCourse(course)
+      .then(async (res) => {
+        const videoForm = {
+          courseId: res.id,
+          videoList: videos,
+        };
+        await httpClient.video
+          .createVideos(videoForm)
+          .then((res) => {
+            message.success("Upload khoá học mới thành công!");
+          })
+          .catch((err) => {
+            console.log(err);
+            message.error("Upload bài videos, vui lòng thử lại sau!");
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Upload bài học lỗi, vui lòng thử lại sau!");
+      });
+    setIsPageLoading(false);
+    history.push("/");
   };
 
-  useEffect(() => {}, []);
   return (
     <Spin
       spinning={isPageLoading}
