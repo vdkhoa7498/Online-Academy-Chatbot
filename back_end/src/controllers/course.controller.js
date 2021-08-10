@@ -38,6 +38,12 @@ const getCourseById = catchAsync(async (req, res) => {
   res.send(course);
 });
 
+const editCourseById = catchAsync(async (req, res) => {
+  // Basic info
+  let course = await courseService.editCourseById(req.params.courseId, req.body);
+  res.send(course);
+});
+
 const createCourse = catchAsync(async (req, res) => {
   const course = await courseService.createCourse(req.body);
   res.status(httpStatus.CREATED).send(course);
@@ -68,4 +74,5 @@ module.exports = {
   getCourseById,
   deleteCourse,
   getVideoOfCourse,
+  editCourseById,
 };
