@@ -60,6 +60,13 @@ const getCourseById = async (courseId) => {
   return course;
 };
 
+const editCourseById = async (courseId, updateBody) => {
+  const course = await Course.findById(courseId);
+  Object.assign(course, updateBody);
+  await course.save();
+  return course;
+};
+
 const getLectureListByCourseId = async (courseId) => {
   const lectureList = await Video.find({ courseId: courseId });
   return lectureList;
@@ -106,6 +113,7 @@ const deleteCourse = async (courseId) => {
 
 module.exports = {
   createCourse,
+  editCourseById,
   queryCourses,
   getAllCourses,
   addView,

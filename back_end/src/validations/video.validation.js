@@ -30,8 +30,15 @@ const setCurrentTime = {
   }),
 };
 
+const deleteVideo = {
+  params: Joi.object().keys({
+    videoId: Joi.string().required().custom(objectId),
+  }),
+};
+
 module.exports = {
   createVideos,
   getVideos,
+  deleteVideo,
   setCurrentTime,
 };

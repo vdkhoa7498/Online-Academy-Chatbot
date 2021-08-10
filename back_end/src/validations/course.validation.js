@@ -15,6 +15,22 @@ const createCourse = {
   }),
 };
 
+const editCourse = {
+  params: Joi.object().keys({
+    courseId: Joi.string().required().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    title: Joi.string().required(),
+    picture: Joi.string(),
+    description: Joi.string().required(),
+    shortDescription: Joi.string().required(),
+    categoryId: Joi.string().required().custom(objectId),
+    price: Joi.number(),
+    voucher: Joi.number(),
+    status: Joi.string(),
+  }),
+};
+
 const getCourses = {
   query: Joi.object().keys({
     title: Joi.string(),
@@ -29,4 +45,5 @@ const getCourses = {
 module.exports = {
   createCourse,
   getCourses,
+  editCourse,
 };
