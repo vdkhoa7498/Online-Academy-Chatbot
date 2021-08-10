@@ -20,8 +20,15 @@ const setCurrentTime = catchAsync(async (req, res) => {
   res.status(200).send('update Success');
 });
 
+const deleteVideo = catchAsync(async (req, res) => {
+  const message = await videoService.deleteVideoById(req.params.videoId);
+  res.status(httpStatus.OK).send(message);
+});
+
+
 module.exports = {
   getVideos,
   createVideos,
+  deleteVideo,
   setCurrentTime,
 };
