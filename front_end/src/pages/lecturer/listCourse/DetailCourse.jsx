@@ -38,7 +38,6 @@ const DetailCourse = (props) => {
   };
 
   const fetchData = async () => {
-    console.log("id", selectedCourse.id);
     const videos_ = await httpClient.video.getVideos({
       courseId: selectedCourse.id,
     });
@@ -143,8 +142,8 @@ const DetailCourse = (props) => {
       <Divider />
       <p className="site-description-item-profile-p">Videos</p>
       <Row>
-        {videos.map((video) => (
-          <Col span={24}>
+        {videos.map((video, index) => (
+          <Col span={24} key={index}>
             <DescriptionItem
               title={video.title}
               content={

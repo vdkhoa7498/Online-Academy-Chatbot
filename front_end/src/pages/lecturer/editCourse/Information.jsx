@@ -1,34 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Markup } from "interweave";
 import {
   Form,
   Input,
   Button,
   Upload,
   message,
-  Divider,
   Select,
   Modal,
   InputNumber,
   Spin,
-  Tabs,
-  Table,
 } from "antd";
-import {
-  PlusOutlined,
-  VerticalAlignTopOutlined,
-  MinusCircleOutlined,
-  EditOutlined,
-  PlaySquareOutlined,
-  PicLeftOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import { Promise } from "bluebird";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useHistory, useParams } from "react-router-dom";
-import { uploadFile } from "react-s3";
+import { useHistory } from "react-router-dom";
 import { httpClient } from "../../../api";
 import AWS from "aws-sdk";
 
@@ -44,15 +32,12 @@ function getBase64(file) {
   });
 }
 
-const Information = ({ categories }) => {
+const Information = ({ categories, courseId, course }) => {
   let [form] = Form.useForm();
   const history = useHistory();
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const courseId = useParams().courseId;
-  const user = JSON.parse(localStorage.getItem("user"));
 
-  const [course, setCourse] = useState({});
-  const [videos, setVideos] = useState([]);
+  const [pictureLink, setPictureLink] = useState("");
   const [pictures, setPictures] = useState([]);
 
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -70,62 +55,60 @@ const Information = ({ categories }) => {
   const REGION = process.env.REACT_APP_REGION;
   const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
   const SECRET_ACCESS_KEY = process.env.REACT_APP_SECRET_ACCESS_KEY;
+  const BASE_S3_LINK = process.env.REACT_APP_PUBLIC_LINK_S3;
 
-  const config = {
-    bucketName: S3_BUCKET,
-    region: REGION,
-    accessKeyId: ACCESS_KEY,
-    secretAccessKey: SECRET_ACCESS_KEY,
-  };
-
-  const customRequest = ({
-    action,
-    data,
-    file,
-    filename,
-    headers,
-    onError,
-    onProgress,
-    onSuccess,
-    withCredentials,
-  }) => {
-    AWS.config.update({
-      ...config,
-    });
-
-    const S3 = new AWS.S3();
-    console.log("DEBUG filename", file.name);
-    console.log("DEBUG file type", file.type);
-
-    const objParams = {
-      Bucket: S3_BUCKET,
-      Key: file.name,
-      Body: file,
-      ContentType: file.type, // TODO: You should set content-type because AWS SDK will not automatically set file MIME
-    };
-
-    S3.putObject(objParams)
-      .on("httpUploadProgress", function ({ loaded, total }) {
-        onProgress(
-          {
-            percent: Math.round((loaded / total) * 100),
-          },
-          file
-        );
-      })
-      .send(function (err, data) {
-        if (err) {
-          onError();
-          console.log("Something went wrong");
-          console.log(err.code);
-          console.log(err.message);
-        } else {
-          onSuccess(data.response, file);
-          console.log("SEND FINISHED");
-        }
+  const props = {
+    customRequest({
+      action,
+      data,
+      file,
+      filename,
+      headers,
+      onError,
+      onProgress,
+      onSuccess,
+      withCredentials,
+    }) {
+      AWS.config.update({
+        accessKeyId: ACCESS_KEY,
+        secretAccessKey: SECRET_ACCESS_KEY,
       });
-  };
 
+      const S3 = new AWS.S3();
+      console.log("DEBUG filename", file.name);
+      console.log("DEBUG file type", file.type);
+
+      const objParams = {
+        Bucket: S3_BUCKET,
+        Key: Date.now() + "-" + file.name,
+        Body: file,
+        ContentType: file.type, // TODO: You should set content-type because AWS SDK will not automatically set file MIME
+        ACL: "public-read",
+      };
+
+      S3.putObject(objParams)
+        .on("httpUploadProgress", function ({ loaded, total }) {
+          onProgress(
+            {
+              percent: Math.round((loaded / total) * 100),
+            },
+            file
+          );
+        })
+        .send(function (err, data) {
+          if (err) {
+            onError();
+            console.log("Something went wrong");
+            console.log(err.code);
+            console.log(err.message);
+          } else {
+            onSuccess(data, file);
+            setPictureLink(`${BASE_S3_LINK}${objParams.Key}`);
+            console.log("SEND FINISHED");
+          }
+        });
+    },
+  };
   const handleCancel = () => setPreviewVisible(false);
 
   const handlePreview = async (file) => {
@@ -149,40 +132,40 @@ const Information = ({ categories }) => {
     </div>
   );
 
-  const onFinish = async (values) => {
+  const onFinish = async (form) => {
     setIsPageLoading(true);
+    form.picture = pictureLink;
 
+    const result = await httpClient.course.updateCourseById(courseId, form);
+    console.log(result);
     setIsPageLoading(false);
-    history.push("/");
+    // history.push("/");
   };
 
-  const fetchCourse = async () => {
-    const course_ = await httpClient.course.getCourseById(courseId);
-    setCourse(course_);
-    console.log(course);
-  };
 
-  const fillCurrentForm = () => {
-    const description_ = course?.description?.replaceAll("&lt;", "<");
+
+  const fillCurrentForm = async () => {
+    setPictureLink(course.picture);
+    setPictures([
+      {
+        uid: "-1",
+        name: "avatar.png",
+        status: "done",
+        url: course.picture,
+      },
+    ]);
     form.setFieldsValue({
       title: course.title,
-      picture: {
-        uid: "-1",
-        name: "image.png",
-        status: "done",
-        url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-      },
       shortDescription: course.shortDescription,
       categoryId: course.categoryId,
       status: course.status,
-      price: course.price
-      // description: description_
+      price: course.price,
+      description: course.description,
     });
   };
   useEffect(() => {
-    fetchCourse();
     fillCurrentForm();
-  }, [courseId]);
+  }, [course]);
 
   return (
     <Spin
@@ -242,13 +225,14 @@ const Information = ({ categories }) => {
                 }),
               ]}
             >
+              {/* <img src={pictureLink} /> */}
               <Upload
+                {...props}
                 listType="picture-card"
                 fileList={pictures}
                 accept={".jpg, .png, jpeg"}
                 onPreview={handlePreview}
                 onChange={handleChange}
-                beforeUpload={() => false}
               >
                 {pictures.length >= 1 ? null : uploadButton}
               </Upload>
@@ -324,7 +308,6 @@ const Information = ({ categories }) => {
                 },
               ]}
               hasFeedback
-              initialValue={<strong>abc</strong>}
             >
               <ReactQuill theme="snow" />
             </Form.Item>
