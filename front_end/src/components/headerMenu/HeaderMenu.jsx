@@ -34,12 +34,12 @@ const HeaderMenu = (props) => {
             {` Home`}
           </Link>
         </Menu.Item>
-        <Menu.Item key="-1">
+        {/* <Menu.Item key="-1">
           <Link>
             <AppstoreOutlined />
             {` Tất cả`}
           </Link>
-        </Menu.Item>
+        </Menu.Item> */}
         {menu.map((item, index) => {
           if (!item.parentId) {
             return (

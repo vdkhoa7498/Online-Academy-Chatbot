@@ -68,7 +68,14 @@ export function UserHttpService(options) {
 
   }
 
+  async function getUserById(id) {
+    const baseUrl = options.httpService.getUrl(`users/${id}`);
+    return await options.httpService.get(baseUrl);
+  }
+
+
   return {
+    getUserById,
     getWatchList,
     getMyCourses,
     registerCourse,
