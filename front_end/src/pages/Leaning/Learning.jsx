@@ -27,7 +27,6 @@ const Learning = ({ user }) => {
   const [state, setState] = useState();
   const [video, setVideo] = useState({});
 
-  console.log("video", videos);
   const lastTime =
     video.lastWatchTime && user
       ? video.lastWatchTime.find((v) => v.userId === user.id)
@@ -59,9 +58,10 @@ const Learning = ({ user }) => {
           videoId: video.id,
           userId: user.id,
           currentTime: state?.getState().player.currentTime,
-          watchedPercent:
+          watchedPercent: (
             state?.getState().player.currentTime /
-            state?.getState().player.duration,
+            state?.getState().player.duration
+          ).toFixed(2),
         });
       }
     };
@@ -131,9 +131,9 @@ const Learning = ({ user }) => {
                   onClick={() => handleChangeVideo(item)}
                 >
                   {item.title}(
-                  {item.lastWatchTime
-                    .find((i) => i.userId === user.id)
-                    .watchedPercent.toFixed(2) * 100}
+                  {user &&
+                    item.lastWatchTime.find((i) => i.userId === user.id)
+                      .watchedPercent * 100}
                   %)
                 </List.Item>
               )}
