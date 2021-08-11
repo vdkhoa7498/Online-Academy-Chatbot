@@ -170,7 +170,7 @@ const PostCourse = ({ categories }) => {
         message.error("Upload bài học lỗi, vui lòng thử lại sau!");
       });
     setIsPageLoading(false);
-    history.push("/");
+    history.push("/lecturer/my-courses");
   };
 
   return (

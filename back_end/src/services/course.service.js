@@ -6,6 +6,7 @@ const videoService = require('./video.service');
 const Video = require('../models/video.model');
 
 const createCourse = async (courseBody) => {
+  courseBody.description = courseBody.description.replace(/&lt;/g, '<');
   const course = await Course.create(courseBody);
   return course;
 };
