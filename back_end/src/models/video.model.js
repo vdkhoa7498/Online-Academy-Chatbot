@@ -1,30 +1,36 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const videoSchema = mongoose.Schema({
-  courseId: { 
-    type: mongoose.SchemaTypes.ObjectId, 
-    ref: 'Course', 
-    required: true 
+const videoSchema = mongoose.Schema(
+  {
+    courseId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Course',
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    lastWatchTime: [
+      {
+        userId: mongoose.SchemaTypes.ObjectId,
+        time: String,
+        watchedPercent: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
   },
-  title: { 
-    type: String, 
-    required: true 
-  },
-  url: { 
-    type: String, 
-    required: true 
-  },
-  lastWatchTime: [
-    { 
-      userId: mongoose.SchemaTypes.ObjectId, 
-      time: String,
-    }
-  ]
-},
-{
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 // add plugin that converts mongoose to json
 videoSchema.plugin(toJSON);
