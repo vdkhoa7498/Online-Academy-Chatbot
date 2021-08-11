@@ -16,6 +16,11 @@ export function CourseHttpService(options) {
     return options.httpService.post(baseUrl, form);
   }
 
+  function addView(form) {
+    const baseUrl = options.httpService.getUrl("courses/addView");
+    return options.httpService.post(baseUrl, form);
+  }
+
   async function getCourseById(courseId) {
     const baseUrl = options.httpService.getUrl(`courses/${courseId}`);
     return await options.httpService.get(baseUrl);
@@ -44,6 +49,7 @@ export function CourseHttpService(options) {
   }
 
   return {
+    addView,
     getCourses,
     getAllCourses,
     createCourse,

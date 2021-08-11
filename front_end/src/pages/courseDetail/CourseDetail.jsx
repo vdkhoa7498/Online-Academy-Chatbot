@@ -188,6 +188,15 @@ const CourseDetail = ({ user }) => {
     if (user) fetchUserCourseInfo();
   }, [param.id, user]);
 
+  useEffect(() => {
+    const addView = async () => {
+      await httpClient.course.addView({
+        courseId: param.id,
+      });
+    };
+    addView();
+  }, []);
+
   const handleRegisterCourse = async () => {
     console.log("course", course._id);
     await httpClient.user
