@@ -24,7 +24,7 @@ import "react-quill/dist/quill.snow.css";
 import { useHistory } from "react-router-dom";
 import { uploadFile } from "react-s3";
 import "./styles.scss";
-import { httpClient } from "../../api";
+import { httpClient } from "../../../api";
 
 const { TextArea } = Input;
 const { Option, OptGroup } = Select;
@@ -155,19 +155,24 @@ const PostCourse = ({ categories }) => {
           courseId: res.id,
           videoList: videos,
         };
-        await httpClient.video.createVideos(videoForm).then((res) => {
-          message.success("Upload khoá học mới thành công!");
-        });
+        await httpClient.video
+          .createVideos(videoForm)
+          .then((res) => {
+            message.success("Upload khoá học mới thành công!");
+          })
+          .catch((err) => {
+            console.log(err);
+            message.error("Upload bài videos, vui lòng thử lại sau!");
+          });
       })
       .catch((err) => {
         console.log(err);
         message.error("Upload bài học lỗi, vui lòng thử lại sau!");
       });
     setIsPageLoading(false);
-    history.push("/");
+    history.push("/lecturer/my-courses");
   };
 
-  useEffect(() => {}, []);
   return (
     <Spin
       spinning={isPageLoading}

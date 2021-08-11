@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Rate, Button } from "antd";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { httpClient } from "../../api";
 
 import "./styles.scss";
 
-export default function CourseItem({ item, isWatchList, onRemoveCourse }) {
-  const { title, category, lecturer, numberOfRate, rateScore } = item;
-  console.log("Number of courses", item);
+function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
+  const [lecturer, setLecturer] = useState({});
+  const { title, categoryId, lecturerId, ratings, rateScore } = item;
+  let categoryNameList = [];
+  categories?.map((item) => {
+    categoryNameList[item._id] = item.name;
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(item)
+      const lecturer_ = await httpClient.user.getUserById(lecturerId);
+      setLecturer(lecturer_);
+    };
+    fetchData();
+  }, [item]);
 
   return (
     <div>
@@ -25,15 +41,15 @@ export default function CourseItem({ item, isWatchList, onRemoveCourse }) {
               </div>
               <div className="content-detail">
                 <span className="title">Thể Loại:</span>
-                <span className="value">{category}</span>
+                <span className="value">{categoryNameList[categoryId]}</span>
               </div>
               <div className="content-detail">
                 <span className="title">Giảng Viên:</span>
-                <span className="value">{lecturer}</span>
+                <span className="value">{lecturer.fullName}</span>
               </div>
               <div className="content-detail">
                 <span className="title">Đánh giá:</span>
-                <Rate allowHalf value={rateScore} disabled /> {numberOfRate}{" "}
+                <Rate allowHalf value={rateScore} disabled />{"  "}{ratings}{"  "}
                 Lượt đánh giá
               </div>
             </Link>
@@ -53,3 +69,10 @@ export default function CourseItem({ item, isWatchList, onRemoveCourse }) {
     </div>
   );
 }
+
+const mapState = (state) => ({
+  categories: state.category.categories,
+});
+const mapDispatch = (dispatch) => bindActionCreators({}, dispatch);
+
+export default connect(mapState, mapDispatch)(CourseItem);

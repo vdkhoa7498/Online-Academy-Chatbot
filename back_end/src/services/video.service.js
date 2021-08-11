@@ -36,8 +36,18 @@ const deleteByCourseId = async (courseId) => {
   return await Video.deleteMany({ courseId: courseId });
 };
 
+const deleteVideoById = async (userId) => {
+  const video = await Video.findById(userId);
+  if (!video) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Video not found');
+  }
+  await video.remove();
+  return 'success';
+};
+
 module.exports = {
   createVideos,
+  deleteVideoById,
   queryVideos,
   getAllVideos,
   deleteByCourseId,

@@ -11,6 +11,11 @@ export function VideosHttpService(options) {
     return options.httpService.post(baseUrl, form);
   }
 
+  function deleteVideo(id) {
+    const baseUrl = options.httpService.getUrl(`videos/${id}`);
+    return options.httpService.del(baseUrl);
+  }
+
   function setCurrentTime(form) {
     const baseUrl = options.httpService.getUrl("videos");
     return options.httpService.put(baseUrl, form);
@@ -19,6 +24,7 @@ export function VideosHttpService(options) {
   return {
     getVideos,
     createVideos,
+    deleteVideo,
     setCurrentTime,
   };
 }

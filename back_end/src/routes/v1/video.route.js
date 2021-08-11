@@ -11,4 +11,6 @@ router
   .post(validate(videoValidate.createVideos), videosController.createVideos)
   .put(auth(), validate(videoValidate.setCurrentTime), videosController.setCurrentTime);
 
+router.delete('/:videoId', validate(videoValidate.deleteVideo), videosController.deleteVideo);
+
 module.exports = router;
