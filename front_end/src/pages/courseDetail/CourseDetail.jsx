@@ -198,7 +198,6 @@ const CourseDetail = ({ user }) => {
   }, []);
 
   const handleRegisterCourse = async () => {
-    console.log("course", course._id);
     await httpClient.user
       .registerCourse(course._id)
       .catch((error) => console.log("Fail to register course"));
