@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const pick = require('../utils/pick');
-const { courseService } = require('../services/index');
+const { courseService, rateService, userService } = require('../services/index');
 
 const getCourses = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['title', 'category', 'lecturerId', 'search', 'rateScoreFilter', 'priceFilter']);
@@ -11,9 +11,9 @@ const getCourses = catchAsync(async (req, res) => {
 });
 
 const getAllCourses = catchAsync(async (req, res) => {
-  const allCategories = await courseService.getAllCourses();
-  res.send(allCategories);
-});
+  const allCourses = await courseService.getAllCourses();
+  res.send(allCourses);
+})
 
 const getCoursesByCategoryId = catchAsync(async (req, res) => {
   const filter = pick(req.params, ['categoryId']);
@@ -27,6 +27,10 @@ const getCourseById = catchAsync(async (req, res) => {
   let course = await courseService.getCourseById(req.params.courseId);
   course = course.toObject();
 
+  // Count students
+  let countStudents = await userService.countStudentsByCourseId(req.params.courseId);
+  course.countStudents = countStudents;
+
   // Lectures
   const lectures = await courseService.getLectureListByCourseId(req.params.courseId);
   course.lectures = lectures;
@@ -34,6 +38,19 @@ const getCourseById = catchAsync(async (req, res) => {
   // Other courses
   const otherCourses = await courseService.getOtherCourses(course.categoryId);
   course.otherCourses = otherCourses;
+
+  // Lecturer info
+  const lecturerInfo = await userService.getLecturerInfo(course.lecturerId);
+  course.lecturerInfo = lecturerInfo;
+
+  // Rates
+  let rates = await rateService.getRateListByCourseId(req.params.courseId);
+  course.rates = rates;
+  let rateScore = 0;
+  rates.forEach(rate => { rateScore += rate.point});
+  rateScore /= rates.length;
+  course.rateScore = rateScore;
+  course.ratings = rates.length;
 
   res.send(course);
 });

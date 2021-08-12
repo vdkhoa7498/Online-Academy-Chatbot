@@ -45,6 +45,9 @@ const Course = () => {
     // Set category name
     courses_.forEach(course => {
       course.categoryName = course.category[0].name;
+      if (course.lecturer.length > 0) {
+        course.lecturerName = course.lecturer[0].fullName;
+      }
     });
     setCourses(courses_);
   }
@@ -58,7 +61,7 @@ const Course = () => {
           <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tên khóa học" dataIndex="title" key="title" align="center" />
           <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" />
-          <Column title="Giảng viên" dataIndex="lecturer" key="lecturer" align="center" />
+          <Column title="Giảng viên" dataIndex="lecturerName" key="lecturerName" align="center" />
           <Column title="Danh mục" dataIndex="categoryName" key="categoryName" align="center" />
           <Column title="Gỡ bỏ" key="action" align="center" render={(text, row) => (
             <Popconfirm

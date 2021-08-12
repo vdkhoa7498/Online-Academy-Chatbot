@@ -12,6 +12,7 @@ import {
   Space,
   Image,
   Button,
+  Modal
 } from "antd";
 import moment from "moment";
 import {
@@ -32,132 +33,6 @@ import { Markup } from "interweave";
 
 import "./styles.scss";
 import { httpClient } from "../../api";
-
-const courseEx = {
-  title: "Tự học guitar",
-  short_description:
-    "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
-  description:
-    "Tập đánh đàn bằng cả hai tay là một trong những bước quan trọng dành cho những bạn học đánh đàn guitar cơ bản. Sẽ giúp bạn biết cách cầm phím ra sao và ngón tay bấm như thế nào, đồng thời phối hợp được nhịp nhàng giữa 2 tay. Ngoài ra, ở tuần đầu tiên luyện tập, các ngón tay trái của bạn sẽ bị đau. Tuy nhiên, nếu cố gắng luyện tập một thời gian, bạn sẽ dễ dàng làm quen và không còn đau nữa.",
-  image:
-    "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-  rateScore: 3.5,
-  ratings: 249,
-  studentNumber: 341,
-  lastUpdate: "7/2021",
-
-  lectures: [
-    {
-      name: "Bài 1",
-      length: "15:00",
-    },
-    {
-      name: "Bài 2",
-      length: "15:00",
-    },
-    {
-      name: "Bài 2",
-      length: "15:00",
-    },
-  ],
-
-  otherCourses: [
-    {
-      title: "Tự học guitar",
-      short_description:
-        "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
-      image:
-        "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-      rateScore: 3.5,
-      studentNumber: 341,
-    },
-    {
-      title: "Tự học guitar",
-      short_description:
-        "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
-      image:
-        "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-      rateScore: 3.5,
-      studentNumber: 341,
-    },
-    {
-      title: "Tự học guitar",
-      short_description:
-        "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
-      image:
-        "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-      rateScore: 3.5,
-      studentNumber: 341,
-    },
-    {
-      title: "Tự học guitar",
-      short_description:
-        "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
-      image:
-        "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-      rateScore: 3.5,
-      studentNumber: 341,
-    },
-    {
-      title: "Tự học guitar",
-      short_description:
-        "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tích kiệm được nhiều chi phí.",
-      image:
-        "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg",
-      rateScore: 3.5,
-      studentNumber: 341,
-    },
-  ],
-
-  lecturer: {
-    name: "Nguyễn Mạnh Linh",
-    company: "Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus iusto adipisci ratione commodi deleniti in modi, ipsa perferendis fugiat reiciendis dignissimos eos distinctio perspiciatis aut nisi fuga nihil nam delectus.",
-    avatar:
-      "https://ik.imagekit.io/5tq70vhft/cropped756619698302919104_tQbaIrNm0.jpg",
-    averageRating: 4.5,
-    totalReviews: 100000,
-    totalStudents: 2000000,
-    totalCourses: 10,
-  },
-
-  rates: [
-    {
-      user: {
-        id: 0,
-        avatar:
-          "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
-        name: "abc",
-      },
-      content: "Hay qua!",
-      rateScore: 5,
-      createdAt: 1621611357961,
-    },
-    {
-      user: {
-        id: 1,
-        avatar:
-          "https://i.pinimg.com/originals/eb/b0/2a/ebb02aedec9bc74f65e38311c7e14d34.png",
-        name: "Vivi",
-      },
-      content: "Hay qua!",
-      rateScore: 4,
-      createdAt: 1621611343961,
-    },
-    {
-      user: {
-        id: 1,
-        avatar:
-          "https://png.pngtree.com/element_our/20190530/ourlarge/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-image_1263411.jpg",
-        name: "Khung long con",
-      },
-      content: "So so",
-      rateScore: 3,
-      createdAt: 1621611351261,
-    },
-  ],
-};
 
 const CourseDetail = ({ user }) => {
   const [course, setCourse] = useState({});
@@ -228,6 +103,16 @@ const CourseDetail = ({ user }) => {
     }
   };
 
+  const [isPreviewModalVisible, setPreviewModalVisible] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const showPreViewModal = (url) => {
+    setPreviewUrl(url);
+    setPreviewModalVisible(true);
+  };
+  const handlePreviewCancel = () => {
+    setPreviewModalVisible(false);
+  };
+
   if (!course) return <div>loading</div>;
 
   return (
@@ -245,7 +130,7 @@ const CourseDetail = ({ user }) => {
             {course.rateScore}{" "}
             <Rate allowHalf value={course.rateScore} disabled /> (
             {course.ratings} đánh giá){" "}
-            <TeamOutlined className="student-number" /> {course.studentNumber}{" "}
+            <TeamOutlined className="student-number" /> {course.countStudents}{" "}
             học viên
           </div>
           <div>
@@ -313,7 +198,7 @@ const CourseDetail = ({ user }) => {
         size="large"
         itemLayout="horizontal"
         dataSource={course.lectures}
-        renderItem={(item) => (
+        renderItem={(item, index) => (
           <List.Item className="lecture-item">
             <div>
               <Space>
@@ -323,13 +208,18 @@ const CourseDetail = ({ user }) => {
             </div>
             <div>
               <Space size="large">
-                <a href="#">Xem trước</a>
+                { index < course.preView && <Button type="link" onClick={() => showPreViewModal(item.url)}>Xem trước</Button> }
                 {item.length}
               </Space>
             </div>
           </List.Item>
         )}
       />
+      <Modal width='700px' visible={isPreviewModalVisible} onCancel={handlePreviewCancel} footer={null}>
+        <video controls>
+          <source src={previewUrl}/>
+        </video>
+      </Modal>
 
       <Divider orientation="left">
         <div className="section">Các khóa học khác</div>
@@ -357,8 +247,7 @@ const CourseDetail = ({ user }) => {
       <Divider orientation="left">
         <div className="section">Thông tin giảng viên</div>
       </Divider>
-      {/* <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div> */}
-      {/* <div>{course.lecturer.company}</div> */}
+      { course.lecturerInfo && <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerInfo.fullName}</div> }
       <Row>
         <Col span={3}>
           {/* <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} /> */}
@@ -401,7 +290,7 @@ const CourseDetail = ({ user }) => {
           Đánh giá của học viên
           <span style={{ fontSize: 24 }}>
             {" "}
-            ({courseEx.rates.length} đánh giá)
+            ({course.ratings} đánh giá)
           </span>
         </div>
       </Divider>
@@ -412,11 +301,11 @@ const CourseDetail = ({ user }) => {
         renderItem={(item) => (
           <li>
             <Comment
-              author={<b style={{ color: "black" }}>{item.user.name}</b>}
-              avatar={<Avatar src={item.user.avatar} alt={course.title} />}
+              author={<b style={{ color: "black" }}>{item.user[0].fullName}</b>}
+              avatar={<Avatar size={64}>{defaultAvatar(item.user[0].fullName)}</Avatar>}
               content={
                 <div>
-                  <Rate allowHalf value={item.rateScore} disabled />
+                  <Rate allowHalf value={item.point} disabled />
                   <p>{item.content}</p>
                 </div>
               }
@@ -432,7 +321,7 @@ const CourseDetail = ({ user }) => {
         )}
       />
       <br />
-      <Pagination defaultCurrent={1} total={50} />
+      {/* <Pagination defaultCurrent={1} total={50} /> */}
       <Divider />
     </div>
   );
@@ -444,3 +333,12 @@ const mapState = (state) => ({
 });
 const mapDispatch = (dispatch) => bindActionCreators({}, dispatch);
 export default connect(mapState, mapDispatch)(CourseDetail);
+
+const defaultAvatar = (fullName) => {
+  var segments = fullName.split(' ');
+  var result = '';
+  segments.forEach(segment => {
+    result += segment[0];
+  })
+  return result;
+}

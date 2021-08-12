@@ -1,3 +1,4 @@
+var ObjectId = require('mongodb').ObjectId;
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const Rate = require('../models/rate.model');
@@ -18,6 +19,26 @@ const createRate = async (userId, courseId, content) => {
   return newRate;
 }
 
+const getRateListByCourseId = async (courseId) => {
+  let id = new ObjectId(courseId);
+  return await Rate.aggregate([
+    {
+      $match: {
+        courseId: id
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'user'
+      }
+    }
+  ])
+}
+
 module.exports = {
-  createRate
+  createRate,
+  getRateListByCourseId
 }
