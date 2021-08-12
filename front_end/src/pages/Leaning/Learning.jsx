@@ -26,14 +26,11 @@ const Learning = ({ user }) => {
   const [visible, setVisible] = React.useState(false);
   const [state, setState] = useState();
   const [video, setVideo] = useState({});
-  const [showExitPrompt, setShowExitPrompt] = useState(false);
 
   const lastTime =
     video.lastWatchTime && user
       ? video.lastWatchTime.find((v) => v.userId === user.id)
       : null;
-  // console.log("state", state?.getState();
-  // console.log("currentTime", state?.getState().player.currentTime);
 
   const param = useParams();
 
@@ -61,18 +58,13 @@ const Learning = ({ user }) => {
           videoId: video.id,
           userId: user.id,
           currentTime: state?.getState().player.currentTime,
+          watchedPercent: (
+            state?.getState().player.currentTime /
+            state?.getState().player.duration
+          ).toFixed(2),
         });
       }
     };
-    // setInterval(() => {
-    //   if (user && video.id) {
-    //     SaveCurrentTime();
-    //   }
-    // }, 5000);
-    // window.addEventListener("beforeunload", function (e) {
-    //   e.preventDefault();
-    //   e.returnValue = "";
-    // });
     window.onbeforeunload = () => {
       handleUnload();
       SaveCurrentTime();
@@ -138,7 +130,11 @@ const Learning = ({ user }) => {
                   className="title"
                   onClick={() => handleChangeVideo(item)}
                 >
-                  {item.title}
+                  {item.title}(
+                  {user &&
+                    item.lastWatchTime.find((i) => i.userId === user.id)
+                      .watchedPercent * 100}
+                  %)
                 </List.Item>
               )}
             />

@@ -27,6 +27,7 @@ const setCurrentTime = {
     videoId: Joi.string().required().custom(objectId),
     userId: Joi.string().required().custom(objectId),
     currentTime: Joi.number().required(),
+    watchedPercent: Joi.number().required(),
   }),
 };
 
