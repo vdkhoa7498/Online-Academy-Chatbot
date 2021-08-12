@@ -20,7 +20,7 @@ const ListCourse = (props) => {
   const [selectedCourse, setSelectedCourse] = useState({});
 
   const handleDeleteCourse = async (row) => {
-    await httpClient.course.deleteCourse(row._id);
+    await httpClient.course.deleteCourse(row.id);
     await fetchData();
     message.success("Bạn đã gỡ bỏ một khóa học");
   };
@@ -65,7 +65,7 @@ const ListCourse = (props) => {
           pagination={false}
           onRow={(record, rowIndex) => {
             return {
-              onClick: (event) => {
+              onDoubleClick: (event) => {
                 setSelectedCourse(record);
                 showDrawer();
               }, // click row
