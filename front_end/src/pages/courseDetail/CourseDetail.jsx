@@ -245,7 +245,7 @@ const CourseDetail = ({ user }) => {
             {course.rateScore}{" "}
             <Rate allowHalf value={course.rateScore} disabled /> (
             {course.ratings} đánh giá){" "}
-            <TeamOutlined className="student-number" /> {course.studentNumber}{" "}
+            <TeamOutlined className="student-number" /> {course.countStudents}{" "}
             học viên
           </div>
           <div>
@@ -357,6 +357,7 @@ const CourseDetail = ({ user }) => {
       <Divider orientation="left">
         <div className="section">Thông tin giảng viên</div>
       </Divider>
+      { course.lecturerInfo && <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerInfo.fullName}</div> }
       {/* <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturer.name}</div> */}
       {/* <div>{course.lecturer.company}</div> */}
       <Row>
@@ -401,7 +402,7 @@ const CourseDetail = ({ user }) => {
           Đánh giá của học viên
           <span style={{ fontSize: 24 }}>
             {" "}
-            ({courseEx.rates.length} đánh giá)
+            ({course.ratings} đánh giá)
           </span>
         </div>
       </Divider>
@@ -412,11 +413,11 @@ const CourseDetail = ({ user }) => {
         renderItem={(item) => (
           <li>
             <Comment
-              author={<b style={{ color: "black" }}>{item.user.name}</b>}
+              author={<b style={{ color: "black" }}>{item.user[0].fullName}</b>}
               avatar={<Avatar src={item.user.avatar} alt={course.title} />}
               content={
                 <div>
-                  <Rate allowHalf value={item.rateScore} disabled />
+                  <Rate allowHalf value={item.point} disabled />
                   <p>{item.content}</p>
                 </div>
               }
@@ -432,7 +433,7 @@ const CourseDetail = ({ user }) => {
         )}
       />
       <br />
-      <Pagination defaultCurrent={1} total={50} />
+      {/* <Pagination defaultCurrent={1} total={50} /> */}
       <Divider />
     </div>
   );
