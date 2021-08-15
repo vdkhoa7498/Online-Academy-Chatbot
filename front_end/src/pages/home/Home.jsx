@@ -44,14 +44,14 @@ const Home = (props) => {
           ...categories_,
           {
             id: item._id.category,
-            categoryName: categories.find(element => element._id === item._id.category).name,
+            categoryName: categories?.find(element => element._id === item._id.category)?.name,
           },
         ];
       });
       setTopCategory(categories_);
       setTopView(topView_.results);
       setTopNew(topNew_.results);
-      setTopHightLight(topView_.results);
+      setTopHightLight([topView_.results[0], topView_.results[1], topNew_.results[0]]);
     };
     fetchData();
   }, []);
@@ -110,7 +110,7 @@ const Home = (props) => {
             Danh sách lĩnh vực được đăng ký học nhiều nhất trong tuần
           </h1>
           <Space direction="vertical" style={{ textAlign: "left" }}>
-            {topCategory.map((item, index) => {
+            {topCategory?.map((item, index) => {
               return (
                 <Link to={`/courses/category/${item.id}`}>
                   <Button key={`category${index}`}>{item.categoryName}</Button>

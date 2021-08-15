@@ -244,7 +244,6 @@ function RouterOutlet(props) {
               "/courses/:id",
               "/categories/:id",
               "/courses/category/:categoryId",
-              "/courses/learning/:id",
               "/profile",
               "/search",
             ]}
@@ -263,9 +262,6 @@ function RouterOutlet(props) {
                 <Route exact path="/courses/category/:categoryId">
                   <CourseListCategory />
                 </Route>
-                <Route exact path="/courses/learning/:id">
-                  <Learning />
-                </Route>
                 <Route exact path="/categories/:id">
                   <CourseListCategory />
                 </Route>
@@ -276,9 +272,15 @@ function RouterOutlet(props) {
             </RouteLayout>
           </Route>
 
-          <StudentRoute exact path={["/watch-list", "/my-courses"]}>
+          <StudentRoute
+            exact
+            path={["/watch-list", "/my-courses", "/courses/learning/:id"]}
+          >
             <RouteLayout {...rest}>
               <Switch>
+                <Route exact path="/courses/learning/:id">
+                  <Learning />
+                </Route>
                 <Route exact path="/watch-list" component={WatchList} />
                 <Route exact path="/my-courses" component={MyCourses} />
               </Switch>
@@ -287,7 +289,11 @@ function RouterOutlet(props) {
 
           <LecturerRoute
             exact
-            path={["/lecturer/create-new-course", "/lecturer/my-courses", "/lecturer/edit-my-course/:courseId"]}
+            path={[
+              "/lecturer/create-new-course",
+              "/lecturer/my-courses",
+              "/lecturer/edit-my-course/:courseId",
+            ]}
           >
             <LecturerRouteLayout>
               <Switch>
@@ -298,7 +304,7 @@ function RouterOutlet(props) {
                   <ListCourse />
                 </Route>
                 <Route exact path="/lecturer/edit-my-course/:courseId">
-                  <EditCourse/>
+                  <EditCourse />
                 </Route>
               </Switch>
             </LecturerRouteLayout>

@@ -105,6 +105,8 @@ export function getProfile({ onSuccess, onFailure }) {
       onSuccess(result);
     } catch (error) {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
       localStorage.removeItem("isAuthenticated");
       onFailure(error);
       toggleGlobalLoading(false);
@@ -118,6 +120,8 @@ export function logout({ onSuccess, onFailure }) {
       dispatch(clearProfile());
       localStorage.removeItem("access_token");
       localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
       window.location.replace("/");
       onSuccess();
     } catch (error) {
