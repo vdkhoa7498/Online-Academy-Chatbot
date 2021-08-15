@@ -6,7 +6,7 @@ export default function PrivateRoute({children, ...rest}) {
     <Route
       {...rest}
       render={({location}) => 
-        (localStorage.getItem("isAuthenticated")) ? (
+        (localStorage.getItem("access_token")) ? (
           children
         ) : (
           <Redirect
