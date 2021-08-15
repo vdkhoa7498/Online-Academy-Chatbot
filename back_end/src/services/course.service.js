@@ -69,6 +69,11 @@ const getCourseById = async (courseId) => {
   return course;
 };
 
+const getCoursesByLecturerId = async (lecturerId) => {
+  const result = await Course.find({ lecturerId: lecturerId });
+  return result;
+}
+
 const editCourseById = async (courseId, updateBody) => {
   const course = await Course.findById(courseId);
   Object.assign(course, updateBody);
@@ -82,7 +87,7 @@ const getLectureListByCourseId = async (courseId) => {
 };
 
 const getOtherCourses = async (currentCourseId, categoryId) => {
-  const otherCourses = await Course.find({ categoryId: categoryId, courseId: { $ne: currentCourseId } });
+  const otherCourses = await Course.find({ categoryId: categoryId, _id: { $ne: currentCourseId } });
   return otherCourses;
 };
 
@@ -129,6 +134,7 @@ module.exports = {
   getVideosOfCourse,
   findWithListId,
   getCourseById,
+  getCoursesByLecturerId,
   getLectureListByCourseId,
   getOtherCourses,
   queryCoursesByCategoryId,

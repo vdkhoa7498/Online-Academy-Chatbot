@@ -215,8 +215,8 @@ const CourseDetail = ({ user }) => {
           </List.Item>
         )}
       />
-      <Modal width='700px' visible={isPreviewModalVisible} onCancel={handlePreviewCancel} footer={null}>
-        <video controls>
+      <Modal title='Xem trước' width='50%' visible={isPreviewModalVisible} onCancel={handlePreviewCancel} footer={null}>
+        <video width='100%' controls>
           <source src={previewUrl}/>
         </video>
       </Modal>
@@ -231,15 +231,15 @@ const CourseDetail = ({ user }) => {
           <List.Item>
             <List.Item.Meta
               avatar={<Avatar shape="square" size={64} src={item.picture} />}
-              title={<a href="#">{item.title}</a>}
+              title={<a href={"/courses/" + item._id}>{item.title}</a>}
               description={item.shortDescription}
             />
-            <div>
+            {/* <div>
               <Rate allowHalf value={item.rateScore} disabled />
             </div>
             <div>
               <TeamOutlined className="student-number" /> {course.studentNumber}
-            </div>
+            </div> */}
           </List.Item>
         )}
       />
@@ -247,7 +247,7 @@ const CourseDetail = ({ user }) => {
       <Divider orientation="left">
         <div className="section">Thông tin giảng viên</div>
       </Divider>
-      { course.lecturerInfo && <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerInfo.fullName}</div> }
+      { course.lecturerDetails && <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerDetails.fullName}</div> }
       <Row>
         <Col span={3}>
           {/* <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} /> */}
@@ -256,28 +256,28 @@ const CourseDetail = ({ user }) => {
           <Row>
             <Space>
               <StarFilled />
-              {/* {course.lecturer.averageRating} */}
+              {course.lecturerDetails && course.lecturerDetails.rateScore}
               Đánh giá trung bình
             </Space>
           </Row>
           <Row>
             <Space>
               <EditFilled />
-              {/* {course.lecturer.averageRating} */}
+              {course.lecturerDetails && course.lecturerDetails.ratings}
               Đánh giá
             </Space>
           </Row>
           <Row>
             <Space>
               <TeamOutlined />
-              {/* {course.lecturer.totalStudents} */}
+              {course.lecturerDetails && course.lecturerDetails.countStudents}
               Học viên
             </Space>
           </Row>
           <Row>
             <Space>
               <PlayCircleFilled />
-              {/* {course.lecturer.totalCourses} */}
+              {course.lecturerDetails && course.lecturerDetails.countCourses}
               Khóa học
             </Space>
           </Row>
