@@ -1,22 +1,29 @@
 import Axios from "axios";
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
-export function HttpService(options) {
+// Function that will be called to refresh authorization
+const serverUrl = process.env.REACT_APP_BASE_API
+const refreshToken = localStorage.getItem("refresh_token")
+const refreshAuthLogic = failedRequest => Axios.post(`${serverUrl}/auth/refresh-tokens`,{refreshToken}).then(tokenRefreshResponse => {
+  console.log(tokenRefreshResponse, "refresh token ne~~")
+    localStorage.setItem('access_token', tokenRefreshResponse.data.access.token);
+    localStorage.setItem('refresh_token', tokenRefreshResponse.data.refresh.token);
+    failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access.token;
+    return Promise.resolve();
+});
 
-  // Function that will be called to refresh authorization
-  // const serverUrl = process.env.REACT_APP_BASE_API;
-  // const refreshAuthLogic = failedRequest => Axios.post(`${serverUrl}/auth/refresh-tokens`).then(tokenRefreshResponse => {
-  //   localStorage.setItem('access_token', tokenRefreshResponse.access.token);
-  //   localStorage.setItem('refresh_token', tokenRefreshResponse.refresh.token);
-  //   failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.token;
-  //   return Promise.resolve();
-  // });
+
+export function HttpService(options) {
 
   const HTTP = Axios.create({
     headers: {
       'Content-Type': 'application/json'
     },
   });
+
+
+// Instantiate the interceptor (you can chain it as it returns the axios instance)
+createAuthRefreshInterceptor(HTTP, refreshAuthLogic);
 
   // createAuthRefreshInterceptor(HTTP, refreshAuthLogic);
 
