@@ -1,5 +1,8 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
+const Course = require('../models/courses.model');
+const { findById } = require('../models/registeredCategory.model');
+const RegisteredCategory = require('../models/registeredCategory.model');
 const ApiError = require('../utils/ApiError');
 const courseService = require("./course.service")
 
@@ -49,6 +52,8 @@ const registerCourse = async(id, user) => {
   
     await user.save();
   }
+  const course = await Course.findById(id)
+  await RegisteredCategory.create({categoryId: course.categoryId})
 
   return true;
 }
