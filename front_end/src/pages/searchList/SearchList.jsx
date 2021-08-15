@@ -22,39 +22,50 @@ const SearchList = () => {
   const params = useParams().categoryId;
 
   const [courses, setCourses] = useState([]);
-  const [priceFilter, setPriceFilter] = useState(null);
+  // const [priceFilter, setPriceFilter] = useState(null);
   const [sortBy, setSortBy] = useState("createdAt:desc");
-  const [rateScoreFilter, setRateScoreFilter] = useState(0)
-  const [totalResults, setTotalResults] = useState(0)
+  const [searchBy, setSearchBy] = useState("");
+  const [rateScoreFilter, setRateScoreFilter] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(10)
 
   useEffect(() => {
+    // console.log(priceFilter)
     const fetchData = async () => {
       const courses_ = await httpClient.course.getCourses({
         sortBy: sortBy,
-        // rateScoreFilter: rateScoreFilter,
+        rateScoreFilter: rateScoreFilter,
+        searchBy: searchBy,
+        limit: limit,
+        page: page,
         // priceFilter: priceFilter
       });
       setCourses(courses_.results);
-      setTotalResults(courses_.totalResults)
+      setTotalResults(courses_.totalResults);
     };
     fetchData();
-  }, [sortBy]);
+  }, [sortBy, rateScoreFilter, limit, page]);
 
   const onSearch = async (searchText) => {
     const courses_ = await httpClient.course.getCourses({
       sortBy: sortBy,
       search: searchText,
-      // rateScoreFilter: rateScoreFilter,
+      rateScoreFilter: rateScoreFilter,
+      searchBy: searchBy,
+      limit: limit,
+      page: page,
       // priceFilter: priceFilter
     });
     setCourses(courses_.results);
-    setTotalResults(courses_.totalResults)
+    setTotalResults(courses_.totalResults);
   };
 
-  const priceOptions = [
-    { label: "Miễn phí", value: 0 },
-    { label: "Có phí", value: -1 },
-  ];
+  // const priceOptions = [
+  //   { label: "Miễn phí", value: 0 },
+  //   { label: "Có phí", value: -1 },
+  // ];
 
   return (
     <div style={{ backgroundColor: "white", marginTop: 20, padding: 15 }}>
@@ -66,30 +77,53 @@ const SearchList = () => {
             enterButton
           />
         </Col>
-        <Col>
-          <Select
-            defaultValue="createdAt:desc"
-            style={{ width: 200 }}
-            onChange={(value) => {
-              setSortBy(value);
-            }}
-          >
-            <Option value="createdAt:desc">Mới nhất</Option>
-            <Option value="view:desc">Nhiều người xem nhất</Option>
-            <Option value="studentNumber:desc">Nhiều người đăng ký nhất</Option>
-            <Option value="rateScore">Điểm đánh giá tăng dần</Option>
-            <Option value="rateScore:desc">Điểm đánh giá giảm dần</Option>
-          </Select>
-        </Col>
+        <div style={{ textAlign: "left", margin: 5 }}>
+          Có {totalResults} kết quả tìm kiếm ...
+        </div>
+        <Row style={{ marginTop: 20 }}>
+          <Col>
+            <span>Tìm kiếm theo  </span>
+            <Select
+              defaultValue=""
+              style={{ width: 200 }}
+              onChange={(value) => {
+                setSearchBy(value);
+              }}
+            >
+              <Option value="">Tất cả</Option>
+              <Option value="name">Tên</Option>
+              <Option value="studentNumber:desc">Thể loại</Option>
+              <Option value="description">Chi tiết khoá học</Option>
+            </Select>
+          </Col>
+          <Col style={{marginLeft: 15}}>
+            <span>Sắp xếp theo  </span>
+            <Select
+              defaultValue="createdAt:desc"
+              style={{ width: 200 }}
+              onChange={(value) => {
+                setSortBy(value);
+              }}
+            >
+              <Option value="createdAt:desc">Mới nhất</Option>
+              <Option value="view:desc">Nhiều người xem nhất</Option>
+              <Option value="studentNumber:desc">
+                Nhiều người đăng ký nhất
+              </Option>
+              <Option value="rateScore">Điểm đánh giá tăng dần</Option>
+              <Option value="rateScore:desc">Điểm đánh giá giảm dần</Option>
+            </Select>
+          </Col>
+        </Row>
       </Row>
-      <div style={{textAlign: 'left', margin: 5}}>Có {totalResults} kết quả tìm kiếm ...</div>
+
       <Row style={{ padding: 15 }}></Row>
       <Row>
         <Col span={6}>
           <Divider />
           <h2>Lọc kết quả tìm kiếm</h2>
 
-          <Divider orientation="left">Giá tiền</Divider>
+          {/* <Divider orientation="left">Giá tiền</Divider>
           <Checkbox.Group
             options={priceOptions}
             onChange={(value) => {
@@ -102,10 +136,14 @@ const SearchList = () => {
               onSearch()
               console.log('priceFilter', priceFilter)
             }}
-          />
+          /> */}
 
           <Divider orientation="left">Đánh giá</Divider>
-          <Radio.Group onChange={(event)=>{setRateScoreFilter(event.target.value)}}>
+          <Radio.Group
+            onChange={(event) => {
+              setRateScoreFilter(event.target.value);
+            }}
+          >
             <Space direction="vertical">
               <Radio value={4.5}>
                 <div>
@@ -126,11 +164,18 @@ const SearchList = () => {
                   <span>3.5 đến 5.0</span>
                 </div>
               </Radio>
+              <Radio value={0}>
+                {" "}
+                <div>
+                  <Rate allowHalf value={0} disabled />
+                  <span>0 đến 5.0</span>
+                </div>
+              </Radio>
             </Space>
           </Radio.Group>
         </Col>
         <Col span={18}>
-          <CourseList titleList={"Danh sách tìm kiếm"} courses={courses} />
+          <CourseList titleList={"Danh sách tìm kiếm"} courses={courses} limit={limit} setLimit={setLimit} page={page} setPage={setPage} total={totalResults} />
         </Col>
       </Row>
     </div>

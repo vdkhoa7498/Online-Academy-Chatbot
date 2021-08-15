@@ -31,9 +31,9 @@ export function CourseHttpService(options) {
     return await options.httpService.put(baseUrl, form);
   }
 
-  function getCoursesByCategoryId(categoryId) {
+  function getCoursesByCategoryId(categoryId, { limit, page }) {
     const baseUrl = options.httpService.getUrl(
-      `courses/category/${categoryId}`
+      `courses/category/${categoryId}?limit=${limit}&&page=${page}`
     );
     return options.httpService.get(baseUrl);
   }

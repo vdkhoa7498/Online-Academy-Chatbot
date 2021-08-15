@@ -18,11 +18,7 @@ const topCatEx = [
   {
     id: 0,
     categoryName: "Lập trình web",
-  },
-  {
-    id: 0,
-    categoryName: "Thể dục",
-  },
+  }, 
 ];
 
 const Home = (props) => {
