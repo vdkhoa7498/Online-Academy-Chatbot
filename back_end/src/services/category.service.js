@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const Category = require('../models/category.model');
 const Course = require('../models/courses.model');
+const RegisteredCategory = require('../models/registeredCategory.model');
 const ApiError = require('../utils/ApiError');
 
 const createCategory = async (categoryBody) => {
@@ -21,10 +22,10 @@ const getAllCategoriesAdmin = async () => {
       $group: {
         _id: '$categoryId',
         totalCourses: {
-          $sum: 1
-        }
-      }
-    }
+          $sum: 1,
+        },
+      },
+    },
   ]);
   // Join with all
   for (let i = 0; i < allCategories.length; i++) {
@@ -52,7 +53,7 @@ const getAllCategoriesAdmin = async () => {
   }
 
   return allCategories;
-}
+};
 
 const queryCategory = async (filter, options) => {
   const users = await Category.paginate(filter, options);
@@ -60,12 +61,12 @@ const queryCategory = async (filter, options) => {
 };
 
 const getCategoryById = async (categoryId) => {
-  const category =  await Category.findById(categoryId);
-  return category
+  const category = await Category.findById(categoryId);
+  return category;
 };
 
 const editCategory = async (categoryBody) => {
-  const category = await Category.findOne({ _id: categoryBody._id })
+  const category = await Category.findOne({ _id: categoryBody._id });
   category.name = categoryBody.name;
   category.parentId = categoryBody.parentId;
   category.save();
@@ -73,9 +74,29 @@ const editCategory = async (categoryBody) => {
 };
 
 const deleteCategory = async (categoryId) => {
-  await Category.deleteOne({ _id: categoryId })
+  await Category.deleteOne({ _id: categoryId });
   return 'success';
-}
+};
+
+const getTopRegisteredCategory = async () => {
+  const categories = RegisteredCategory.aggregate([
+    {
+      $group: {
+        _id: {
+          category: "$categoryId",
+          week: { $week: new Date("$createdAt") }
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $limit: 5,
+    },
+    { $sort : { count: -1 } },
+  ]);
+  // const categories = RegisteredCategory.paginate({},{limit:5, sortBy: 'numberOfRegister:desc'})
+  return categories;
+};
 
 module.exports = {
   createCategory,
@@ -84,5 +105,6 @@ module.exports = {
   getAllCategoriesAdmin,
   getCategoryById,
   editCategory,
-  deleteCategory
+  deleteCategory,
+  getTopRegisteredCategory,
 };
