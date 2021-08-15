@@ -6,21 +6,6 @@ import { httpClient } from "../../api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-const topCatEx = [
-  {
-    id: 0,
-    categoryName: "Đàn guitar",
-  },
-  {
-    id: 0,
-    categoryName: "Vật lý",
-  },
-  {
-    id: 0,
-    categoryName: "Lập trình web",
-  }, 
-];
-
 const Home = (props) => {
   const [topView, setTopView] = useState([]);
   const [topNew, setTopNew] = useState([]);
