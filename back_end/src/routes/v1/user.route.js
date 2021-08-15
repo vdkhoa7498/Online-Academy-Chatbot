@@ -7,13 +7,36 @@ const userController = require('../../controllers/user.controller');
 const router = express.Router();
 
 router
+  .route('/watch-list')
+  .get(auth(), userController.getWatchList);
+
+
+router
+  .route('/my-courses')
+  .get(auth(), userController.getMyCourses);
+
+router
+  .route('/get-info-course/:id')
+  .get(auth(),  userController.getInfoCourse)
+
+router.post('/register-course/:id', auth(), userController.registerCourse);
+router.post('/add-favorite/:id', auth(), userController.addToFavorite);
+router.post('/remove-register-course/:id', auth(), userController.removeRegisterCourse);
+router.post('/remove-favorite-course/:id', auth(), userController.removeFavoriteCourse);
+
+
+
+
+router
   .route('/')
-  .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
-  .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+  //.post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
+  //.get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+  .post(validate(userValidation.createUser), userController.createUser)
+  .get(validate(userValidation.getUsers), userController.getUsers);
 
 router
   .route('/:userId')
-  .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
+  .get(validate(userValidation.getUser), userController.getUser)
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 

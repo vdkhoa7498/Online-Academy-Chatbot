@@ -7,14 +7,20 @@ const auth = require('../../middlewares/auth');
 const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
+router.post('/change-password', auth(), validate(authValidation.changePassword), authController.changePassword);
 router.post('/login', validate(authValidation.login), authController.login);
 router.get('/me', auth(), authController.getProfile);
+router.post('/edit-profile', auth(), authController.editProfile);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
+router.post('/loginwithgoogle', authController.loginWithGoogle);
+router.post('/loginwithfacebook', authController.loginWithFacebook);
+router.post('/send-otp', validate(authValidation.sendOtp), authController.sendOtp);
+router.post('/validate-otp', validate(authValidation.validateOtp), authController.validateOtp);
 
 module.exports = router;
 

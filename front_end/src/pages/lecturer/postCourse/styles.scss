@@ -1,0 +1,15 @@
+.postCourse-container {
+    padding: 15px;
+    margin-top: 15px;
+    text-align: left;
+    background-color: white !important;
+
+    .post-course-form{
+        // background-color: white !important;
+        margin: 15 !important;
+        
+        .ql-editor{
+            min-height: 120px;
+        }
+    }
+}

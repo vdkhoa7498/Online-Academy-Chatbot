@@ -9,6 +9,13 @@ const register = {
   }),
 };
 
+const changePassword = {
+  body: Joi.object().keys({
+    oldPassword: Joi.string().required().custom(password),
+    newPassword: Joi.string().required().custom(password),
+  }),
+};
+
 const login = {
   body: Joi.object().keys({
     email: Joi.string().required(),
@@ -49,12 +56,28 @@ const verifyEmail = {
   }),
 };
 
+const sendOtp = {
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+  }),
+};
+
+const validateOtp = {
+  body: Joi.object().keys({
+    otp: Joi.string().required(),
+    email: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   register,
+  changePassword,
   login,
   logout,
   refreshTokens,
   forgotPassword,
   resetPassword,
   verifyEmail,
+  sendOtp,
+  validateOtp
 };

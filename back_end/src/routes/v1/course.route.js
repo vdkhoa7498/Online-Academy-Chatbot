@@ -8,4 +8,14 @@ router
   .route('/')
   .get(coursesController.getCourses)
   .post(validate(courseValidate.createCourse), coursesController.createCourse);
+
+router.post('/addView', coursesController.addView);
+
+router.get('/:courseId', coursesController.getCourseById);
+router.delete('/:courseId', coursesController.deleteCourse);
+router.put('/:courseId', validate(courseValidate.editCourse), coursesController.editCourseById);
+
+router.get('/category/:categoryId', coursesController.getCoursesByCategoryId);
+router.get('/learning/:courseId', coursesController.getVideoOfCourse);
+
 module.exports = router;

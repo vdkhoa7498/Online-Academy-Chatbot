@@ -1,6 +1,10 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
+const Course = require('../models/courses.model');
+const { findById } = require('../models/registeredCategory.model');
+const RegisteredCategory = require('../models/registeredCategory.model');
 const ApiError = require('../utils/ApiError');
+const courseService = require("./course.service")
 
 /**
  * Create a user
@@ -15,10 +19,78 @@ const createUser = async (userBody) => {
   return user;
 };
 
-
 const getProfile = async (id) => {
   return await User.findOne({ _id: id });
 };
+
+const editProfile = async ({ email, fullName }) => {
+  const user = await User.findOne({ email });
+
+  user.fullName = fullName;
+  await user.save();
+
+  return user;
+
+}
+
+const changePassword = async (email, oldPassword, newPassword) => {
+  const user = await User.findOne({ email: email });
+  if (!user || !(await user.isPasswordMatch(oldPassword))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Vui lòng nhập đúng mật khẩu cũ');
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  return user;
+}
+
+const registerCourse = async(id, user) => {
+  const result = user.registeredCourses.find(x => x===id);
+  if (!result){
+    user.registeredCourses.push(id); 
+  
+    await user.save();
+  }
+  const course = await Course.findById(id)
+  await RegisteredCategory.create({categoryId: course.categoryId})
+
+  return true;
+}
+
+const addToFavorite = async(id, user) => {
+  const result = user.favoriteCourses.find(x => x===id);
+  if (!result){
+    user.favoriteCourses.push(id);
+    await user.save();  
+  }
+
+  return true;
+}
+
+const removeRegister = async(id, user) => {
+  user.registeredCourses = user.registeredCourses.filter(c => c !== id);
+  await user.save();
+
+  const newCourses = await courseService.findWithListId(user.registeredCourses);
+
+  return newCourses;
+}
+
+const removeFavorite= async(id, user) => {
+  user.favoriteCourses = user.favoriteCourses.filter(c => c !== id);
+  await user.save();
+  return await courseService.findWithListId(user.favoriteCourses);
+
+}
+
+const getInfoCourse = async(id, user) => {
+  const isLike = await user.favoriteCourses.find(c => c === id);
+  const isRegister = await user.registeredCourses.find(c => c === id);
+
+  return { isLike: !!isLike, isRegister: !!isRegister}
+}
+
 
 /**
  * Query for users
@@ -82,15 +154,48 @@ const deleteUserById = async (userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   await user.remove();
-  return user;
+  return 'success';
 };
+
+const editUser = async (userId, body) => {
+  const user = await User.findOne({ _id: userId });
+  user.fullName = body.fullName;
+  user.save();
+  return user;
+}
+
+const editStudent = async (studentBody) => {
+  const student = await User.findOne({ _id: studentBody.id });
+  student.fullName = studentBody.fullName;
+  student.save();
+  return student;
+}
+
+const countStudentsByCourseId = async (courseId) => {
+  return await User.countDocuments({ registeredCourses: courseId });
+}
+
+const getLecturerInfo = async (lecturerId) => {
+  return await User.findOne({ _id: lecturerId });
+}
 
 module.exports = {
   createUser,
   getProfile,
+  editProfile,
+  changePassword,
+  registerCourse,
+  addToFavorite,
+  removeRegister,
+  removeFavorite,
   queryUsers,
   getUserById,
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  editUser,
+  editStudent,
+  getInfoCourse,
+  countStudentsByCourseId,
+  getLecturerInfo
 };

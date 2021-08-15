@@ -1,4 +1,5 @@
 .list-container {
+  color: Black;
   padding: 15px;
 
   .image-item {
@@ -8,6 +9,7 @@
   }
 
   .content-item {
+    color: Black;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -17,9 +19,23 @@
     width: 100%;
     background-color: white;
     font-size: 14px;
-    .title {
-      font-weight: bold;
-      margin-right: 10px;
+    .content-detail {
+      color: Black;
+      display: flex;
+      justify-content: flex-start;
+      .title {
+        // display: flex;
+        // justify-content: flex-start;
+        font-size: 14px ;
+        color: Black;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .value {
+        color: Black;
+        font-size: 14px;
+        font-weight: 600px;
+      }
     }
   }
   .btn-remove-courses {

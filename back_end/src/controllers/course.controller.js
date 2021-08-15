@@ -1,10 +1,64 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { courseService } = require('../services/index');
+const pick = require('../utils/pick');
+const { courseService, rateService, userService } = require('../services/index');
 
 const getCourses = catchAsync(async (req, res) => {
-  const courses = await courseService.getAllCourses();
+  const filter = pick(req.query, ['title', 'category', 'lecturerId', 'search', 'rateScoreFilter', 'priceFilter']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const courses = await courseService.queryCourses(filter, options);
   res.send(courses);
+});
+
+const getAllCourses = catchAsync(async (req, res) => {
+  const allCourses = await courseService.getAllCourses();
+  res.send(allCourses);
+})
+
+const getCoursesByCategoryId = catchAsync(async (req, res) => {
+  const filter = pick(req.params, ['categoryId']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const courses = await courseService.queryCoursesByCategoryId(filter, options);
+  res.send(courses);
+});
+
+const getCourseById = catchAsync(async (req, res) => {
+  // Basic info
+  let course = await courseService.getCourseById(req.params.courseId);
+  course = course.toObject();
+
+  // Count students
+  let countStudents = await userService.countStudentsByCourseId(req.params.courseId);
+  course.countStudents = countStudents;
+
+  // Lectures
+  const lectures = await courseService.getLectureListByCourseId(req.params.courseId);
+  course.lectures = lectures;
+
+  // Other courses
+  const otherCourses = await courseService.getOtherCourses(course.categoryId);
+  course.otherCourses = otherCourses;
+
+  // Lecturer info
+  const lecturerInfo = await userService.getLecturerInfo(course.lecturerId);
+  course.lecturerInfo = lecturerInfo;
+
+  // Rates
+  let rates = await rateService.getRateListByCourseId(req.params.courseId);
+  course.rates = rates;
+  let rateScore = 0;
+  rates.forEach(rate => { rateScore += rate.point});
+  rateScore /= rates.length;
+  course.rateScore = rateScore;
+  course.ratings = rates.length;
+
+  res.send(course);
+});
+
+const editCourseById = catchAsync(async (req, res) => {
+  // Basic info
+  let course = await courseService.editCourseById(req.params.courseId, req.body);
+  res.send(course);
 });
 
 const createCourse = catchAsync(async (req, res) => {
@@ -12,7 +66,30 @@ const createCourse = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(course);
 });
 
+const addView = catchAsync(async (req, res) => {
+  courseId = req.body.courseId;
+  const course = await courseService.addView(courseId);
+  res.status(httpStatus.OK).send(course);
+});
+
+const deleteCourse = catchAsync(async (req, res) => {
+  const message = await courseService.deleteCourse(req.params.courseId);
+  res.status(httpStatus.OK).send(message);
+});
+
+const getVideoOfCourse = catchAsync(async (req, res) => {
+  const videos = await courseService.getVideosOfCourse(req.params.courseId);
+  res.status(httpStatus.OK).send(videos);
+});
+
 module.exports = {
   getCourses,
+  getAllCourses,
   createCourse,
+  addView,
+  getCoursesByCategoryId,
+  getCourseById,
+  deleteCourse,
+  getVideoOfCourse,
+  editCourseById,
 };

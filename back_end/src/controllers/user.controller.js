@@ -2,11 +2,12 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService } = require('../services');
+const { userService, courseService } = require('../services');
 
 const createUser = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  const response = await userService.createUser(req.body);
+  console.log(response.message);
+  res.status(httpStatus.CREATED).send(response);
 });
 
 const getUsers = catchAsync(async (req, res) => {
@@ -30,9 +31,60 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-  await userService.deleteUserById(req.params.userId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const message = await userService.deleteUserById(req.params.userId);
+  res.status(httpStatus.OK).send(message);
 });
+
+const getWatchList = catchAsync(async (req, res) => {
+  const coursesId = req.user.favoriteCourses;
+  const watchList = await courseService.findWithListId(coursesId);
+  res.status(200).send(watchList)
+})
+
+const getMyCourses = catchAsync(async (req, res) => {
+  const coursesId = req.user.registeredCourses;
+  const registeredCourses = await courseService.findWithListId(coursesId);
+  res.status(200).send(registeredCourses)
+})
+
+
+const registerCourse = catchAsync(async (req, res) => {
+  console.log(req.params.id, req.user);
+  const result = await userService.registerCourse(req.params.id, req.user);
+
+  res.status(httpStatus.CREATED).send(result);
+})
+
+const addToFavorite = catchAsync(async (req, res) => {
+  const result = await userService.addToFavorite(req.params.id, req.user);
+
+  res.status(httpStatus.CREATED).send(result);
+})
+
+const removeRegisterCourse = catchAsync(async (req, res)=> {
+  const result = await userService.removeRegister(req.params.id, req.user);
+
+  res.status(200).send(result);
+
+})
+
+const removeFavoriteCourse = catchAsync(async (req, res)=> {
+  const result = await userService.removeFavorite(req.params.id, req.user);
+
+  res.status(200).send(result);
+
+})
+
+const editUserAdmin = catchAsync(async (req, res) => {
+  const result = await userService.editUser(req.params.userId, req.body);
+  res.status(httpStatus.OK).send(result);
+})
+
+const getInfoCourse = catchAsync(async (req, res) => {  
+  const result = await userService.getInfoCourse(req.params.id, req.user);
+
+  res.status(httpStatus.OK).send(result);
+})
 
 module.exports = {
   createUser,
@@ -40,4 +92,12 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  getWatchList,
+  getMyCourses,
+  registerCourse,
+  addToFavorite,
+  editUserAdmin,
+  removeRegisterCourse,
+  removeFavoriteCourse,
+  getInfoCourse
 };

@@ -8,7 +8,7 @@ const courseSchema = mongoose.Schema({
     trim: true,
   },
   picture: { 
-    type: Array,
+    type: String,
     required: true,
   },
   description: { 
@@ -24,14 +24,44 @@ const courseSchema = mongoose.Schema({
     ref: 'Category', 
     required: true 
   },
+  status:{
+    type: String,
+    enum: ['complete', 'incomplete'],
+    default: 'incomplete',
+  },
+  view: { 
+    type: Number, 
+    default: 0
+  },
   price: { 
     type: Number, 
-    required: true 
+    default: 0
   },
   voucher: { 
     type: Number, 
     default: 0 
   },
+  rateScore:{
+    type: Number,
+    default: 0
+  },
+  ratings:{
+    type: Number,
+    default: 0
+  },
+  lecturerId:{
+    type: mongoose.SchemaTypes.ObjectId, 
+    required: true, 
+    ref: 'User' 
+  },
+  studentNumber:{
+    type: Number,
+    default: 0
+  },
+  preView: {
+    type: Number,
+    default: 0,
+  }
 },
 {
   timestamps: true,
@@ -40,6 +70,8 @@ const courseSchema = mongoose.Schema({
 // add plugin that converts mongoose to json
 courseSchema.plugin(toJSON);
 courseSchema.plugin(paginate);
+
+courseSchema.index({title: 'text', description: 'text', shortDescription: 'text'})
 
 const Course = mongoose.model('Course', courseSchema);
 
