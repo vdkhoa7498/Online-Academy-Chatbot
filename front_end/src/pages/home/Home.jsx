@@ -10,7 +10,7 @@ const Home = (props) => {
   const [topView, setTopView] = useState([]);
   const [topNew, setTopNew] = useState([]);
   const [topHighlight, setTopHightLight] = useState([]);
-  const [topCategory, setTopCategory] = useState(topCatEx);
+  const [topCategory, setTopCategory] = useState([]);
 
   const { categories } = props;
 
@@ -39,7 +39,7 @@ const Home = (props) => {
       setTopHightLight([topView_.results[0], topView_.results[1], topNew_.results[0]]);
     };
     fetchData();
-  }, []);
+  }, [categories]);
 
   return (
     <div className="home-container">

@@ -12,6 +12,30 @@ const createCourse = async (courseBody) => {
   return course;
 };
 
+const getHighLightCourses = async () => {
+  const courses = await CourseView.aggregate([
+    {
+      $group: {
+        _id: {
+          courseId: "$courseId",
+          week: { $week: new Date("$createdAt") }
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $limit: 4,
+    },
+    { $sort : { count: -1 } },
+  ]);
+  let courseIdList = []
+  courses.map((item)=>{
+    courseIdList=[...courseIdList, item._id.courseId]
+  })
+  const results = await Course.paginate({_id: {$in: courseIdList}}, {})
+  return results;
+};
+
 const getAllCourses = async () => {
   return await Course.aggregate([
     {
@@ -123,6 +147,7 @@ const deleteCourse = async (courseId) => {
 };
 
 module.exports = {
+  getHighLightCourses,
   createCourse,
   editCourseById,
   queryCourses,
