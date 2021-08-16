@@ -41,12 +41,15 @@ const getCourseById = catchAsync(async (req, res) => {
   course.lectures = lectures;
 
   // Other courses
-  const otherCourses = await courseService.getOtherCourses(course.categoryId);
-  course.otherCourses = otherCourses;
+  const otherCourses = await courseService.getOtherCourses(course._id, course.categoryId);
+  course.otherCourses = [];
+  otherCourses.forEach(otherCourse => {
+    course.otherCourses.push(otherCourse.toObject());
+  });
 
-  // Lecturer info
-  const lecturerInfo = await userService.getLecturerInfo(course.lecturerId);
-  course.lecturerInfo = lecturerInfo;
+  // Lecturer details
+  const lecturerDetails = await getLecturerDetails(course.lecturerId);
+  course.lecturerDetails = lecturerDetails;
 
   // Rates
   let rates = await rateService.getRateListByCourseId(req.params.courseId);
@@ -59,6 +62,36 @@ const getCourseById = catchAsync(async (req, res) => {
 
   res.send(course);
 });
+
+const getLecturerDetails = async (lecturerId) => {
+  // Basic info
+  let lecturerDetails = await userService.getLecturerInfo(lecturerId);
+  lecturerDetails = lecturerDetails.toObject();
+
+  // Get all courses owned
+  let coursesOwned = await courseService.getCoursesByLecturerId(lecturerId);
+  lecturerDetails.countCourses = coursesOwned.length;
+
+  // For each course count stundents and get rates
+  let countStudents = 0;
+  let rateScore = 0;
+  let ratings = 0;
+  for (const course of coursesOwned) {
+    const count = await userService.countStudentsByCourseId(course._id.toString());
+    countStudents += count;
+
+    let rates = await rateService.getRateListByCourseId(course._id);
+    ratings += rates.length;
+    rates.forEach(rate => { rateScore += rate.point });
+  };
+  rateScore /= ratings;
+
+  lecturerDetails.countStudents = countStudents;
+  lecturerDetails.rateScore = rateScore;
+  lecturerDetails.ratings = ratings;
+
+  return lecturerDetails;
+}
 
 const editCourseById = catchAsync(async (req, res) => {
   // Basic info
