@@ -61,6 +61,10 @@ const courseSchema = mongoose.Schema({
   preView: {
     type: Number,
     default: 0,
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 },
 {

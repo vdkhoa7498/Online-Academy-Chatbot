@@ -10,7 +10,7 @@ const Home = (props) => {
   const [topView, setTopView] = useState([]);
   const [topNew, setTopNew] = useState([]);
   const [topHighlight, setTopHightLight] = useState([]);
-  const [topCategory, setTopCategory] = useState(topCatEx);
+  const [topCategory, setTopCategory] = useState([]);
 
   const { categories } = props;
 
