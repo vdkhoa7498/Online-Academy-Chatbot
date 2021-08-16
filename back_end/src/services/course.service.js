@@ -4,11 +4,36 @@ const Category = require('../models/category.model');
 const ApiError = require('../utils/ApiError');
 const videoService = require('./video.service');
 const Video = require('../models/video.model');
+const CourseView = require('../models/courseview.model');
 
 const createCourse = async (courseBody) => {
   courseBody.description = courseBody.description.replace(/&lt;/g, '<');
   const course = await Course.create(courseBody);
   return course;
+};
+
+const getHighLightCourses = async () => {
+  const courses = await CourseView.aggregate([
+    {
+      $group: {
+        _id: {
+          courseId: "$courseId",
+          week: { $week: new Date("$createdAt") }
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $limit: 4,
+    },
+    { $sort : { count: -1 } },
+  ]);
+  let courseIdList = []
+  courses.map((item)=>{
+    courseIdList=[...courseIdList, item._id.courseId]
+  })
+  const results = await Course.paginate({_id: {$in: courseIdList}}, {})
+  return results;
 };
 
 const getAllCourses = async () => {
@@ -92,6 +117,7 @@ const getOtherCourses = async (currentCourseId, categoryId) => {
 };
 
 const addView = async (courseId) => {
+  await CourseView.create({courseId})
   const course = await Course.findOne({ _id: courseId });
   course.view = course.view + 1;
   await course.save();
@@ -126,6 +152,7 @@ const deleteCourse = async (courseId) => {
 };
 
 module.exports = {
+  getHighLightCourses,
   createCourse,
   editCourseById,
   queryCourses,

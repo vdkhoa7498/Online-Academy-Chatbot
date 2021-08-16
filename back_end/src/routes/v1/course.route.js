@@ -10,6 +10,7 @@ router
   .post(validate(courseValidate.createCourse), coursesController.createCourse);
 
 router.post('/addView', coursesController.addView);
+router.get('/high-light', coursesController.getHighLightCourses);
 
 router.get('/:courseId', coursesController.getCourseById);
 router.delete('/:courseId', coursesController.deleteCourse);

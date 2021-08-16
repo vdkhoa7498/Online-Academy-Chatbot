@@ -10,6 +10,11 @@ const getCourses = catchAsync(async (req, res) => {
   res.send(courses);
 });
 
+const getHighLightCourses = catchAsync(async (req, res) => {
+  const courses = await courseService.getHighLightCourses();
+  res.send(courses);
+});
+
 const getAllCourses = catchAsync(async (req, res) => {
   const allCourses = await courseService.getAllCourses();
   res.send(allCourses);
@@ -116,6 +121,7 @@ const getVideoOfCourse = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  getHighLightCourses,
   getCourses,
   getAllCourses,
   createCourse,
