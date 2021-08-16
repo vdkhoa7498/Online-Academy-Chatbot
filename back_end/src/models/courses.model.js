@@ -67,7 +67,6 @@ const courseSchema = mongoose.Schema({
   timestamps: true,
 });
 
-
 // add plugin that converts mongoose to json
 courseSchema.plugin(toJSON);
 courseSchema.plugin(paginate);

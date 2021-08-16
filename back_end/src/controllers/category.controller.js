@@ -32,4 +32,9 @@ const deleteCategory = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(message);
 })
 
-module.exports = { getCategories, getCategoriesAdmin, createCategory, getCategoryById, editCategory, deleteCategory };
+const getTopRegisteredCategory = catchAsync(async (req, res) => {
+  const category = await categoryService.getTopRegisteredCategory();
+  res.send(category);
+});
+
+module.exports = { getCategories, getCategoriesAdmin, createCategory, getCategoryById, editCategory, deleteCategory, getTopRegisteredCategory };
