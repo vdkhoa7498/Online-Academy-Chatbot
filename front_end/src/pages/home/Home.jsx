@@ -22,6 +22,7 @@ const Home = (props) => {
       const topNew_ = await httpClient.course.getCourses({
         sortBy: "createdAt:desc",
       });
+      const topHighlight_ = await httpClient.course.getHighLightCourses()
       const topCategory_ = await httpClient.category.getTopRegisteredCategory();
       let categories_ = [];
       topCategory_?.map((item) => {
@@ -36,7 +37,7 @@ const Home = (props) => {
       setTopCategory(categories_);
       setTopView(topView_.results);
       setTopNew(topNew_.results);
-      setTopHightLight([topView_.results[0], topView_.results[1], topNew_.results[0]]);
+      setTopHightLight(topHighlight_.results);
     };
     fetchData();
   }, [categories]);

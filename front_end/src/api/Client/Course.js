@@ -6,6 +6,11 @@ export function CourseHttpService(options) {
     });
   }
 
+  function getHighLightCourses() {
+    const baseUrl = options.httpService.getUrl("courses/high-light");
+    return options.httpService.get(baseUrl);
+  }
+
   async function getAllCourses() {
     const baseUrl = options.httpService.getUrl("admin/courses");
     return await options.httpService.get(baseUrl);
@@ -49,6 +54,7 @@ export function CourseHttpService(options) {
   }
 
   return {
+    getHighLightCourses,
     addView,
     getCourses,
     getAllCourses,
