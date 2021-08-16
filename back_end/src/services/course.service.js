@@ -4,6 +4,7 @@ const Category = require('../models/category.model');
 const ApiError = require('../utils/ApiError');
 const videoService = require('./video.service');
 const Video = require('../models/video.model');
+const CourseView = require('../models/courseview.model');
 
 const createCourse = async (courseBody) => {
   courseBody.description = courseBody.description.replace(/&lt;/g, '<');
@@ -87,6 +88,7 @@ const getOtherCourses = async (currentCourseId, categoryId) => {
 };
 
 const addView = async (courseId) => {
+  await CourseView.create({courseId})
   const course = await Course.findOne({ _id: courseId });
   course.view = course.view + 1;
   await course.save();
