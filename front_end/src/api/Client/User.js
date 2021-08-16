@@ -46,6 +46,16 @@ export function UserHttpService(options) {
     return await options.httpService.del(baseUrl);
   }
 
+  async function lockUser(userId) {
+    const baseUrl = options.httpService.getUrl('admin/users/lock/' + userId);
+    return await options.httpService.get(baseUrl);
+  }
+
+  async function unlockUser(userId) {
+    const baseUrl = options.httpService.getUrl('admin/users/unlock/' + userId);
+    return await options.httpService.get(baseUrl);
+  }
+
   async function createLecturer(form) {
     const baseUrl = options.httpService.getUrl('users');
     const body = {
@@ -83,10 +93,12 @@ export function UserHttpService(options) {
     getStudents,
     editUser,
     deleteUser,
+    lockUser,
+    unlockUser,
     removeRegisterCourse,
     removeFavoriteCourse,
     createLecturer,
     getLecturers,
-    getInfoCourse
+    getInfoCourse,
   };
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Table, message, Divider } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
+import { Card, Button, Table, message, Divider, Popconfirm } from "antd";
+import { EditOutlined, DeleteOutlined, LockOutlined, UnlockOutlined } from "@ant-design/icons"
 import EditStudentForm from "./forms/EditStudentForm"
 import '../styles.scss'
 import { httpClient } from '../../../api'
@@ -34,8 +34,16 @@ const Student = () => {
     setEditStudentModalVisible(false);
   }
 
-  const handleDeleteStudent = (row) => {
+  const handleLockStudent = async (row) => {
+    await httpClient.user.lockUser(row.id);
+    await fetchData();
+    message.success('Đã khóa tài khoản');
+  }
 
+  const handleUnlockStudent = async (row) => {
+    await httpClient.user.unlockUser(row.id);
+    await fetchData();
+    message.success('Đã mở khóa tài khoản');
   }
 
   const handleEditStudent = (row) => {
@@ -74,9 +82,25 @@ const Student = () => {
           <Column title="Email" dataIndex="email" key="email" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>
-              <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditStudent(row)} />
+              <Button shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditStudent(row)} />
               <Divider type="vertical" />
-              <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" onClick={handleDeleteStudent} />
+              {
+                !row.disabled ?
+                  <Popconfirm
+                    title="Bạn có chắc là muốn khóa tài khoản này không?"
+                    onConfirm={() => handleLockStudent(row)}
+                    okText="Có"
+                    cancelText="Không">
+                    <Button type="danger" shape="circle" icon={<LockOutlined />} />
+                  </Popconfirm> :
+                  <Popconfirm
+                    title="Bạn có chắc là muốn mở khóa tài khoản này không?"
+                    onConfirm={() => handleUnlockStudent(row)}
+                    okText="Có"
+                    cancelText="Không">
+                    <Button type="primary" shape="circle" icon={<UnlockOutlined />} />
+                  </Popconfirm>
+              }
             </span>
           )} />
         </Table>

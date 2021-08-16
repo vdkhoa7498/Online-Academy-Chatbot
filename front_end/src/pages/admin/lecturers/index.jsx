@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Table, message, Divider, Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, UserAddOutlined, LockOutlined, UnlockOutlined } from "@ant-design/icons";
 import EditLecturerForm from "./forms/EditLecturerForm";
 import AddLecturerForm from "./forms/AddLecturerForm";
 import '../styles.scss';
@@ -42,6 +42,18 @@ const Lecturer = () => {
     const msg = await httpClient.user.deleteUser(row.id);
     await fetchData();
     message.success('Bạn đã xóa một giảng viên');
+  }
+
+  const handleLockLecturer = async (row) => {
+    await httpClient.user.lockUser(row.id);
+    await fetchData();
+    message.success('Đã khóa tài khoản');
+  }
+
+  const handleUnlockLecturer = async (row) => {
+    await httpClient.user.unlockUser(row.id);
+    await fetchData();
+    message.success('Đã mở khóa tài khoản');
   }
 
   const handleAddLecturer = () => {
@@ -103,15 +115,25 @@ const Lecturer = () => {
           <Column title="Email" dataIndex="email" key="email" align="center" />
           <Column title="Hành động" key="action" width={195} align="center" render={(text, row) => (
             <span>
-              <Button type="primary" shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditLecturer(row)} />
+              <Button shape="circle" icon={<EditOutlined />} title="Sửa" onClick={() => handleEditLecturer(row)} />
               <Divider type="vertical" />
-              <Popconfirm
-                title="Bạn có chắc là muốn xóa giảng viên này không?"
-                onConfirm={() => handleDeleteLecturer(row)}
-                okText="Có"
-                cancelText="Không">
-                <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá" />
-              </Popconfirm>
+              {
+                !row.disabled ?
+                  <Popconfirm
+                    title="Bạn có chắc là muốn khóa tài khoản này không?"
+                    onConfirm={() => handleLockLecturer(row)}
+                    okText="Có"
+                    cancelText="Không">
+                    <Button type="danger" shape="circle" icon={<LockOutlined />} />
+                  </Popconfirm> :
+                  <Popconfirm
+                    title="Bạn có chắc là muốn mở khóa tài khoản này không?"
+                    onConfirm={() => handleUnlockLecturer(row)}
+                    okText="Có"
+                    cancelText="Không">
+                    <Button type="primary" shape="circle" icon={<UnlockOutlined />} />
+                  </Popconfirm>
+              }
             </span>
           )} />
         </Table>
