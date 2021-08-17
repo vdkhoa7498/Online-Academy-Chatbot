@@ -27,8 +27,10 @@ const coursesEx = [
 ]
 
 const Course = () => {
-  const [courses, setCourses] = useState([])
-  const [currentRowData, setCurrentRowData] = useState({})
+  const [courses, setCourses] = useState([]);
+  const [currentRowData, setCurrentRowData] = useState({});
+  const [categoryFilters, setCategoryFilters] = useState([]);
+  const [lecturerFilters, setLecturerFilters] = useState([]);
 
   const handleLockCourse = async (row) => {
     await httpClient.course.lockCourse(row._id);
@@ -44,6 +46,8 @@ const Course = () => {
 
   useEffect(async () => {
     await fetchData();
+    await fecthCategories();
+    await fecthLecturers();
   }, [])
 
   const fetchData = async () => {
@@ -58,6 +62,40 @@ const Course = () => {
     setCourses(courses_);
   }
 
+  const fecthCategories = async () => {
+    let filters = [];
+    const categories = await httpClient.category.getCategories({});
+    categories.forEach(category => {
+      if (category.parentId) {
+        filters.push({
+          text: category.name,
+          value: category.name
+        });
+      }
+    });
+    setCategoryFilters(filters);
+  }
+
+  const fecthLecturers = async () => {
+    let filters = [];
+    const lecturers = await httpClient.user.getLecturers();
+    lecturers.results.forEach(lecturer => {
+      filters.push({
+        text: lecturer.fullName,
+        value: lecturer.fullName
+      });
+    });
+    setLecturerFilters(filters);
+  }
+
+  const onCategoryFilter = (value, record) => {
+    return value == record.categoryName;
+  };
+
+  const onLecturerFilter = (value, record) => {
+    return value == record.lecturerName;
+  };
+
   return (
     <div className="app-container">
       <div className="title">Danh sách khóa học</div>
@@ -67,8 +105,8 @@ const Course = () => {
           <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tên khóa học" dataIndex="title" key="title" align="center" />
           {/* <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" /> */}
-          <Column title="Giảng viên" dataIndex="lecturerName" key="lecturerName" align="center" />
-          <Column title="Danh mục" dataIndex="categoryName" key="categoryName" align="center" />
+          <Column title="Giảng viên" dataIndex="lecturerName" key="lecturerName" align="center" filters={lecturerFilters} onFilter={onLecturerFilter} />
+          <Column title="Danh mục" dataIndex="categoryName" key="categoryName" align="center" filters={categoryFilters} onFilter={onCategoryFilter} />
           <Column title="Hành động" key="action" align="center" render={(text, row) => (
             !row.disabled ?
               <Popconfirm
