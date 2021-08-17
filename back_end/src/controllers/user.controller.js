@@ -35,6 +35,16 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(message);
 });
 
+const lockUser = catchAsync(async (req, res) => {
+  const message = await userService.lockUser(req.params.userId);
+  res.status(httpStatus.OK).send(message);
+});
+
+const unlockUser = catchAsync(async (req, res) => {
+  const message = await userService.unlockUser(req.params.userId);
+  res.status(httpStatus.OK).send(message);
+});
+
 const getWatchList = catchAsync(async (req, res) => {
   const coursesId = req.user.favoriteCourses;
   const watchList = await courseService.findWithListId(coursesId);
@@ -92,6 +102,8 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  lockUser,
+  unlockUser,
   getWatchList,
   getMyCourses,
   registerCourse,

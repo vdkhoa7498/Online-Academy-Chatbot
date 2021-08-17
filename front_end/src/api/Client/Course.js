@@ -48,6 +48,16 @@ export function CourseHttpService(options) {
     return await options.httpService.del(baseUrl);
   }
 
+  async function lockCourse(courseId) {
+    const baseUrl = options.httpService.getUrl(`courses/lock/${courseId}`);
+    return await options.httpService.get(baseUrl);
+  }
+
+  async function unlockCourse(courseId) {
+    const baseUrl = options.httpService.getUrl(`courses/unlock/${courseId}`);
+    return await options.httpService.get(baseUrl);
+  }
+
   function getVideoOfCourse(courseId) {
     const baseUrl = options.httpService.getUrl(`courses/learning/${courseId}`);
     return options.httpService.get(baseUrl);
@@ -62,6 +72,8 @@ export function CourseHttpService(options) {
     getCourseById,
     getCoursesByCategoryId,
     deleteCourse,
+    lockCourse,
+    unlockCourse,
     getVideoOfCourse,
     updateCourseById,
   };

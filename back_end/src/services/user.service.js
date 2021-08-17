@@ -157,6 +157,20 @@ const deleteUserById = async (userId) => {
   return 'success';
 };
 
+const lockUser = async (userId) => {
+  const user = await User.findOne({ _id: userId });
+  user.disabled = true;
+  user.save();
+  return 'success';
+}
+
+const unlockUser = async (userId) => {
+  const user = await User.findOne({ _id: userId });
+  user.disabled = false;
+  user.save();
+  return 'success';
+}
+
 const editUser = async (userId, body) => {
   const user = await User.findOne({ _id: userId });
   user.fullName = body.fullName;
@@ -193,6 +207,8 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  lockUser,
+  unlockUser,
   editUser,
   editStudent,
   getInfoCourse,

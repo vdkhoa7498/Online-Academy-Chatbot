@@ -15,4 +15,7 @@ router
   .put(userController.editUserAdmin)
   .delete(userController.deleteUser);
 
+router.route('/users/lock/:userId').get(userController.lockUser);
+router.route('/users/unlock/:userId').get(userController.unlockUser);
+
 module.exports = router;

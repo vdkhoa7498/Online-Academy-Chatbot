@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Table, message, Divider, Popconfirm } from "antd";
-import { DeleteOutlined } from "@ant-design/icons"
+import { DeleteOutlined, LockOutlined, UnlockOutlined } from "@ant-design/icons"
 import '../styles.scss'
 import { httpClient } from '../../../api'
 const { Column } = Table;
@@ -30,10 +30,16 @@ const Course = () => {
   const [courses, setCourses] = useState([])
   const [currentRowData, setCurrentRowData] = useState({})
 
-  const handleDeleteCourse = async (row) => {
-    await httpClient.course.deleteCourse(row._id);
+  const handleLockCourse = async (row) => {
+    await httpClient.course.lockCourse(row._id);
     await fetchData();
-    message.success('Bạn đã gỡ bỏ một khóa học');
+    message.success('Bạn đã đình chỉ khóa học');
+  }
+
+  const handleUnlockCourse = async (row) => {
+    await httpClient.course.unlockCourse(row._id);
+    await fetchData();
+    message.success('Bạn đã mở lại khóa học');
   }
 
   useEffect(async () => {
@@ -60,17 +66,25 @@ const Course = () => {
         <Table bordered rowKey="_id" dataSource={courses} pagination={false}>
           <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tên khóa học" dataIndex="title" key="title" align="center" />
-          <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" />
+          {/* <Column title="Mô tả" dataIndex="shortDescription" key="shortDescription" align="center" /> */}
           <Column title="Giảng viên" dataIndex="lecturerName" key="lecturerName" align="center" />
           <Column title="Danh mục" dataIndex="categoryName" key="categoryName" align="center" />
-          <Column title="Gỡ bỏ" key="action" align="center" render={(text, row) => (
-            <Popconfirm
-              title="Bạn có chắc là muốn gỡ bỏ khóa học này không?"
-              onConfirm={() => handleDeleteCourse(row)}
-              okText="Có"
-              cancelText="Không">
-              <Button type="danger" shape="circle" icon={<DeleteOutlined />} title="Xoá"/>
-            </Popconfirm>
+          <Column title="Hành động" key="action" align="center" render={(text, row) => (
+            !row.disabled ?
+              <Popconfirm
+                title="Bạn có chắc là muốn đình chỉ khóa học này không?"
+                onConfirm={() => handleLockCourse(row)}
+                okText="Có"
+                cancelText="Không">
+                <Button type="danger" shape="circle" icon={<LockOutlined />} />
+              </Popconfirm> :
+              <Popconfirm
+                title="Bạn có chắc là muốn mở lại khóa học này không?"
+                onConfirm={() => handleUnlockCourse(row)}
+                okText="Có"
+                cancelText="Không">
+                <Button type="primary" shape="circle" icon={<UnlockOutlined />} />
+              </Popconfirm>
           )} />
         </Table>
       </Card>

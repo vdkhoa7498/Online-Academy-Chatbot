@@ -115,6 +115,16 @@ const deleteCourse = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(message);
 });
 
+const lockCourse = catchAsync(async (req, res) => {
+  const message = await courseService.lockCourse(req.params.courseId);
+  res.status(httpStatus.OK).send(message);
+});
+
+const unlockCourse = catchAsync(async (req, res) => {
+  const message = await courseService.unlockCourse(req.params.courseId);
+  res.status(httpStatus.OK).send(message);
+});
+
 const getVideoOfCourse = catchAsync(async (req, res) => {
   const videos = await courseService.getVideosOfCourse(req.params.courseId);
   res.status(httpStatus.OK).send(videos);
@@ -129,6 +139,8 @@ module.exports = {
   getCoursesByCategoryId,
   getCourseById,
   deleteCourse,
+  lockCourse,
+  unlockCourse,
   getVideoOfCourse,
   editCourseById,
 };
