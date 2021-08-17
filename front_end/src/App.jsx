@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import 'antd/dist/antd.css'
 import './App.scss';
 import { getMenu } from './stores/category';
+import { setHighLightCourses } from './stores/course';
 
 function App(props) {
 
@@ -24,6 +25,7 @@ function App(props) {
     //  props.toggleGlobalLoading(false);
     }
     props.getMenu()
+    props.setHighLightCourses()
   }, [])
 
   return (
@@ -41,6 +43,7 @@ const mapState = (state) => ({
 
 const mapDispatch = dispatch => bindActionCreators({
   getProfile,
-  getMenu
+  getMenu,
+  setHighLightCourses,
 }, dispatch)
 export default connect(mapState, mapDispatch)(App);

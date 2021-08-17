@@ -7,9 +7,10 @@ import { httpClient } from "../../api";
 
 import "./styles.scss";
 
-function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
+function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCourses }) {
   const [lecturer, setLecturer] = useState({});
   const { title, categoryId, lecturerId, ratings, rateScore } = item;
+  const [isHightLight, setIsHightLight] = useState(false)
   let categoryNameList = [];
   categories?.map((item) => {
     categoryNameList[item._id] = item.name;
@@ -17,12 +18,15 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(item)
       const lecturer_ = await httpClient.user.getUserById(lecturerId);
       setLecturer(lecturer_);
     };
     fetchData();
-  }, [item]);
+    const index = highLightCourses.findIndex((element) => element.id === item.id)
+    if (index !== -1) {
+      setIsHightLight(true)
+    }
+  }, [item, highLightCourses]);
 
   return (
     <div>
@@ -33,7 +37,8 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
           </Link>
         </Col>
         <Col span={14}>
-          <div className="content-item">
+          {isHightLight && <span style={{position:'absolute', right:5, color: "red", fontWeight: 'bold'}}>Hot</span>}
+          <div className="content-item" style={{backgroundColor: isHightLight?"#f1dddb":"white"}} >
             <Link to={`/courses/${item.id}`}>
               <div className="content-detail">
                 <span className="title">Tên:</span>
@@ -72,6 +77,7 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
 
 const mapState = (state) => ({
   categories: state.category.categories,
+  highLightCourses: state.course.highLightCourses,
 });
 const mapDispatch = (dispatch) => bindActionCreators({}, dispatch);
 
