@@ -7,9 +7,11 @@ import { httpClient } from "../../api";
 
 import "./styles.scss";
 
-function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
+function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCourses, topNewCourses }) {
   const [lecturer, setLecturer] = useState({});
   const { title, categoryId, lecturerId, ratings, rateScore } = item;
+  const [isHightLight, setIsHightLight] = useState(false)
+  const [isTopNew, setIsTopNew] = useState(false)
   let categoryNameList = [];
   categories?.map((item) => {
     categoryNameList[item._id] = item.name;
@@ -17,12 +19,20 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(item)
       const lecturer_ = await httpClient.user.getUserById(lecturerId);
       setLecturer(lecturer_);
     };
     fetchData();
-  }, [item]);
+    const index = highLightCourses.findIndex((element) => element.id === item.id)
+    if (index !== -1) {
+      setIsHightLight(true)
+    }
+
+    const indexTopNew = topNewCourses.findIndex((element) => element.id === item.id)
+    if (indexTopNew !== -1) {
+      setIsTopNew(true)
+    }
+  }, [item, highLightCourses]);
 
   return (
     <div>
@@ -33,7 +43,9 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
           </Link>
         </Col>
         <Col span={14}>
-          <div className="content-item">
+          {!isWatchList && isHightLight && <span style={{position:'absolute', right:5, color: "red", fontWeight: 'bold'}}>Hot</span>}
+          {!isWatchList && isTopNew && <span style={{position:'absolute', left:5, color: "green", fontWeight: 'bold'}}>New</span>}
+          <div className="content-item" style={{backgroundColor: (!isWatchList && isHightLight)?"#f1dddb":isTopNew?"#CFF8F1":"white"}} >
             <Link to={`/courses/${item.id}`}>
               <div className="content-detail">
                 <span className="title">Tên:</span>
@@ -72,6 +84,8 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories }) {
 
 const mapState = (state) => ({
   categories: state.category.categories,
+  highLightCourses: state.course.highLightCourses,
+  topNewCourses: state.course.topNewCourses,
 });
 const mapDispatch = (dispatch) => bindActionCreators({}, dispatch);
 

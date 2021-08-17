@@ -31,7 +31,7 @@ export function CategoryHttpService(options) {
 
   async function getTopRegisteredCategory() {
     const baseUrl = options.httpService.getUrl(
-      `/categories/top-registered-category`
+      `categories/top-registered-category`
     );
     return await options.httpService.get(baseUrl);
   }

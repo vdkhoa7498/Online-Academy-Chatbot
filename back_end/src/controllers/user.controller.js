@@ -48,53 +48,49 @@ const unlockUser = catchAsync(async (req, res) => {
 const getWatchList = catchAsync(async (req, res) => {
   const coursesId = req.user.favoriteCourses;
   const watchList = await courseService.findWithListId(coursesId);
-  res.status(200).send(watchList)
-})
+  res.status(200).send(watchList);
+});
 
 const getMyCourses = catchAsync(async (req, res) => {
   const coursesId = req.user.registeredCourses;
   const registeredCourses = await courseService.findWithListId(coursesId);
-  res.status(200).send(registeredCourses)
-})
-
+  res.status(200).send(registeredCourses);
+});
 
 const registerCourse = catchAsync(async (req, res) => {
-  console.log(req.params.id, req.user);
   const result = await userService.registerCourse(req.params.id, req.user);
 
   res.status(httpStatus.CREATED).send(result);
-})
+});
 
 const addToFavorite = catchAsync(async (req, res) => {
   const result = await userService.addToFavorite(req.params.id, req.user);
 
   res.status(httpStatus.CREATED).send(result);
-})
+});
 
-const removeRegisterCourse = catchAsync(async (req, res)=> {
+const removeRegisterCourse = catchAsync(async (req, res) => {
   const result = await userService.removeRegister(req.params.id, req.user);
 
   res.status(200).send(result);
+});
 
-})
-
-const removeFavoriteCourse = catchAsync(async (req, res)=> {
+const removeFavoriteCourse = catchAsync(async (req, res) => {
   const result = await userService.removeFavorite(req.params.id, req.user);
 
   res.status(200).send(result);
-
-})
+});
 
 const editUserAdmin = catchAsync(async (req, res) => {
   const result = await userService.editUser(req.params.userId, req.body);
   res.status(httpStatus.OK).send(result);
-})
+});
 
-const getInfoCourse = catchAsync(async (req, res) => {  
+const getInfoCourse = catchAsync(async (req, res) => {
   const result = await userService.getInfoCourse(req.params.id, req.user);
 
   res.status(httpStatus.OK).send(result);
-})
+});
 
 module.exports = {
   createUser,
@@ -111,5 +107,5 @@ module.exports = {
   editUserAdmin,
   removeRegisterCourse,
   removeFavoriteCourse,
-  getInfoCourse
+  getInfoCourse,
 };
