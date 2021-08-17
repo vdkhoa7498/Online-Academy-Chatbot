@@ -19,4 +19,7 @@ router.put('/:courseId', validate(courseValidate.editCourse), coursesController.
 router.get('/category/:categoryId', coursesController.getCoursesByCategoryId);
 router.get('/learning/:courseId', coursesController.getVideoOfCourse);
 
+router.get('/lock/:courseId', coursesController.lockCourse);
+router.get('/unlock/:courseId', coursesController.unlockCourse);
+
 module.exports = router;

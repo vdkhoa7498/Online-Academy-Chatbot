@@ -151,6 +151,20 @@ const deleteCourse = async (courseId) => {
   return 'success';
 };
 
+const lockCourse = async (courseId) => {
+  let course = await Course.findOne({ _id: courseId });
+  course.disabled = true;
+  await course.save();
+  return 'success';
+}
+
+const unlockCourse = async (courseId) => {
+  let course = await Course.findOne({ _id: courseId });
+  course.disabled = false;
+  await course.save();
+  return 'success';
+}
+
 module.exports = {
   getHighLightCourses,
   createCourse,
@@ -166,4 +180,6 @@ module.exports = {
   getOtherCourses,
   queryCoursesByCategoryId,
   deleteCourse,
+  lockCourse,
+  unlockCourse
 };
