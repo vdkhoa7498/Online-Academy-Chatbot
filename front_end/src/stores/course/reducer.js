@@ -3,6 +3,7 @@ import { ActionTypeCourse } from './actionType';
 export const initialState = {
   loading: false,
   highLightCourses: [],
+  topNewCourses: [],
 }
 export default function courseReducer(state = initialState, action) {
   switch (action.type) {
@@ -10,6 +11,11 @@ export default function courseReducer(state = initialState, action) {
       return {
         ...state,
         highLightCourses: action.payload
+      }
+    case ActionTypeCourse.SetTopNewCourses:
+      return {
+        ...state,
+        topNewCourses: action.payload
       }
     case ActionTypeCourse.Loading:
       return {

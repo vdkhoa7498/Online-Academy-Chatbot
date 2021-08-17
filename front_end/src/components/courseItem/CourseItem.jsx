@@ -7,10 +7,11 @@ import { httpClient } from "../../api";
 
 import "./styles.scss";
 
-function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCourses }) {
+function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCourses, topNewCourses }) {
   const [lecturer, setLecturer] = useState({});
   const { title, categoryId, lecturerId, ratings, rateScore } = item;
   const [isHightLight, setIsHightLight] = useState(false)
+  const [isTopNew, setIsTopNew] = useState(false)
   let categoryNameList = [];
   categories?.map((item) => {
     categoryNameList[item._id] = item.name;
@@ -26,6 +27,11 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCo
     if (index !== -1) {
       setIsHightLight(true)
     }
+
+    const indexTopNew = topNewCourses.findIndex((element) => element.id === item.id)
+    if (indexTopNew !== -1) {
+      setIsTopNew(true)
+    }
   }, [item, highLightCourses]);
 
   return (
@@ -37,8 +43,9 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCo
           </Link>
         </Col>
         <Col span={14}>
-          {isHightLight && <span style={{position:'absolute', right:5, color: "red", fontWeight: 'bold'}}>Hot</span>}
-          <div className="content-item" style={{backgroundColor: isHightLight?"#f1dddb":"white"}} >
+          {!isWatchList && isHightLight && <span style={{position:'absolute', right:5, color: "red", fontWeight: 'bold'}}>Hot</span>}
+          {!isWatchList && isTopNew && <span style={{position:'absolute', left:5, color: "green", fontWeight: 'bold'}}>New</span>}
+          <div className="content-item" style={{backgroundColor: (!isWatchList && isHightLight)?"#f1dddb":isTopNew?"#CFF8F1":"white"}} >
             <Link to={`/courses/${item.id}`}>
               <div className="content-detail">
                 <span className="title">Tên:</span>
@@ -78,6 +85,7 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCo
 const mapState = (state) => ({
   categories: state.category.categories,
   highLightCourses: state.course.highLightCourses,
+  topNewCourses: state.course.topNewCourses,
 });
 const mapDispatch = (dispatch) => bindActionCreators({}, dispatch);
 

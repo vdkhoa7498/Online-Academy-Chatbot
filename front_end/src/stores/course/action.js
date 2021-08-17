@@ -13,3 +13,10 @@ export function setHighLightCoursesAction(payload) {
     payload
   }
 }
+
+export function setTopNewCoursesAction(payload) {
+  return {
+    type: ActionTypeCourse.SetTopNewCourses,
+    payload
+  }
+}
