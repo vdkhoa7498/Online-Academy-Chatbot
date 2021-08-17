@@ -3,8 +3,9 @@ const { User } = require('../models');
 const Course = require('../models/courses.model');
 const { findById } = require('../models/registeredCategory.model');
 const RegisteredCategory = require('../models/registeredCategory.model');
+const Video = require('../models/video.model');
 const ApiError = require('../utils/ApiError');
-const courseService = require("./course.service")
+const courseService = require('./course.service');
 
 /**
  * Create a user
@@ -30,8 +31,7 @@ const editProfile = async ({ email, fullName }) => {
   await user.save();
 
   return user;
-
-}
+};
 
 const changePassword = async (email, oldPassword, newPassword) => {
   const user = await User.findOne({ email: email });
@@ -43,54 +43,70 @@ const changePassword = async (email, oldPassword, newPassword) => {
   await user.save();
 
   return user;
-}
+};
 
-const registerCourse = async(id, user) => {
-  const result = user.registeredCourses.find(x => x===id);
-  if (!result){
-    user.registeredCourses.push(id); 
-  
+const registerCourse = async (id, user) => {
+  const result = user.registeredCourses.find((x) => x === id);
+  if (!result) {
+    user.registeredCourses.push(id);
+
+    await user.save();
+
+    const videos = await Video.find({ courseId: id });
+    for (let i = 0; i < videos.length; i++) {
+      const userDataInVideo = videos[i].lastWatchTime.find((v) => v.userId === user.id);
+      console.log('userDataInVideo', userDataInVideo, user.id);
+      if (!userDataInVideo) {
+        videos[i].lastWatchTime.push({
+          userId: user.id,
+          time: '0',
+          watchedPercent: 0,
+        });
+      }
+      await videos[i].save();
+    }
+    // const videos = await Video.find({
+    //   courseId: { $in: coursesId },
+    // });
+    console.log('videos', videos);
+  }
+  const course = await Course.findById(id);
+  await RegisteredCategory.create({ categoryId: course.categoryId });
+
+  return true;
+};
+
+const addToFavorite = async (id, user) => {
+  const result = user.favoriteCourses.find((x) => x === id);
+  if (!result) {
+    user.favoriteCourses.push(id);
     await user.save();
   }
-  const course = await Course.findById(id)
-  await RegisteredCategory.create({categoryId: course.categoryId})
 
   return true;
-}
+};
 
-const addToFavorite = async(id, user) => {
-  const result = user.favoriteCourses.find(x => x===id);
-  if (!result){
-    user.favoriteCourses.push(id);
-    await user.save();  
-  }
-
-  return true;
-}
-
-const removeRegister = async(id, user) => {
-  user.registeredCourses = user.registeredCourses.filter(c => c !== id);
+const removeRegister = async (id, user) => {
+  user.registeredCourses = user.registeredCourses.filter((c) => c !== id);
   await user.save();
 
   const newCourses = await courseService.findWithListId(user.registeredCourses);
 
   return newCourses;
-}
+};
 
-const removeFavorite= async(id, user) => {
-  user.favoriteCourses = user.favoriteCourses.filter(c => c !== id);
+const removeFavorite = async (id, user) => {
+  user.favoriteCourses = user.favoriteCourses.filter((c) => c !== id);
   await user.save();
   return await courseService.findWithListId(user.favoriteCourses);
+};
 
-}
+const getInfoCourse = async (id, user) => {
+  const isLike = await user.favoriteCourses.find((c) => c === id);
+  const isRegister = await user.registeredCourses.find((c) => c === id);
 
-const getInfoCourse = async(id, user) => {
-  const isLike = await user.favoriteCourses.find(c => c === id);
-  const isRegister = await user.registeredCourses.find(c => c === id);
-
-  return { isLike: !!isLike, isRegister: !!isRegister}
-}
-
+  return { isLike: !!isLike, isRegister: !!isRegister };
+};
 
 /**
  * Query for users
@@ -176,22 +192,22 @@ const editUser = async (userId, body) => {
   user.fullName = body.fullName;
   user.save();
   return user;
-}
+};
 
 const editStudent = async (studentBody) => {
   const student = await User.findOne({ _id: studentBody.id });
   student.fullName = studentBody.fullName;
   student.save();
   return student;
-}
+};
 
 const countStudentsByCourseId = async (courseId) => {
   return await User.countDocuments({ registeredCourses: courseId });
-}
+};
 
 const getLecturerInfo = async (lecturerId) => {
   return await User.findOne({ _id: lecturerId });
-}
+};
 
 module.exports = {
   createUser,
@@ -213,5 +229,5 @@ module.exports = {
   editStudent,
   getInfoCourse,
   countStudentsByCourseId,
-  getLecturerInfo
+  getLecturerInfo,
 };
