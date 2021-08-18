@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService, courseService } = require('../services');
+const { userService, courseService, rateService } = require('../services');
 
 const createUser = catchAsync(async (req, res) => {
   const response = await userService.createUser(req.body);
@@ -48,12 +48,40 @@ const unlockUser = catchAsync(async (req, res) => {
 const getWatchList = catchAsync(async (req, res) => {
   const coursesId = req.user.favoriteCourses;
   const watchList = await courseService.findWithListId(coursesId);
+
+  for (let i = 0; i < watchList.length; i++) {
+    // Rates
+    let rates = await rateService.getRateListByCourseId(watchList[i].id);
+    watchList[i].rates = rates;
+    let rateScore = 0;
+    rates.forEach((rate) => {
+      rateScore += rate.point;
+    });
+    rateScore /= rates.length;
+    watchList[i].rateScore = rateScore;
+    watchList[i].ratings = rates.length;
+  }
+
   res.status(200).send(watchList);
 });
 
 const getMyCourses = catchAsync(async (req, res) => {
   const coursesId = req.user.registeredCourses;
   const registeredCourses = await courseService.findWithListId(coursesId);
+
+  for (let i = 0; i < registeredCourses.length; i++) {
+    // Rates
+    let rates = await rateService.getRateListByCourseId(registeredCourses[i].id);
+    registeredCourses[i].rates = rates;
+    let rateScore = 0;
+    rates.forEach((rate) => {
+      rateScore += rate.point;
+    });
+    rateScore /= rates.length;
+    registeredCourses[i].rateScore = rateScore;
+    registeredCourses[i].ratings = rates.length;
+  }
+
   res.status(200).send(registeredCourses);
 });
 

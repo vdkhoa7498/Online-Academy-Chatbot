@@ -68,7 +68,6 @@ const registerCourse = async (id, user) => {
     // const videos = await Video.find({
     //   courseId: { $in: coursesId },
     // });
-    console.log('videos', videos);
   }
   const course = await Course.findById(id);
   await RegisteredCategory.create({ categoryId: course.categoryId });
@@ -178,14 +177,14 @@ const lockUser = async (userId) => {
   user.disabled = true;
   user.save();
   return 'success';
-}
+};
 
 const unlockUser = async (userId) => {
   const user = await User.findOne({ _id: userId });
   user.disabled = false;
   user.save();
   return 'success';
-}
+};
 
 const editUser = async (userId, body) => {
   const user = await User.findOne({ _id: userId });
