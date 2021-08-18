@@ -7,11 +7,19 @@ import { httpClient } from "../../api";
 
 import "./styles.scss";
 
-function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCourses, topNewCourses }) {
+function CourseItem({
+  item,
+  isWatchList,
+  onRemoveCourse,
+  categories,
+  highLightCourses,
+  topNewCourses,
+}) {
   const [lecturer, setLecturer] = useState({});
   const { title, categoryId, lecturerId, ratings, rateScore } = item;
-  const [isHightLight, setIsHightLight] = useState(false)
-  const [isTopNew, setIsTopNew] = useState(false)
+  console.log("ratings", ratings);
+  const [isHightLight, setIsHightLight] = useState(false);
+  const [isTopNew, setIsTopNew] = useState(false);
   let categoryNameList = [];
   categories?.map((item) => {
     categoryNameList[item._id] = item.name;
@@ -23,14 +31,18 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCo
       setLecturer(lecturer_);
     };
     fetchData();
-    const index = highLightCourses.findIndex((element) => element.id === item.id)
+    const index = highLightCourses.findIndex(
+      (element) => element.id === item.id
+    );
     if (index !== -1) {
-      setIsHightLight(true)
+      setIsHightLight(true);
     }
 
-    const indexTopNew = topNewCourses.findIndex((element) => element.id === item.id)
+    const indexTopNew = topNewCourses.findIndex(
+      (element) => element.id === item.id
+    );
     if (indexTopNew !== -1) {
-      setIsTopNew(true)
+      setIsTopNew(true);
     }
   }, [item, highLightCourses]);
 
@@ -43,9 +55,41 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCo
           </Link>
         </Col>
         <Col span={14}>
-          {!isWatchList && isHightLight && <span style={{position:'absolute', right:5, color: "red", fontWeight: 'bold'}}>Hot</span>}
-          {!isWatchList && isTopNew && <span style={{position:'absolute', left:5, color: "green", fontWeight: 'bold'}}>New</span>}
-          <div className="content-item" style={{backgroundColor: (!isWatchList && isHightLight)?"#f1dddb":isTopNew?"#CFF8F1":"white"}} >
+          {!isWatchList && isHightLight && (
+            <span
+              style={{
+                position: "absolute",
+                right: 5,
+                color: "red",
+                fontWeight: "bold",
+              }}
+            >
+              Hot
+            </span>
+          )}
+          {!isWatchList && isTopNew && (
+            <span
+              style={{
+                position: "absolute",
+                left: 5,
+                color: "green",
+                fontWeight: "bold",
+              }}
+            >
+              New
+            </span>
+          )}
+          <div
+            className="content-item"
+            style={{
+              backgroundColor:
+                !isWatchList && isHightLight
+                  ? "#f1dddb"
+                  : isTopNew
+                  ? "#CFF8F1"
+                  : "white",
+            }}
+          >
             <Link to={`/courses/${item.id}`}>
               <div className="content-detail">
                 <span className="title">Tên:</span>
@@ -61,8 +105,10 @@ function CourseItem({ item, isWatchList, onRemoveCourse, categories, highLightCo
               </div>
               <div className="content-detail">
                 <span className="title">Đánh giá:</span>
-                <Rate allowHalf value={rateScore} disabled />{"  "}{ratings}{"  "}
-                Lượt đánh giá
+                <Rate allowHalf value={rateScore} disabled />
+                {"  "}
+                {ratings}
+                Đánh giá Lượt đánh giá
               </div>
             </Link>
 
