@@ -50,7 +50,7 @@ let getWebhook = (req, res) => {
     }
 }
 
-// Handles messages events
+// Handles messages events (Search)
 async function handleMessage(sender_psid, received_message) {
     
     if (received_message.text) {
@@ -58,7 +58,7 @@ async function handleMessage(sender_psid, received_message) {
     }
 }
 
-// Handles messaging_postbacks events
+// Handles messaging_postbacks events (Button clicked)
 async function handlePostback(sender_psid, received_postback) {
     
     let payload = received_postback.payload;
@@ -68,20 +68,23 @@ async function handlePostback(sender_psid, received_postback) {
         case 'get_started':
             await chatbotService.handleGetStarted(sender_psid);
             break;
+        case 'sub_category':
+            await chatbotService.handleGetSubCategories(sender_psid, keyValuePair[1]);
+            break;
         case 'show_list':
-            await chatbotService.handleGetListCoursesByCategory(sender_psid, keyValuePair[1]);
+            await chatbotService.handleGetListCoursesBySubCategory(sender_psid, keyValuePair[1]);
             break;
         case 'show_detail':
             await chatbotService.handleGetCourseDetail(sender_psid);
             break;
         default:
             let response = { "text": `Xin lỗi, tôi không hiểu ${payload}.` };
-            callSendAPI(sender_psid, response);
+            callSendApiError(sender_psid, response);
     }
 }
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
+function callSendApiError(sender_psid, response) {
     
     let request_body = {
         "recipient": {

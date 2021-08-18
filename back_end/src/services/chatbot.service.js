@@ -5,26 +5,30 @@ const categoryService = require('./category.service');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const SAMPLE_IMAGE = "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg";
 
-async function callSendAPI(sender_psid, response) {
+function callSendAPI(sender_psid, response) {
     let request_body = {
         "recipient": {
             "id": sender_psid
         },
         "message": response
     }
-    
-    await request({
-        "uri": "https://graph.facebook.com/v9.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
+
+    return new Promise((resolve, reject) => {
+        request({
+            "uri": "https://graph.facebook.com/v9.0/me/messages",
+            "qs": { "access_token": PAGE_ACCESS_TOKEN },
+            "method": "POST",
+            "json": request_body
+        }, (err, res, body) => {
+            if (!err) {
+                console.log('message sent!');
+                resolve('success');
+            } else {
+                console.error("Unable to send message:" + err);
+                reject(err);
+            }
+        });
+    })
 }
 
 function getUsername(sender_psid) {
@@ -47,7 +51,6 @@ function getUsername(sender_psid) {
 }
 
 async function getAllCategories() {
-
     let allCategories = await categoryService.getAllCategories();
     // Just get categories that have no parent
     let allParentCategories = [];
@@ -56,11 +59,39 @@ async function getAllCategories() {
             allParentCategories.push(category);
         }
     })
-    console.log(allParentCategories);
 
     // Create template elements
     let templateElements = [];
     allParentCategories.forEach(category => {
+        templateElements.push({
+            title: category.name,
+            buttons: [{
+                type: "postback",
+                title: "Xem " + category.name,
+                payload: `sub_category=${category._id}`
+            }]
+        });
+    });
+
+    // Create response
+    let response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": JSON.stringify(templateElements)
+            }
+        }
+    };
+    return response;
+}
+
+async function getAllSubCategories(categoryId) {
+    let allSubCategories = await categoryService.getAllSubCategories(categoryId);
+
+    // Create template elements
+    let templateElements = [];
+    allSubCategories.forEach(category => {
         templateElements.push({
             title: category.name,
             buttons: [{
@@ -185,10 +216,24 @@ let handleGetListCoursesByQuery = (sender_psid, query) => {
     })
 }
 
-let handleGetListCoursesByCategory = (sender_psid, category) => {
+let handleGetSubCategories = (sender_psid, categoryId) => {
     return new Promise(async(resolve, reject) => {
         try {
-            let response1 = { "text": `Danh sách khóa học thuộc danh mục "${category}"` }
+            let response1 = { "text": `Đây là những danh mục con` }
+            let response2 = await getAllSubCategories(categoryId);
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
+            resolve('done');
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let handleGetListCoursesBySubCategory = (sender_psid, subCategory) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let response1 = { "text": `Danh sách khóa học thuộc danh mục "${subCategory}"` }
             let response2 = getListCourses();
             await callSendAPI(sender_psid, response1);
             await callSendAPI(sender_psid, response2);
@@ -214,8 +259,9 @@ let handleGetCourseDetail = (sender_psid) => {
 }
 
 module.exports = {
-    handleGetStarted: handleGetStarted,
-    handleGetListCoursesByQuery: handleGetListCoursesByQuery,
-    handleGetListCoursesByCategory: handleGetListCoursesByCategory,
-    handleGetCourseDetail: handleGetCourseDetail
+    handleGetStarted,
+    handleGetListCoursesByQuery,
+    handleGetSubCategories,
+    handleGetListCoursesBySubCategory,
+    handleGetCourseDetail
 }
