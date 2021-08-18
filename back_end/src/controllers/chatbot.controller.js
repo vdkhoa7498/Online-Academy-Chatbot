@@ -75,7 +75,7 @@ async function handlePostback(sender_psid, received_postback) {
             await chatbotService.handleGetListCoursesBySubCategory(sender_psid, keyValuePair[1]);
             break;
         case 'show_detail':
-            await chatbotService.handleGetCourseDetail(sender_psid);
+            await chatbotService.handleGetCourseDetail(sender_psid, keyValuePair[1]);
             break;
         default:
             let response = { "text": `Xin lỗi, tôi không hiểu ${payload}.` };
