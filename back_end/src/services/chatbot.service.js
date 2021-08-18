@@ -1,30 +1,35 @@
 require('dotenv').config();
 const request = require('request');
 const categoryService = require('./category.service');
+const Course = require('../models/courses.model');
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const SAMPLE_IMAGE = "https://hocguitar.net/wp-content/uploads/2019/11/tu-hoc-guitar-tai-nha-online.jpg";
 
-async function callSendAPI(sender_psid, response) {
+function callSendAPI(sender_psid, response) {
     let request_body = {
         "recipient": {
             "id": sender_psid
         },
         "message": response
     }
-    
-    await request({
-        "uri": "https://graph.facebook.com/v9.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
+
+    return new Promise((resolve, reject) => {
+        request({
+            "uri": "https://graph.facebook.com/v9.0/me/messages",
+            "qs": { "access_token": PAGE_ACCESS_TOKEN },
+            "method": "POST",
+            "json": request_body
+        }, (err, res, body) => {
+            if (!err) {
+                console.log('message sent!');
+                resolve('success');
+            } else {
+                console.error("Unable to send message:" + err);
+                reject(err);
+            }
+        });
+    })
 }
 
 function getUsername(sender_psid) {
@@ -47,7 +52,6 @@ function getUsername(sender_psid) {
 }
 
 async function getAllCategories() {
-
     let allCategories = await categoryService.getAllCategories();
     // Just get categories that have no parent
     let allParentCategories = [];
@@ -56,7 +60,6 @@ async function getAllCategories() {
             allParentCategories.push(category);
         }
     })
-    console.log(allParentCategories);
 
     // Create template elements
     let templateElements = [];
@@ -66,7 +69,7 @@ async function getAllCategories() {
             buttons: [{
                 type: "postback",
                 title: "Xem " + category.name,
-                payload: `show_list=${category.name}`
+                payload: `sub_category=${category._id}`
             }]
         });
     });
@@ -84,54 +87,91 @@ async function getAllCategories() {
     return response;
 }
 
-function getListCourses() {
+async function getAllSubCategories(categoryId) {
+    let allSubCategories = await categoryService.getAllSubCategories(categoryId);
+
+    // Create template elements
+    let templateElements = [];
+    allSubCategories.forEach(category => {
+        templateElements.push({
+            title: category.name,
+            buttons: [{
+                type: "postback",
+                title: "Xem " + category.name,
+                payload: `show_list=${category._id},${category.name}`
+            }]
+        });
+    });
+
+    // Create response
     let response = {
         "attachment": {
             "type": "template",
             "payload": {
                 "template_type": "generic",
-                "elements": [
-                    {
-                        "title": "Tự học guitar",
-                        "image_url": SAMPLE_IMAGE,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Tự học guitar",
-                                "payload": "show_detail",
-                            }
-                        ],
-                    },
-                    {
-                        "title": "Tự học guitar",
-                        "image_url": SAMPLE_IMAGE,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Tự học guitar",
-                                "payload": "show_detail",
-                            }
-                        ],
-                    },
-                    {
-                        "title": "Tự học guitar",
-                        "image_url": SAMPLE_IMAGE,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Tự học guitar",
-                                "payload": "show_detail",
-                            }
-                        ],
-                    }
-                ]
+                "elements": JSON.stringify(templateElements)
             }
         }
     };
     return response;
 }
 
-function getCourseDetail() {
+async function getListCoursesByQuery(query) {
+    let templateElements = [];
+    const listCourses = await Course.find({ $or: [{ title: new RegExp(query, "i") }] });
+    listCourses.forEach(course => {
+        templateElements.push({
+            title: course.title,
+            image_url: course.picture,
+            buttons: [{
+                type: "postback",
+                title: "Xem " + course.title,
+                payload: `show_detail=${course._id}`
+            }]
+        });
+    });
+    console.log(templateElements);
+
+    let response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": JSON.stringify(templateElements)
+            }
+        }
+    };
+    return response;
+}
+
+async function getListCoursesBySubCategory(categoryId) {
+    let templateElements = [];
+    const listCourses = await Course.find({ categoryId: categoryId });
+    listCourses.forEach(course => {
+        templateElements.push({
+            title: course.title,
+            image_url: course.picture,
+            buttons: [{
+                type: "postback",
+                title: "Xem " + course.title,
+                payload: `show_detail=${course._id}`
+            }]
+        });
+    });
+
+    let response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": JSON.stringify(templateElements)
+            }
+        }
+    };
+    return response;
+}
+
+function getCourseDetailResponse(course) {
     let response = {
         "attachment": {
             "type": "template",
@@ -139,12 +179,12 @@ function getCourseDetail() {
                 "template_type": "generic",
                 "elements": [
                     {
-                        "title": "Tự học guitar",
-                        "image_url": SAMPLE_IMAGE,
+                        "title": `${course.title}`,
+                        "image_url": `${course.picture}`,
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "Quay lại",
+                                "title": "Quay lại menu chính",
                                 "payload": "get_started",
                             }
                         ],
@@ -175,7 +215,7 @@ let handleGetListCoursesByQuery = (sender_psid, query) => {
     return new Promise(async(resolve, reject) => {
         try {
             let response1 = { "text": `Danh sách khóa học ứng với từ khóa "${query}"` }
-            let response2 = getListCourses();
+            let response2 = await getListCoursesByQuery(query);
             await callSendAPI(sender_psid, response1);
             await callSendAPI(sender_psid, response2);
             resolve('done');
@@ -185,11 +225,11 @@ let handleGetListCoursesByQuery = (sender_psid, query) => {
     })
 }
 
-let handleGetListCoursesByCategory = (sender_psid, category) => {
+let handleGetSubCategories = (sender_psid, categoryId) => {
     return new Promise(async(resolve, reject) => {
         try {
-            let response1 = { "text": `Danh sách khóa học thuộc danh mục "${category}"` }
-            let response2 = getListCourses();
+            let response1 = { "text": `Đây là những danh mục con` }
+            let response2 = await getAllSubCategories(categoryId);
             await callSendAPI(sender_psid, response1);
             await callSendAPI(sender_psid, response2);
             resolve('done');
@@ -199,11 +239,28 @@ let handleGetListCoursesByCategory = (sender_psid, category) => {
     })
 }
 
-let handleGetCourseDetail = (sender_psid) => {
+let handleGetListCoursesBySubCategory = (sender_psid, subCategory) => {
+    const segments = subCategory.split(',');
+
     return new Promise(async(resolve, reject) => {
         try {
-            let response1 = getCourseDetail();
-            let response2 = { "text": "Tự học guitar tại nhà cho phép người tập được chủ động về thời gian và phương pháp học, cũng như tiết kiệm được nhiều chi phí." }
+            let response1 = { "text": `Danh sách khóa học thuộc danh mục "${segments[1]}"` }
+            let response2 = await getListCoursesBySubCategory(segments[0]);
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
+            resolve('done');
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let handleGetCourseDetail = (sender_psid, courseId) => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let course = await Course.findOne({ _id: courseId });
+            let response1 = getCourseDetailResponse(course);
+            let response2 = { "text": `${course.shortDescription}` }
             await callSendAPI(sender_psid, response1);
             await callSendAPI(sender_psid, response2);
             resolve('done');
@@ -214,8 +271,9 @@ let handleGetCourseDetail = (sender_psid) => {
 }
 
 module.exports = {
-    handleGetStarted: handleGetStarted,
-    handleGetListCoursesByQuery: handleGetListCoursesByQuery,
-    handleGetListCoursesByCategory: handleGetListCoursesByCategory,
-    handleGetCourseDetail: handleGetCourseDetail
+    handleGetStarted,
+    handleGetListCoursesByQuery,
+    handleGetSubCategories,
+    handleGetListCoursesBySubCategory,
+    handleGetCourseDetail
 }

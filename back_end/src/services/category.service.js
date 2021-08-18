@@ -13,6 +13,10 @@ const getAllCategories = async () => {
   return await Category.find();
 };
 
+const getAllSubCategories = async (categoryId) => {
+  return await Category.find({ parentId: categoryId });
+}
+
 const getAllCategoriesAdmin = async () => {
   const allCategories = await Category.find();
 
@@ -102,6 +106,7 @@ module.exports = {
   createCategory,
   queryCategory,
   getAllCategories,
+  getAllSubCategories,
   getAllCategoriesAdmin,
   getCategoryById,
   editCategory,
