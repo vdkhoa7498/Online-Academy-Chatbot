@@ -17,7 +17,6 @@ function CourseItem({
 }) {
   const [lecturer, setLecturer] = useState({});
   const { title, categoryId, lecturerId, ratings, rateScore } = item;
-  console.log("ratings", ratings);
   const [isHightLight, setIsHightLight] = useState(false);
   const [isTopNew, setIsTopNew] = useState(false);
   let categoryNameList = [];
@@ -104,10 +103,10 @@ function CourseItem({
                 <span className="value">{lecturer.fullName}</span>
               </div>
               <div className="content-detail">
-                <span className="title">Đánh giá:</span>
-                <Rate allowHalf value={rateScore} disabled />
+                <div className="title">Đánh giá:</div>
+                <Rate className="rate" allowHalf value={rateScore} disabled />
                 {"  "}
-                {ratings}
+                {ratings} {"  "}
                 Đánh giá Lượt đánh giá
               </div>
             </Link>
