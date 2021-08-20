@@ -109,7 +109,7 @@ const Lecturer = () => {
       <Card title={<span>
         <Button icon={<UserAddOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddLecturer}>Cấp tài khoản giảng viên</Button>
       </span>}>
-        <Table bordered rowKey="id" dataSource={lecturers} pagination={false}>
+        <Table bordered rowKey="id" dataSource={lecturers}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
           <Column title="Tên" dataIndex="fullName" key="fullName" align="center" />
           <Column title="Email" dataIndex="email" key="email" align="center" />

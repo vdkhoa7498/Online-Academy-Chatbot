@@ -76,7 +76,7 @@ const Student = () => {
       <div className="title">Danh sách học viên</div>
       {/* <br /> */}
       <Card>
-        <Table bordered rowKey="id" dataSource={students} pagination={false}>
+        <Table bordered rowKey="id" dataSource={students}>
           <Column title="ID" dataIndex="id" key="id" align="center" />
           <Column title="Tên" dataIndex="fullName" key="fullName" align="center" />
           <Column title="Email" dataIndex="email" key="email" align="center" />

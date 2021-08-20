@@ -117,7 +117,7 @@ const Category = () => {
       <Card title={<span>
         <Button icon={<TagsOutlined />} style={{ float: "right" }} type='primary' onClick={handleAddCategory}>Thêm danh mục</Button>
       </span>}>
-        <Table rowKey="_id" dataSource={categories} pagination={false} size="middle">
+        <Table rowKey="_id" dataSource={categories} size="middle">
           <Column title="ID" dataIndex="_id" key="_id" align="center" />
           <Column title="Tiêu đề" dataIndex="name" key="name" align="center" />
           <Column title="Danh mục cha" dataIndex="parent" key="parent" align="center" />
