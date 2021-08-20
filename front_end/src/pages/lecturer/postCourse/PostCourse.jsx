@@ -129,6 +129,7 @@ const PostCourse = ({ categories }) => {
 
     const course = {
       title: values.title,
+      preView: values.preView,
       picture: picture,
       shortDescription: values.shortDescription,
       description: values.description,
@@ -445,6 +446,20 @@ const PostCourse = ({ categories }) => {
               </Form.List>
             </Form.Item>
 
+            <Form.Item name="preView" label="Số video được xem trước" initialValue={0}
+            >
+              <InputNumber
+                style={{
+                  width: 200,
+                  textAlign: "right",
+                }}
+                defaultValue="0"
+                min="0"
+                max="3"
+                step="1"
+              />
+            </Form.Item>
+
             <Form.Item
               name="status"
               label="Trạng thái"
@@ -472,7 +487,7 @@ const PostCourse = ({ categories }) => {
                 max="100000000"
                 step="5000"
                 onChange={(value) => setPrice(value)}
-                // stringMode
+              // stringMode
               />
             </Form.Item>
 

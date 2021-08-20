@@ -139,6 +139,9 @@ const Information = ({ categories, courseId, course }) => {
     const result = await httpClient.course.updateCourseById(courseId, form);
     console.log(result);
     setIsPageLoading(false);
+    if (result){
+      message.success("Thay đổi thông tin khoá học thành công")
+    }
     // history.push("/");
   };
 
@@ -160,6 +163,7 @@ const Information = ({ categories, courseId, course }) => {
       categoryId: course.categoryId,
       status: course.status,
       price: course.price,
+      preView: course.preView,
       description: course.description,
     });
   };
@@ -310,6 +314,19 @@ const Information = ({ categories, courseId, course }) => {
               hasFeedback
             >
               <ReactQuill theme="snow" />
+            </Form.Item>
+            <Form.Item name="preView" label="Số video được xem trước" initialValue={0}
+            >
+              <InputNumber
+                style={{
+                  width: 200,
+                  textAlign: "right",
+                }}
+                defaultValue="0"
+                min="0"
+                max="3"
+                step="1"
+              />
             </Form.Item>
             <Form.Item
               name="status"

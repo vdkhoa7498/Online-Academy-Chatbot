@@ -77,7 +77,7 @@ const HeaderBar = (props) => {
       </Link>
       {isAuthenticated ? (
         <div className="right-header-container">
-          {user.role === "admin" ? (
+          {user?.role === "admin" ? (
             <div style={{ display: "flex" }}>
               <Link to="/search" style={{ marginRight: 20 }}>
                 <Button
@@ -96,7 +96,7 @@ const HeaderBar = (props) => {
             </div>
           ) : (
             <div>
-              {user.role === "lecturer" ? (
+              {user?.role === "lecturer" ? (
                 <div style={{ display: "flex" }}>
                   <Link to="/search" style={{ marginRight: 20 }}>
                     <Button

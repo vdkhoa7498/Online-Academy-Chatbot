@@ -49,17 +49,23 @@ const SearchList = () => {
   }, [sortBy, rateScoreFilter, limit, page, searchBy]);
 
   const onSearch = async (searchText) => {
-    const courses_ = await httpClient.course.getCourses({
-      sortBy: sortBy,
-      search: searchText,
-      rateScoreFilter: rateScoreFilter,
-      searchBy: searchBy,
-      limit: limit,
-      page: page,
-      // priceFilter: priceFilter
-    });
-    setCourses(courses_.results);
-    setTotalResults(courses_.totalResults);
+    if (searchText && searchText.trim() !== "") {
+      const courses_ = await httpClient.course.getCourses({
+        sortBy: sortBy,
+        search: searchText,
+        rateScoreFilter: rateScoreFilter,
+        searchBy: searchBy,
+        limit: limit,
+        page: page,
+        // priceFilter: priceFilter
+      });
+      setCourses(courses_.results);
+      setTotalResults(courses_.totalResults);
+    }
+    else {
+      window.location.reload();
+    }
+
   };
 
   // const priceOptions = [

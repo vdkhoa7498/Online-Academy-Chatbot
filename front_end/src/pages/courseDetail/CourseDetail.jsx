@@ -139,7 +139,7 @@ const CourseDetail = ({ user }) => {
           </div>
           <div style={{ marginTop: "20px" }}>
             <Space>
-              {user && (
+              {user && user?.role === "student" &&(
                 <div>
                   {!isRegister ? (
                     <Button
@@ -174,7 +174,7 @@ const CourseDetail = ({ user }) => {
                     </Button>
                   )}
 
-                  {isRegister && user && (
+                  {isRegister && user && user?.role === "student" &&(
                     <div className="learing">
                       <Link to={`/courses/learning/${param.id}`}>
                         <VideoCameraOutlined /> Học ngay
@@ -208,7 +208,7 @@ const CourseDetail = ({ user }) => {
             </div>
             <div>
               <Space size="large">
-                { index < course.preView && <Button type="link" onClick={() => showPreViewModal(item.url)}>Xem trước</Button> }
+                {index < course.preView && <Button type="link" onClick={() => showPreViewModal(item.url)}>Xem trước</Button>}
                 {item.length}
               </Space>
             </div>
@@ -217,7 +217,7 @@ const CourseDetail = ({ user }) => {
       />
       <Modal title='Xem trước' width='50%' visible={isPreviewModalVisible} onCancel={handlePreviewCancel} footer={null}>
         <video width='100%' controls>
-          <source src={previewUrl}/>
+          <source src={previewUrl} />
         </video>
       </Modal>
 
@@ -247,7 +247,7 @@ const CourseDetail = ({ user }) => {
       <Divider orientation="left">
         <div className="section">Thông tin giảng viên</div>
       </Divider>
-      { course.lecturerDetails && <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerDetails.fullName}</div> }
+      {course.lecturerDetails && <div style={{ fontWeight: 'bold', fontSize: 18, color: 'purple', marginTop: '20px' }}>{course.lecturerDetails.fullName}</div>}
       <Row>
         <Col span={3}>
           {/* <img style={{ borderRadius: '50%', width: '100%', padding: '10px' }} src={course.lecturer.avatar} /> */}

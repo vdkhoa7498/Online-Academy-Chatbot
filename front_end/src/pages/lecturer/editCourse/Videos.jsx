@@ -127,18 +127,26 @@ const Videos = ({ courseId }) => {
     await httpClient.video
       .createVideos(videoForm)
       .then((res) => {
-        message.success("Upload khoá học mới thành công!");
+        message.success("Thêm video mới thành công!");
         setIsCreateModalVisible(false);
         fetchVideos();
       })
       .catch((err) => {
         console.log(err);
-        message.error("Upload bài video, vui lòng thử lại sau!");
+        message.error("Upload video lỗi, vui lòng thử lại sau!");
       });
   };
 
   const handleDeleteCourse = async ({ id }) => {
-    await httpClient.video.deleteVideo(id);
+    await httpClient.video.deleteVideo(id).then((res) => {
+      message.success("Xoá video thành công!");
+      setIsCreateModalVisible(false);
+      fetchVideos();
+    })
+    .catch((err) => {
+      console.log(err);
+      message.error("Xoá video lỗi, vui lòng thử lại sau!");
+    });
     fetchVideos();
   };
 

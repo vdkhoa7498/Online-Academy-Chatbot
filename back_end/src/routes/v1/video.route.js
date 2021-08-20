@@ -7,9 +7,9 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(videosController.getVideos)
-  .post(validate(videoValidate.createVideos), videosController.createVideos)
-  .put(auth(), validate(videoValidate.setCurrentTime), videosController.setCurrentTime);
+  .get(auth(), videosController.getVideos)
+  .post(auth('lecturer'), validate(videoValidate.createVideos), videosController.createVideos)
+  .put(auth('lecturer'), validate(videoValidate.setCurrentTime), videosController.setCurrentTime);
 
 router.delete('/:videoId', validate(videoValidate.deleteVideo), videosController.deleteVideo);
 

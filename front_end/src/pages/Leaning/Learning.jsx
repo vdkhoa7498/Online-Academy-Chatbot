@@ -110,8 +110,8 @@ const Learning = ({ user }) => {
                 setState(player);
               }}
               fluid={false}
-              height={700}
-              width={1070}
+              height={500}
+              width={"100%"}
               playsInline
               poster="./logo_32.png"
               startTime={lastTime.time}
@@ -132,8 +132,8 @@ const Learning = ({ user }) => {
                 >
                   {item.title}(
                   {user &&
-                    item.lastWatchTime.find((i) => i.userId === user.id)
-                      .watchedPercent * 100}
+                    item?.lastWatchTime?.find((i) => i.userId === user.id)
+                      ?.watchedPercent * 100}
                   %)
                 </List.Item>
               )}

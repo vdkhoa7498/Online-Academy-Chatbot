@@ -58,6 +58,7 @@ const getAllCourses = async () => {
 };
 
 const queryCourses = async (filter, options) => {
+  filter.disabled=false;
   if (filter.search) {
     filter.$text = { $search: filter.search };
     delete filter.search;
