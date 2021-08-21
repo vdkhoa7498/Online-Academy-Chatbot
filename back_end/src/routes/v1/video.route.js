@@ -9,7 +9,7 @@ router
   .route('/')
   .get(auth(), videosController.getVideos)
   .post(auth('lecturer'), validate(videoValidate.createVideos), videosController.createVideos)
-  .put(auth('lecturer'), validate(videoValidate.setCurrentTime), videosController.setCurrentTime);
+  .put(auth('student'), validate(videoValidate.setCurrentTime), videosController.setCurrentTime);
 
 router.delete('/:videoId', validate(videoValidate.deleteVideo), videosController.deleteVideo);
 
